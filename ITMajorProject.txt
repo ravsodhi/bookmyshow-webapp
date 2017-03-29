@@ -1,0 +1,72 @@
+DATA SCHEMA
+
+*Assumptions:
+** There are a limited and fixed slots of fixed duration during which a movie can be viewed, irrespective of duration.The screening of a movie will start at the following times:
+   # 9:00 a.m
+   # 12:00 noon
+   # 3:00 p.m
+   # 6:00 p.m
+   # 9: 00 p.m
+
+
+* Movie:
+    * ID (Primary Key)
+    * Movie Title (Unique)
+    * Duration
+    * Description (String,Nullable)
+    * Director (String,Nullable)
+    * Rating(Integer,Nullable)
+Screening:
+    * Movie  (Foreign Key, one- many relationship with slot)
+    * Hall ()
+    * Showing Time Slot->hall->show
+Booking:
+    * Date
+    * Slot
+    * Hall → Seat (Primary Key ?)
+    * Movie (Foreign Key)
+Login:
+* Admin Login
+   * Add Screening
+   * Delete Screening
+* User Login + Register 
+   * Check if user is registered
+   * Book a screening of a show
+   * Functionality to select seats and view bookings
+* Guest Functionality
+   * Able to view screenings
+   * Require login on booking
+
+IMPLEMENTATION 1:
+By giving id to every seat : 
+* 1-150 :  BIG HALL
+   * 1-30 Least cost ( 2 front rows)
+   * 31-105 Middle cost (5 middle rows)
+   * 106 - 150 highest cost ( 3 back rows)
+* 151-300 MEDIUM HALL
+   * 151-255 Least cost ( 7 front rows)
+   * 256 - 300 highest cost ( 3 back rows)
+* 301- 450 SMALL HALL
+   * 301 - 450 (10 rows)
+
+IMPLEMENTATION 2 :
+Hall:
+* ID (Primary Key)
+* Hall Type
+   * Big
+   * Medium
+   * Small
+Then for each Hall type we have seat arrangement
+Seat:
+* Hall ID (Foreign Key)
+* Seat No.  
+
+
+Doubts:
+1. Can we have two primary keys for same table?
+2. How can we relate 3 tables in database?
+3. How can we create a table with foreign keys (from separate classes) so that they are linked to every other column?
+    Example: - While Booking a ticket, we need to store Movie,Time, Show Time, Hall in a single row of a table.
+
+
+
