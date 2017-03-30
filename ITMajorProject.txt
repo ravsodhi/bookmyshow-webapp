@@ -10,23 +10,38 @@ DATA SCHEMA
 
 
 * Movie:
-    * ID (Primary Key)
-    * Movie Title (Unique)
-    * Duration
-    * Description (String,Nullable)
-    * Director (String,Nullable)
+    * ID (Integer,Primary Key)
+    * Title (String)
+    * Director (String)
+    * Description (String)
+    * Duration_min(Integer)
     * Rating(Float,Nullable)
-Screening:
-    * Movie  (Foreign Key, one- many relationship with slot)
-    * Hall ()
-    * Showing Time Slot->hall->show
+
+* Auditorium:
+    * ID (Primary Key)
+    * name (String)
+    * size (Big/Medium/Small)
+
+* Time:
+    * ID (Primary Key)
+    * start_time
+    
+* Screening:
+    * Movie_id (Foreign Key: from Movie)
+    * Auditorium_id (Foreign Key: from Auditorium)
+    * Screenig_start_time (Foreign Key: from Time)
  
-Booking:
+* Seat:
+    * ID (Primary Key)
+    * Auditorium_id (Foreign Key : from Auditorium)
+    * Row (String)
+    * Column (Integer)
+       
+* Booking/Reservation:
     * User Id
-    * Date
-    * Slot
-    * Hall → Seat (Primary Key ?)
-    * Movie (Foreign Key)
+    * Screening_id (Foreign Key :from screening)
+    * Seat_id (Foreign Key : from Seat)
+    
 Login:
 * Admin Login
    * Add Screening
@@ -39,36 +54,11 @@ Login:
    * Able to view screenings
    * Require login on booking
 
-IMPLEMENTATION 1:
-By giving id to every seat : 
-* 1-150 :  BIG HALL
-   * 1-30 Least cost ( 2 front rows)
-   * 31-105 Middle cost (5 middle rows)
-   * 106 - 150 highest cost ( 3 back rows)
-* 151-300 MEDIUM HALL
-   * 151-255 Least cost ( 7 front rows)
-   * 256 - 300 highest cost ( 3 back rows)
-* 301- 450 SMALL HALL
-   * 301 - 450 (10 rows)
-
-IMPLEMENTATION 2 :
-Hall:
-* ID (Primary Key)
-* Hall Type
-   * Big
-   * Medium
-   * Small
-Then for each Hall type we have seat arrangement
-Seat:
-* Hall ID (Foreign Key)
-* Seat No.  
-
-
 Doubts:
 1. Can we have two primary keys for same table?
-2. How can we relate 3 tables in database?
-3. How can we create a table with foreign keys (from separate classes) so that they are linked to every other column?
+//2. How can we relate 3 tables in database?
+//3. How can we create a table with foreign keys (from separate classes) so that they are linked to every other column?
     Example: - While Booking a ticket, we need to store Movie,Time, Show Time, Hall in a single row of a table.
-
+4. How do we add user functionality?
 
 
