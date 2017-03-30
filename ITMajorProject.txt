@@ -15,12 +15,14 @@ DATA SCHEMA
     * Duration
     * Description (String,Nullable)
     * Director (String,Nullable)
-    * Rating(Integer,Nullable)
+    * Rating(Float,Nullable)
 Screening:
     * Movie  (Foreign Key, one- many relationship with slot)
     * Hall ()
     * Showing Time Slot->hall->show
+ 
 Booking:
+    * User Id
     * Date
     * Slot
     * Hall → Seat (Primary Key ?)

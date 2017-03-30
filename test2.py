@@ -11,51 +11,71 @@ db = SQLAlchemy(app)
 
 
 class Movie (db.Model):
+ #Model   
     __tablename__ = "movie"
     id = db.Column('id', db.Integer, primary_key = True)
     title = db.Column('title', db.Unicode)
     #director = db.Column('director', db.Unicode)
-    #cast = db.Column('cast', db.Unicode)
-    #description = deferred(Column('description', db.Text))
+    #description = db.Column(Column('description', db.Text))
     #duration_min = db.Column('duration_min', db.Integer)
     #rating = db.Column('rating', db.Integer)
     def __init__(self,title):
-        self.title= title
+        self.title = title
+        #self.director
+        #self.description
+        #self.duration_min
+        #self.rating
+
     def __repr__(self):
         return "Movie { name: %r }"%(self.title)
+        '''return "Movie {
+        name: %r
+        director : %r
+        description :%r
+        duration_min : %r
+        rating : %r
+        }"%(self.title,self.director,self.description,self.duration_min,self.rating)
+        '''
 
-# Employee list (users of system)
 class User (db.Model):
+ #Model   
     __tablename__ = "user"
     id = db.Column('id', db.Integer, primary_key = True)
+    
     username = db.Column('username', db.Unicode)
     #password = db.Column('password', db.Unicode)
     def __init__(self,username):
         self.username = username
+        #self.password = generate_password_hash(password)
     def __repr__(self):
         return "User { username: %r }"%(self.username)
+        '''return "User { 
+        username: %r
+        password: %r}"%(self.username,self.password)
+        '''
 
 class Seat (db.Model):
     __tablename__ = "seat"
     id = db.Column('id', db.Integer, primary_key = True)
-    row = db.Column('row', db.Integer)
-    number = db.Column('number', db.Integer)
+    row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
+    column = db.Column('column', db.Integer)
     auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
 
     auditorium = db.relationship('Auditorium', foreign_keys=auditorium_id)
-    def __init__(self,row,number,auditorium_id):
+    
+    def __init__(self,row,column,auditorium_id):
         self.row = row
-        self.number = number
+        self.column = column
         self.auditorium_id = auditorium_id
+    
     def __repr__(self):
-        return "Seat { row: %r number: %r auditorium:%r}"%(self.row,self.number,self.auditorium_id)
+        return "Seat { row: %r column: %r auditorium:%r}"%(self.row,self.column,self.auditorium_id)
 
-# seats_no is redundancy (it could be computed by counting Seat.id_seat related to specific room)
 class Auditorium (db.Model):
     __tablename__ = "auditorium"
     id = db.Column('id', db.Integer, primary_key = True)
     name = db.Column('name', db.Unicode)
-    #seats_no = db.Column('seats_no', db.Integer)
+    
     def __init__(self,name):
         self.name = name
     def __repr__(self):
@@ -64,12 +84,12 @@ class Auditorium (db.Model):
 class Time (db.Model):
     __tablename__ = "time"
     id = db.Column('id', db.Integer, primary_key = True)
-    name = db.Column('name', db.Unicode)
-    #seats_no = db.Column('seats_no', db.Integer)
-    def __init__(self,name):
-        self.name = name
+    start_time = db.Column('start_time', db.Unicode)
+    
+    def __init__(self,start_time):
+        self.start_time = start_time
     def __repr__(self):
-        return "Auditorium { name: %r }"%(self.name)
+        return "Time { start_time: %r }"%(self.start_time)
 
 
 class Screening (db.Model):
@@ -77,17 +97,17 @@ class Screening (db.Model):
     id = db.Column('id', db.Integer, primary_key = True)
     movie_id = db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
     auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
-    screening_start = db.Column('screening_start', db.Integer,db.ForeignKey('time.id'))
-    def __init__(self,movie_id,auditorium_id,screening_start):
+    screening_start_time = db.Column('screening_start_time', db.Integer,db.ForeignKey('time.id'))
+    def __init__(self,movie_id,auditorium_id,screening_start_time):
         self.movie_id = movie_id
         self.auditorium_id = auditorium_id
-        self.screening_start = screening_start
+        self.screening_start_time = screening_start_time
     def __repr__(self):
-        return "Screening { movie_id: %r auditorium_id: %r time:%r}"%(self.movie_id,self.auditorium_id,self.screening_start)
+        return "Screening { movie_id: %r auditorium_id: %r start_time:%r}"%(self.movie_id,self.auditorium_id,self.screening_start_time)
 
     movie = db.relationship('Movie', foreign_keys=movie_id)
     auditorium = db.relationship('Auditorium', foreign_keys=auditorium_id)
-    time = db.relationship('Time', foreign_keys=screening_start)
+    time = db.relationship('Time', foreign_keys=screening_start_time)
 
 db.create_all()
 movie1= Movie("DABANG")
@@ -159,7 +179,7 @@ print(l)
 k=[]
 #l.filter(auditorium_id=1).all()
 for j in l:
-    if j.screening_start == 1:
+    if j.screening_start_time == 1:
         k.append(j)
 print(k)
 
