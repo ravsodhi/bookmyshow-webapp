@@ -14,8 +14,8 @@ class Movie (db.Model):
  #Model   
     __tablename__ = "movie"
     id = db.Column('id', db.Integer, primary_key = True)
-    title = db.Column('title', db.Unicode)
-    #director = db.Column('director', db.Unicode)
+    title = db.Column('title', db.String)
+    #director = db.Column('director', db.String)
     #description = db.Column(Column('description', db.Text))
     #duration_min = db.Column('duration_min', db.Integer)
     #rating = db.Column('rating', db.Integer)
@@ -42,8 +42,8 @@ class User (db.Model):
     __tablename__ = "user"
     id = db.Column('id', db.Integer, primary_key = True)
     
-    username = db.Column('username', db.Unicode)
-    #password = db.Column('password', db.Unicode)
+    username = db.Column('username', db.String)
+    #password = db.Column('password', db.String)
     def __init__(self,username):
         self.username = username
         #self.password = generate_password_hash(password)
@@ -59,22 +59,18 @@ class Seat (db.Model):
     id = db.Column('id', db.Integer, primary_key = True)
     row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
     column = db.Column('column', db.Integer)
-    auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
-
-    auditorium = db.relationship('Auditorium', foreign_keys=auditorium_id)
-    
-    def __init__(self,row,column,auditorium_id):
+        
+    def __init__(self,row,column):
         self.row = row
         self.column = column
-        self.auditorium_id = auditorium_id
-    
+            
     def __repr__(self):
-        return "Seat { row: %r column: %r auditorium:%r}"%(self.row,self.column,self.auditorium_id)
+        return "Seat { row: %r column: %r}"%(self.row,self.column)
 
 class Auditorium (db.Model):
     __tablename__ = "auditorium"
     id = db.Column('id', db.Integer, primary_key = True)
-    name = db.Column('name', db.Unicode)
+    name = db.Column('name', db.String)
     
     def __init__(self,name):
         self.name = name
@@ -84,13 +80,22 @@ class Auditorium (db.Model):
 class Time (db.Model):
     __tablename__ = "time"
     id = db.Column('id', db.Integer, primary_key = True)
-    start_time = db.Column('start_time', db.Unicode)
+    start_time = db.Column('start_time', db.Integer)
     
     def __init__(self,start_time):
         self.start_time = start_time
     def __repr__(self):
         return "Time { start_time: %r }"%(self.start_time)
 
+class Date(db.Model):
+    __tablename__="date"
+    id = db.Column('id',db.Integer,primary_key = True)
+    show_date = db.Column('show_date',db.String)
+    
+    def __init__(self,show_date):
+        self.show_date = show_date
+    def __repr__(self):
+        return "Date { show_date: %r }"%(self.show_date)
 
 class Screening (db.Model):
     __tablename__ = "screening"
@@ -98,16 +103,32 @@ class Screening (db.Model):
     movie_id = db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
     auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
     screening_start_time = db.Column('screening_start_time', db.Integer,db.ForeignKey('time.id'))
-    def __init__(self,movie_id,auditorium_id,screening_start_time):
+    screening_date = db.Column('screening_date',db.Integer,db.ForeignKey('date.id'))
+    
+    def __init__(self,movie_id,auditorium_id,screening_start_time,screening_date):
         self.movie_id = movie_id
         self.auditorium_id = auditorium_id
         self.screening_start_time = screening_start_time
+        self.screening_date = screening_date
+    
     def __repr__(self):
-        return "Screening { movie_id: %r auditorium_id: %r start_time:%r}"%(self.movie_id,self.auditorium_id,self.screening_start_time)
+        return "Screening { movie_id: %r auditorium_id: %r start_time:%r show_date: %r}"%(self.movie_id,self.auditorium_id,self.screening_start_time,self.screening_date)
 
-    movie = db.relationship('Movie', foreign_keys=movie_id)
-    auditorium = db.relationship('Auditorium', foreign_keys=auditorium_id)
-    time = db.relationship('Time', foreign_keys=screening_start_time)
+class Booking (db.Model):
+    __tablename__ = "booking"
+    id = db.Column('id',db.Integer,primary_key = True)
+    user_id = db.Column('user_id',db.Integer,db.ForeignKey('user.id'))
+    screening_id = db.Column('screening_id',db.Integer,db.ForeignKey('screening.id'))
+    seat_id = db.Column('seat_id',db.Integer,db.ForeignKey('seat.id'))
+
+    def __init__(self,user_id,screening_id,seat_id):
+        self.user_id = user_id
+        self.screening_id = screening_id
+        self.seat_id = seat_id
+
+    def __repr__(self):
+        return "Booking { user_id: %r screening_id: %r seat_id: %r}"%(self.user_id,self.screening_id,self.seat_id)
+
 
 db.create_all()
 movie1= Movie("DABANG")
@@ -122,27 +143,37 @@ time2 = Time("12:30")
 time3 = Time("3:30")
 time4 = Time("6:30")
 time5 = Time("9:30")
+date1 = Date("Today")
+date2 = Date("Yesterday")
+date3 = Date("Tommorow")
 
-Screening1 = Screening(1,1,1)
-Screening2 = Screening(1,1,2)
-Screening3 = Screening(1,1,3)
-Screening4 = Screening(1,1,4)
-Screening5 = Screening(1,1,5)
-Screening6 = Screening(1,2,1)
-Screening7 = Screening(1,2,2)
-Screening8 = Screening(1,2,3)
-Screening9 = Screening(1,2,4)
-Screening10 = Screening(1,2,5)
-Screening11 = Screening(2,1,1)
-Screening12 = Screening(2,1,2)
-Screening13  = Screening(2,1,3)
-Screening14 = Screening(2,1,4)
-Screening15 = Screening(2,1,5)
-Screening16 = Screening(2,2,1)
-Screening17 = Screening(2,2,2)
-Screening18 = Screening(2,2,3)
-Screening19 = Screening(2,2,4)
-Screening20 = Screening(2,2,5)
+db.session.add(date1)
+db.session.add(date2)
+db.session.add(date3)
+db.session.commit()
+
+Screening1 = Screening(1,1,1,1)
+Screening2 = Screening(1,1,2,2)
+Screening3 = Screening(1,1,3,3)
+Screening4 = Screening(1,1,4,4)
+Screening5 = Screening(1,1,5,5)
+
+Screening6 = Screening(1,2,1,2)
+Screening7 = Screening(1,2,2,2)
+Screening8 = Screening(1,2,3,2)
+Screening9 = Screening(1,2,4,2)
+Screening10 = Screening(1,2,5,2)
+
+Screening11 = Screening(2,1,1,3)
+Screening12 = Screening(2,1,2,3)
+Screening13  = Screening(2,1,3,3)
+Screening14 = Screening(2,1,4,3)
+Screening15 = Screening(2,1,5,3)
+Screening16 = Screening(2,2,1,3)
+Screening17 = Screening(2,2,2,3)
+Screening18 = Screening(2,2,3,3)
+Screening19 = Screening(2,2,4,3)
+Screening20 = Screening(2,2,5,3)
 db.session.add(movie1)
 db.session.add(movie2)
 db.session.add(user2)
