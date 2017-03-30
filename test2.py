@@ -71,11 +71,13 @@ class Auditorium (db.Model):
     __tablename__ = "auditorium"
     id = db.Column('id', db.Integer, primary_key = True)
     name = db.Column('name', db.String)
-    
-    def __init__(self,name):
+    audi_type = db.Column('audi_type',db.String)
+
+    def __init__(self,name,audi_type):
         self.name = name
+        self.audi_type = audi_type
     def __repr__(self):
-        return "Auditorium { name: %r }"%(self.name)
+        return "Auditorium { name: %r audi_type: %r}"%(self.name,self.audi_type)
 
 class Time (db.Model):
     __tablename__ = "time"
@@ -135,9 +137,9 @@ movie1= Movie("DABANG")
 movie2 = Movie("SHOLAY")
 user1= User("kunal")
 user2 = User("anish")
-aud1 = Auditorium("Big")
-aud2 = Auditorium("Medium")
-aud3 = Auditorium("Small")
+aud1 = Auditorium("Audi-1","Big")
+aud2 = Auditorium("Audi-2","Medium")
+aud3 = Auditorium("Audi-3","Small")
 time1 = Time("9:30")
 time2 = Time("12:30")
 time3 = Time("3:30")
