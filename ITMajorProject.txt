@@ -16,30 +16,26 @@ DATA SCHEMA
     * Description (String)
     * Duration_min(Integer)
     * Rating(Float,Nullable)
+    * release_date (date)
+    * off_theater_date (date)
+    * trailer_url (string)
 
 * Auditorium:
     * ID (Primary Key)
     * name (String)
     * audi_type (Big/Medium/Small)
 
-* Time:
-    * ID (Primary Key)
-    * start_time(String)
-
-* Date:
-    * ID (Primary Key)
-    * show_date(String)
-
 * Screening:
     * Movie_id (Foreign Key: from Movie)
     * Auditorium_id (Foreign Key: from Auditorium)
-    * Screenig_start_time (Foreign Key: from Time)
-    * screening_date(Foreign Key: from date)
+    * Screenig_start_time (time)
+    * screening_date(date)
  
 * Seat:
     * ID (Primary Key)
     * Row (String)
     * Column (Integer)
+
 * Cost:
     * auditorium_id (Foreign Key : from Auditorium)
     * row
