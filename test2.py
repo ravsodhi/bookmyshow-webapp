@@ -15,27 +15,22 @@ class Movie (db.Model):
     __tablename__ = "movie"
     id = db.Column('id', db.Integer, primary_key = True)
     title = db.Column('title', db.String)
-    #director = db.Column('director', db.String)
-    #description = db.Column(Column('description', db.Text))
-    #duration_min = db.Column('duration_min', db.Integer)
-    #rating = db.Column('rating', db.Integer)
-    def __init__(self,title):
+    director = db.Column('director', db.String)
+    description = db.Column('description', db.String)
+    duration_min = db.Column('duration_min', db.Integer)
+    rating = db.Column('rating', db.Float)
+    def __init__(self,title,director,description,duration_min,rating):
+    #def __init__(self,title):
         self.title = title
-        #self.director
-        #self.description
-        #self.duration_min
-        #self.rating
+        self.director = director
+        self.description = description
+        self.duration_min = duration_min
+        self.rating = rating
 
     def __repr__(self):
-        return "Movie { name: %r }"%(self.title)
-        '''return "Movie {
-        name: %r
-        director : %r
-        description :%r
-        duration_min : %r
-        rating : %r
-        }"%(self.title,self.director,self.description,self.duration_min,self.rating)
-        '''
+        #return "Movie { name: %r }"%(self.title)
+        return "Movie {name: %r director : %r description :%r duration_min : %r rating : %r}"%(self.title,self.director,self.description,self.duration_min,self.rating)
+        
 
 class User (db.Model):
  #Model   
@@ -43,18 +38,17 @@ class User (db.Model):
     id = db.Column('id', db.Integer, primary_key = True)
     
     username = db.Column('username', db.String)
-    email = db.Column(db.String(60), index=True, unique=True)
-    is_admin = db.Column(db.Boolean, default=False)
-    #password = db.Column('password', db.String)
-    def __init__(self,username):
+    password = db.Column('password', db.String)
+    email = db.Column(db.String(60), unique = True)
+    def __init__(self,username,password,email):
+    #def __init__(self,username):
         self.username = username
-        #self.password = generate_password_hash(password)
+        self.password =password
+        self.email = email
     def __repr__(self):
-        return "User { username: %r }"%(self.username)
-        '''return "User { 
-        username: %r
-        password: %r}"%(self.username,self.password)
-        '''
+        #return "User { username: %r }"%(self.username)
+        return "User { username: %r password: %r email: %r}"%(self.username,self.password,self.email)
+        
 
 class Seat (db.Model):
     __tablename__ = "seat"
@@ -73,30 +67,18 @@ class Auditorium (db.Model):
     __tablename__ = "auditorium"
     id = db.Column('id', db.Integer, primary_key = True)
     name = db.Column('name', db.String)
-    audi_type = db.Column('audi_type', db.String)
-    
-    def __init__(self,name):
-        self.name = name
-    def __repr__(self):
-        return "Auditorium { name: %r }"%(self.name)
+    audi_type = db.Column('audi_type',db.String)
 
-class Cost (db.Model):
-    __tablename__ = "cost"
-    id = db.Column('id', db.Integer, primary_key = True)
-    auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
-    row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
-    value = db.Column('value', db.Integer)
-    def __init__(self,auditorium_id,row,value):
-        self.auditorium_id = auditorium_id
-        self.row = row
-        self.value = value
+    def __init__(self,name,audi_type):
+        self.name = name
+        self.audi_type = audi_type
     def __repr__(self):
-        return "Cost { auditorium: %r row: %r value:%r}"%(self.auditorium_id,self.row,self.value)
+        return "Auditorium { name: %r audi_type: %r}"%(self.name,self.audi_type)
 
 class Time (db.Model):
     __tablename__ = "time"
     id = db.Column('id', db.Integer, primary_key = True)
-    start_time = db.Column('start_time', db.Integer)
+    start_time = db.Column('start_time', db.String)
     
     def __init__(self,start_time):
         self.start_time = start_time
@@ -130,6 +112,20 @@ class Screening (db.Model):
     def __repr__(self):
         return "Screening { movie_id: %r auditorium_id: %r start_time:%r show_date: %r}"%(self.movie_id,self.auditorium_id,self.screening_start_time,self.screening_date)
 
+class Cost (db.Model):
+    __tablename__ = "cost"
+    id = db.Column('id', db.Integer, primary_key = True)
+    auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
+    row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
+    value = db.Column('value', db.Integer)
+    
+    def __init__(self,auditorium_id,row,value):
+        self.auditorium_id = auditorium_id
+        self.row = row
+        self.value = value
+    def __repr__(self):
+        return "Cost { auditorium: %r row: %r value:%r}"%(self.auditorium_id,self.row,self.value)
+
 class Booking (db.Model):
     __tablename__ = "booking"
     id = db.Column('id',db.Integer,primary_key = True)
@@ -145,20 +141,22 @@ class Booking (db.Model):
     def __repr__(self):
         return "Booking { user_id: %r screening_id: %r seat_id: %r}"%(self.user_id,self.screening_id,self.seat_id)
 
+
 db.create_all()
-movie1= Movie("DABANG")
-movie2 = Movie("SHOLAY")
-user1= User("kunal")
-user2 = User("anish")
-aud1 = Auditorium("Big")
-aud2 = Auditorium("Medium")
-aud3 = Auditorium("Small")
+description1 = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
+movie1= Movie("The Shawshank Redemption","Frank Darabont",description1,142,9.3)
+description2="The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son."
+movie2 = Movie("The Godfather","Francis Ford Coppola",description2,175,9.2)
+user1= User("Kunal","password1","kunal.garg@students.iiit.ac.in")
+user2 = User("Anish","password2","anish.gulati@research.iiit.ac.in")
+aud1 = Auditorium("Audi-1","Big")
+aud2 = Auditorium("Audi-2","Medium")
+aud3 = Auditorium("Audi-3","Small")
 time1 = Time("9:30")
 time2 = Time("12:30")
 time3 = Time("3:30")
 time4 = Time("6:30")
 time5 = Time("9:30")
-
 date1 = Date("28/5")
 date2 = Date("29/5")
 date3 = Date("30/5")
@@ -169,25 +167,27 @@ book2 = Booking(1,2,1)
 book3 = Booking(1,2,2)
 
 Screening1 = Screening(1,1,1,1)
-Screening2 = Screening(1,1,2,1)
-Screening3 = Screening(1,1,3,1)
-Screening4 = Screening(1,1,4,1)
-Screening5 = Screening(1,1,5,2)
+Screening2 = Screening(1,1,2,2)
+Screening3 = Screening(1,1,3,3)
+Screening4 = Screening(1,1,4,4)
+Screening5 = Screening(1,1,5,5)
+
 Screening6 = Screening(1,2,1,2)
 Screening7 = Screening(1,2,2,2)
-Screening8 = Screening(1,2,3,3)
-Screening9 = Screening(1,2,4,3)
-Screening10 = Screening(1,2,5,3)
-Screening11 = Screening(2,1,1,4)
-Screening12 = Screening(2,1,2,4)
-Screening13  = Screening(2,1,3,4)
-Screening14 = Screening(2,1,4,4)
-Screening15 = Screening(2,1,5,5)
-Screening16 = Screening(2,2,1,5)
-Screening17 = Screening(2,2,2,5)
-Screening18 = Screening(2,2,3,5)
-Screening19 = Screening(2,2,4,5)
-Screening20 = Screening(2,2,5,5)
+Screening8 = Screening(1,2,3,2)
+Screening9 = Screening(1,2,4,2)
+Screening10 = Screening(1,2,5,2)
+
+Screening11 = Screening(2,1,1,3)
+Screening12 = Screening(2,1,2,3)
+Screening13  = Screening(2,1,3,3)
+Screening14 = Screening(2,1,4,3)
+Screening15 = Screening(2,1,5,3)
+Screening16 = Screening(2,2,1,3)
+Screening17 = Screening(2,2,2,3)
+Screening18 = Screening(2,2,3,3)
+Screening19 = Screening(2,2,4,3)
+Screening20 = Screening(2,2,5,3)
 db.session.add(movie1)
 db.session.add(movie2)
 db.session.add(user2)
@@ -195,20 +195,6 @@ db.session.add(user1)
 db.session.add(aud1)
 db.session.add(aud2)
 db.session.add(aud3)
-db.session.add(time1)
-db.session.add(time2)
-db.session.add(time3)
-db.session.add(time4)
-db.session.add(time5)
-db.session.add(date1)
-db.session.add(date2)
-db.session.add(date3)
-db.session.add(date4)
-db.session.add(date5)
-db.session.add(book1)
-db.session.add(book2)
-db.session.add(book3)
-
 db.session.add(Screening1)
 db.session.add(Screening2)
 db.session.add(Screening3)
@@ -229,9 +215,21 @@ db.session.add(Screening17)
 db.session.add(Screening18)
 db.session.add(Screening19)
 db.session.add(Screening20)
+db.session.add(time1)
+db.session.add(time2)
+db.session.add(time3)
+db.session.add(time4)
+db.session.add(time5)
+db.session.add(date1)
+db.session.add(date2)
+db.session.add(date3)
+db.session.add(date4)
+db.session.add(date5)
+db.session.add(book1)
+db.session.add(book2)
+db.session.add(book3)
 
-db.session.commit()
-k =Movie.query.filter_by(title="SHOLAY").first()
+k =Movie.query.filter_by(title="The Shawshank Redemption").first()
 #print(k.id)
 l =Screening.query.filter_by(movie_id=k.id).all()
 print(l)
@@ -250,4 +248,8 @@ print(k)
 
 #db.session.delete(movie1)
 db.session.commit()
+
+
+
+
 

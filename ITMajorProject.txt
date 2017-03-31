@@ -20,23 +20,31 @@ DATA SCHEMA
 * Auditorium:
     * ID (Primary Key)
     * name (String)
-    * size (Big/Medium/Small)
+    * audi_type (Big/Medium/Small)
 
 * Time:
     * ID (Primary Key)
-    * start_time
-    
+    * start_time(String)
+
+* Date:
+    * ID (Primary Key)
+    * show_date(String)
+
 * Screening:
     * Movie_id (Foreign Key: from Movie)
     * Auditorium_id (Foreign Key: from Auditorium)
     * Screenig_start_time (Foreign Key: from Time)
+    * screening_date(Foreign Key: from date)
  
 * Seat:
     * ID (Primary Key)
-    * Auditorium_id (Foreign Key : from Auditorium)
     * Row (String)
     * Column (Integer)
-       
+* Cost:
+    * auditorium_id (Foreign Key : from Auditorium)
+    * row
+    * value (cost)
+
 * Booking/Reservation:
     * User Id
     * Screening_id (Foreign Key :from screening)
