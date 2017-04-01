@@ -1,3 +1,16 @@
+
+function tempAlert(msg,duration)
+{
+
+  var el = document.createElement("div");
+  el.innerHTML = msg;
+  el.setAttribute("style","position:fixed ; top:87% ;bottom:5%; left:45% ; background-color:black ; height:9%;padding: 12px 20px;color:white;");
+  setTimeout(function(){
+  el.parentNode.removeChild(el);
+ },duration);
+ document.body.appendChild(el);
+}
+
 var authManager = (function() {
     var loginState = null;
     var intendedPath = null;
@@ -18,6 +31,9 @@ var authManager = (function() {
                         loggedIn(response.user);
                     } else {
                         $view.find('.message').text(response.message);
+                        tempAlert("Invalid Credentials", 3000);
+                        document.forms[0].elements[0].value = "";
+                        document.forms[0].elements[1].value = "";
                     }
                 });
         });
