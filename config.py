@@ -8,7 +8,7 @@ is updated. It should however always be set to False in production.
 It defaults to False.
 '''
 
-SQLALCHEMY_ECHO = True
+#SQLALCHEMY_ECHO = True
 '''
 SQLALCHEMY_ECHO: setting this to True helps us with debugging by
 allowing SQLAlchemy to log errors.

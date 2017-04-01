@@ -46,6 +46,8 @@ def create_user():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+        confirmpassword = request.form['confirmpassword']
+
     except KeyError as e:
         return jsonify(success=False, message="%s not sent in the request" % e.args), 400
 

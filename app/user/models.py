@@ -5,30 +5,18 @@ class User (db.Model):
     """
     Create an User table
     """
-    __tablename__ = "user"
-    id = db.Column('id', db.Integer, primary_key = True)
-    username = db.Column('username', db.String)
-    password = db.Column('password', db.String)
-    email = db.Column(db.String(255), unique = True)
+    __tablename__ = "users"
+    id = db.Column('id', db.Integer, primary_key = True,autoincrement=True)
+    name = db.Column('name', db.String(255))
+    password = db.Column('password', db.String(255))
+    email = db.Column('email',db.String(255), unique = True)
     is_admin = db.Column(db.Boolean, default=False)
 
-    def __init__(self,username,password,email):
-        self.username = username
-        self.password =password
+    def __init__(self,name,email,password):
+        self.name = username
+        self.password = generate_password_hash(password)
         self.email = email
 
-    @property
-    def password(self):
-        """
-        Prevent pasword from being accessed
-        """
-        raise AttributeError('password is not a readable attribute.')
-    @password.setter
-    def password(self, password):
-        """
-        Set password to a hashed password
-        """
-        self.password = generate_password_hash(password)
     def check_password(self, password):
         """
         Check if hashed password matches actual password
@@ -43,7 +31,7 @@ class User (db.Model):
         }
     def __repr__(self):
         #return "User { username: %r }"%(self.username)
-        return "User { username: %r password: %r email: %r}"%(self.username,self.password,self.email)
+        return "User { id :%r,username: %r }"%(self.id,self.name)
 '''
 In the User model, we make use of some of Werkzeug's handy security helper
 methods, generate_password_hash, which allows us to hash passwords, 
