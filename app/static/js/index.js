@@ -1,4 +1,4 @@
-/*$(document).ready(function() {
+$(document).ready(function() {
     $.ajax({
         url: '127.0.0.1:5000/api/movies',
         method: 'GET',
