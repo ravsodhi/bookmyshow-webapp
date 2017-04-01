@@ -13,7 +13,7 @@ class User (db.Model):
     is_admin = db.Column(db.Boolean, default=False)
 
     def __init__(self,name,email,password):
-        self.name = username
+        self.name = name
         self.password = generate_password_hash(password)
         self.email = email
 
