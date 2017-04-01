@@ -10,36 +10,19 @@
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
     <style>
-    .movie-box{
-        width: 95%;
-        padding: 10px;
-        border-width:5px;
-        border-color: gray;
-        border-style:dashed double dashed double;
-        border-radius: 5px;
-        margin:0;
-        background-image:url("download.jpg");
-    }
-    .movie-div{
-        margin:8%;
-               margin-top:2%;
-               margin-bottom:2%;
-        background-image:url("back.jpg");
-    }
     .list-type3 {
         margin: 0 auto;
-overflow: hidden;
+        width: 500px;
     }
 
-    .list-type3 li, .list-type3 a{
-        float:left;
-        height:35px;
+.list-type3 li, .list-type3 a{
+float:left;
+height:35px;
        line-height:35px;
-        position:relative;
+position:relative;
          font-size:15px;
          margin-bottom: 12px;
          font-family: 'Raleway', sans-serif;
-
 transition: background-color 1.5s ease;
 }
 .list-type3 a{
@@ -245,13 +228,13 @@ background:#555;
     </nav>
     <div class="slideshow-container">
         <div class="mySlides fade">
-            <img src="../static/img/img1.jpg" style="width:100%; max-height:550px">
+            <img src="../static/img/img1.jpg" style="width:100%; max-height:400px">
         </div>
         <div class="mySlides fade">
-            <img src="../static/img/img2.jpg" style="width:100%; max-height:550px">
+            <img src="../static/img/img2.jpg" style="width:100%; max-height:400px">
         </div>
         <div class="mySlides fade">
-            <img src="../static/img/img3.jpg" style="width:100%; max-height:550px">
+            <img src="../static/img/img3.jpg" style="width:100%; max-height:400px">
         </div>
     </div>
     <br>
@@ -260,46 +243,19 @@ background:#555;
         <span class="dot"></span>
         <span class="dot"></span>
     </div>
-    <div class="container">
-        <h1 style="text-align:center">Now Showing</h3>
+    <div class="container" >
+        <h3>Now Showing</h3>
     </div>
-    <div class="movie-div">
-        <br/>
-        <div class="list-type3 movie-box">
-        <div>
-            <div style="float:left;margin-top:0">
-            <h2>
-                Movie Name
-            </h2>
-            <br/>
-            <h4>
-                Movie details
-            </h4>
-            </div>
-            <li style="float:right"><a href="/movies">Book Now</a></li>
-        </div>
-        <br/>
-    </div>
-    <br/>
-    <br/>
-    
-    <div class="list-type3 movie-box">
-        <div>
-            <div style="float:left;margin-top:0">
-            <h2>
-                Movie Name
-            </h2>
-            <br/>
-            <h4>
-                Movie details
-            </h4>
-            
-            </div>
-            <button class="button" style="float:right">Book Now</button>
+    <!-- Ravsimar -->
+    <div class="list-type3" style="width:80%;">
+        <div style="background-color:powderblue;">
+            <h3 style="float:left; margin-top:0;">
+                HEllo
+            </h3>
+            <li style="float:right"><a href="#">Book Now</a></li>
         </div>
     </div>
-<!-- ravsimar -->
-</div>
+    <!-- ravsimar -->
     <script>
     var slideIndex = 0;
     showSlides();
