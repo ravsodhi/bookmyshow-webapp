@@ -6,16 +6,117 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../static/css/vendor/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
+    <link rel="shortcut icon" href="../static/img/favicon.ico">
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
+    <style>
+    .navbar-no-margin{
+        margin-bottom: 0!important;
+    }
+    .button {
+  display: inline-block;
+  padding: 7.5px 15.5px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #008CBA;  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.button:hover {background-color:#4783e5}
+
+.button:active {
+  background-color: #0b47a8;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+* {box-sizing:border-box}
+body {font-family: Verdana,sans-serif;}
+.mySlides {display:none}
+
+/* Slideshow container */
+.slideshow-container {
+  /*max-width: 1000px;*/
+  width: 100%
+  position: relative;
+  margin: auto;
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  height: 13px;
+  width: 13px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 4s;
+  animation-name: fade;
+  animation-duration: 4s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}
+</style>
 </head>
 
 <body style="background-image: url(http://wallpaperswide.com/download/light_background-wallpaper-1600x900.jpg)">
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-no-margin">
         <div class="container-fluid">
-            <div class="navbar-header">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+        </button>
                 <a class="navbar-brand" href="#">Book My Show</a>
             </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li><a href="#">Movies</a></li>
             </ul>
@@ -30,15 +131,70 @@
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="register.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href=""><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
         </div>
         </div>
+        </div>
     </nav>
+    <div class="slideshow-container">
+
+<div class="mySlides fade">
+  <img src="../static/img/img1.jpg" style="width:100%; max-height:400px">
+</div>
+
+<div class="mySlides fade">
+  <img src="../static/img/img2.jpg" style="width:100%; max-height:400px">
+</div>
+
+<div class="mySlides fade">
+  <img src="../static/img/img3.jpg" style="width:100%; max-height:400px">
+</div>
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+</div>
     <div class="container">
+    
         <h3>Now Showing</h3>
     </div>
+    <div>
+    	<div style="float:left">
+    		<p>
+    			HEllo
+    		</p>
+    	</div>
+    	<div style="float:centre">
+    		<button class="button">Book Now</button>
+		</div>
+    </div>
+    <script>
+    var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex> slides.length) {slideIndex = 1}    
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    setTimeout(showSlides, 4000); // Change image every 2 seconds
+}
+</script>
 </body>
 
 </html>
