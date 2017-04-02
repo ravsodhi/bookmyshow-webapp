@@ -25,9 +25,10 @@ def login():
         return jsonify(success=False, message="%s not sent in the request" % e.args), 400
 
     user = User.query.filter(User.email == email).first()
-    if user is None or not user.check_password(password):
-        return jsonify(success=False, message="Invalid Credentials"), 400
-
+    if user is None:
+        return jsonify(success=False, message="Email is not registered")
+    if not user.check_password(password):
+        return jsonify(success=False, message="Wrong Password")
     session['user_id'] = user.id
 
     return jsonify(success=True, user=user.to_dict())
@@ -47,20 +48,22 @@ def create_user():
         email = request.form['email']
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
-        if password != confirmpassword:
-            return jsonify(success=False, message="Re-type Password"), 400
+        
 
     except KeyError as e:
         return jsonify(success=False, message="%s not sent in the request" % e.args), 400
 
     if '@' not in email:
-        return jsonify(success=False, message="Please enter a valid email"), 400
+        return jsonify(success=False, message="Please enter a valid email")
 
     u = User(name, email, password)
     db.session.add(u)
     try:
+        if password != confirmpassword:
+            return jsonify(success=False, message="Password's don't match")
         db.session.commit()
     except IntegrityError as e:
-        return jsonify(success=False, message="This email already exists"), 400
+        return jsonify(success=False, message="Email is already registered")
 
     return jsonify(success=True)
+
