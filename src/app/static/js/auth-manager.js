@@ -1,4 +1,3 @@
-
 function tempAlert(msg,duration)
 {
 
@@ -30,10 +29,18 @@ var authManager = (function() {
                     if (response.success) {
                         loggedIn(response.user);
                     } else {
-                        $view.find('.message').text(response.message);
-                        tempAlert("Invalid Credentials", 3000);
-                        document.forms[0].elements[0].value = "";
-                        document.forms[0].elements[1].value = "";
+                        if(response.message == "Email is not registered")
+			            {
+                            tempAlert("Email is not registered",3000);
+                            document.forms[0].elements[0].value = ""
+                            document.forms[0].elements[1].value = ""
+                        }
+                        if(response.message == "Wrong Password")
+                        {
+                            tempAlert("Wrong Password",3000);
+                            document.forms[0].elements[1].value = ""
+
+                        }
                     }
                 });
         });
@@ -71,7 +78,28 @@ var authManager = (function() {
                             },
                         })
                     } else {
-                        $view.find('.message').text(registerResponse.message);
+                        console.log(registerResponse)
+                        if (registerResponse.message == "Password's don't match")
+                            {
+                                tempAlert("Password's don't match",3000);
+                               document.forms[0].elements[2].value = ""
+                                document.forms[0].elements[3].value = ""
+                            }
+                        else if(registerResponse.message == "Please enter a valid email")
+                        {
+                                tempAlert("Please enter a valid email",3000);
+                                document.forms[0].elements[3].value = ""
+                        }
+                        if(registerResponse.message == "Email is already registered")
+                        {
+                                tempAlert("Email is already registered",3000);
+                                document.forms[0].elements[1].value = ""
+                                document.forms[0].elements[2].value = ""
+                                document.forms[0].elements[3].value = ""
+
+
+                        }   
+                        
                     }
                 });
         });
