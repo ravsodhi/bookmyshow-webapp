@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/js/index.js"></script>
+    <script type="text/javascript" src="../static/js/screening.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
@@ -217,13 +217,14 @@
         </div>
         </div>
     </nav>
-    <div class="movie-div">
+     <div class="movie-div">
         <br/>
-        <h1>Movie Name</h1>
-        <h2> Movie Details</h3>
+        <h1>{{ movie.title }}</h1>
+        <h1 class="hidden movie_id_required"> {{ movie.id }} </h1>
+        <h2>{{ movie.director }}</h3>
                 <br/>
-                <h3> Some more details</h3>
-            </div>
+                <h3>{{ movie.description }}</h3>
+    </div>
     <div class="screening-div">
         <h2 style="text-align:center;">Screening</h2>
         <hr/>
