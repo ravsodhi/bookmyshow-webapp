@@ -37,7 +37,7 @@ def requires_auth(f):
 from app.user.controllers import mod_user
 from app.screening.controllers import mod_screening
 from app.movie.controllers import mod_movie
-from app.todo.controllers import mod_todo
+from app.helper.controllers import mod_todo
 # instead of doing app.route
 # Register blueprint(s)
 app.register_blueprint(mod_user)
