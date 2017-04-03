@@ -35,10 +35,16 @@ def requires_auth(f):
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.user.controllers import mod_user
+from app.screening.controllers import mod_screening
+from app.movie.controllers import mod_movie
+
 #from app.todo.controllers import mod_todo
 # instead of doing app.route
 # Register blueprint(s)
 app.register_blueprint(mod_user)
+app.register_blueprint(mod_screening)
+app.register_blueprint(mod_movie)
+
 #app.register_blueprint(mod_todo)
 
 # Build the database:
