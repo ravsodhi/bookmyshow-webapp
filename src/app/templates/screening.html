@@ -39,6 +39,12 @@
         font-family: 'Cabin';
         color: gray;
     }
+    .hall-text {    
+        padding-right: 10px; 
+        color:white;
+        font-family: 'Macondo';
+        display:inline;
+    }
     
     .movie-div {
         width: 100%;
@@ -56,7 +62,7 @@
         padding: 25px;
         border-radius: 15px;
     }
-    
+       
     .navbar-no-margin {
         margin-bottom: 0!important;
     }
@@ -79,6 +85,7 @@
     }
     
     .btn-group .button {
+        
         background-color: white;
         border: 1px solid gray;
         border-radius: 100%;
@@ -99,34 +106,39 @@
     }
     
     .btn-group .button:hover {
-        color: white;
+        border:none;
+        color: gray;
+        background-image: url("../static/img/date-button-background.jpg");
         background-color: #4da6ff;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
     
     .button:focus {
-        background-color: #ff4d4d;
-        color: white;
+        background-image: url("../static/img/date-button-background-after.jpg");
+        
+        color: black;
         box-shadow: 0 5px #666;
         transform: translateY(4px);
     }
     
     .slot-group {
-        padding:5px;
+        padding: 5px;
         padding-bottom: 12px;
         background-image: url("../static/img/slot-background.jpg");
         width: 100%;
     }
-    .hall-div{
+    
+    .hall-div {
         background-image: url("../static/img/movie-box-background.jpg");
         margin: 2%;
         padding: 25px;
-        width:100%;
+        width: 95%;
         border-radius: 15px;
     }
     
-    .slot-group .button {
-        background-color: #008CBA;
-        /* Green */
+    .slot-button {
+        background-image: url("../static/img/slot-button-background.jpg");
+        font-family: 'Droid Sans';
         border: none;
         color: white;
         padding: 25px 50px;
@@ -139,11 +151,36 @@
         cursor: pointer;
         border-radius: 7px;
     }
-    
-    .slot-group .button:hover {
-        color:white;
-        background-color: gray;
+    .slot-button:hover{
+
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
+    .slot-button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    
+    .slot-button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+    
+    .slot-button:hover span {
+        padding-right: 25px;
+    }
+    
+    .slot-button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+    
+    
     </style>
 </head>
 
@@ -201,30 +238,30 @@
         </div>
         <br/>
         <div class="hall-div">
-        <div class="slot-group">
-            <h4>Hall</h4>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
+            <div class="slot-group">
+                <h2 class="hall-text">Hall</h2>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+            </div>
+            <br/>
+            <div class="slot-group">
+                <h2 class="hall-text">Hall</h2>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+            </div>
+            <br/>
+            <div class="slot-group">
+                <h2 class="hall-text">Hall</h2>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+                <button class="slot-button"><span>Button</span></button>
+            </div>
         </div>
-        <br/>
-        <div class="slot-group">
-            <h4>Hall</h4>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-        </div>
-        <br/>
-        <div class="slot-group">
-            <h4>Hall</h4>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-        </div>
-    </div>
     </div>
     <hr/>
     </div>
