@@ -18,7 +18,7 @@ var authManager = (function() {
         loginState = {};
         loginState.loggedIn = true;
         loginState.user = user;
-        page(intendedPath ? intendedPath : '/');
+        page(intendedPath ? intendedPath : '/home');
     };
 
     var showLogin = function() {
@@ -132,7 +132,7 @@ var authManager = (function() {
         getLoginState(function (state) {
             console.log(state);
             if (state && state.loggedIn) {
-                next();
+                page('/home');
             } else {
                 intendedPath = ctx.path;
                 //showLogin();
