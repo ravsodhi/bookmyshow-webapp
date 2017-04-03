@@ -14,3 +14,10 @@ def form_auth():
       #return f(*args, **kwargs)
       return jsonify(success=True)
 
+@mod_todo.route('/home', methods=['GET'])
+def home_html():
+	return jsonify(success=True)
+
+@mod_todo.route('/movies', methods=['GET'])
+def render_html():
+	return render_template("movie.html")
