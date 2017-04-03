@@ -5,7 +5,7 @@ class User (db.Model):
     """
     Create an User table
     """
-    __tablename__ = "users"
+    __tablename__ = "user"
     id = db.Column('id', db.Integer, primary_key = True,autoincrement=True)
     name = db.Column('name', db.String(255))
     password = db.Column('password', db.String(255))
