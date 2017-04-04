@@ -1,5 +1,4 @@
-page('/', authManager.requiresAuthentication,homer.check);
-page('/home',homer.check);
+//page('/', authManager.requiresAuthentication);
 page('/login', authManager.showLogin);
 page('/logout', authManager.logout);
 page('/register', authManager.showRegister);

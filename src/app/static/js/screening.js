@@ -2,7 +2,10 @@
 $(document).ready(function() {
         var array = [];
         var array2 = [];
-        var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
+        tym = window.location.pathname
+        var movie_id = tym.split("/");
+        movie_id = movie_id[2]
+        //var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
         $.ajax({
             url: "http://127.0.0.1:5000/api/screening/movies",
             data: "movie_id=" + movie_id,

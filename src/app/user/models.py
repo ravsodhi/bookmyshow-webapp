@@ -31,7 +31,7 @@ class User (db.Model):
         }
     def __repr__(self):
         #return "User { username: %r }"%(self.username)
-        return "User { id :%r,username: %r }"%(self.id,self.name)
+        return "'User' { 'id' :%r,'name': %r }"%(self.id,self.name)
 '''
 In the User model, we make use of some of Werkzeug's handy security helper
 methods, generate_password_hash, which allows us to hash passwords, 

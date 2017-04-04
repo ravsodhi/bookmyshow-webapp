@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/screening.js"></script>
+    <script type="text/javascript" src="../static/js/login_state.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
@@ -210,8 +211,8 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://127.0.0.1:5000/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="http://127.0.0.1:5000/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href = "#" onclick = "valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
+                    <li><a href="#" onclick = "logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
@@ -220,7 +221,7 @@
      <div class="movie-div">
         <br/>
         <h1>{{ movie.title }}</h1>
-        <h1 class="hidden movie_id_required"> {{ movie.id }} </h1>
+        <!--h1 class="hidden movie_id_required"> {{ movie.id }} </h1-->
         <h2>{{ movie.director }}</h3>
                 <br/>
                 <h3>{{ movie.description }}</h3>

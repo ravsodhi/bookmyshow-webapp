@@ -18,7 +18,7 @@ var authManager = (function() {
         loginState = {};
         loginState.loggedIn = true;
         loginState.user = user;
-        page(intendedPath ? intendedPath : '/home');
+        page(intendedPath ? intendedPath : '/');
     };
 
     var showLogin = function() {
@@ -132,8 +132,9 @@ var authManager = (function() {
         getLoginState(function (state) {
             console.log(state);
             if (state && state.loggedIn) {
-                page('/home');
+                window.location.href = "http://127.0.0.1:5000/home";
             } else {
+                console.log("load")
                 intendedPath = ctx.path;
                 //showLogin();
                 page('/login');

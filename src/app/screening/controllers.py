@@ -1,18 +1,17 @@
-from flask import Blueprint, request, session, jsonify, render_template
+from flask import Blueprint, request, session, jsonify, render_template,redirect
 from app import db
 from .models import Screening
 from sqlalchemy import *
 from app.movie.models import Movie
 
 mod_screening = Blueprint('screening', __name__, url_prefix='/api')
-
+'''
 @mod_screening.route('/screening', methods=['GET'])
 def page_displayer():
     movie_id = request.args.get('movie_id')
-    movie = Movie.query.filter(Movie.id == movie_id).first()
-#    return redirect(url_for
-    return render_template('screening.html', movie=movie)
-
+    return redirect("http://127.0.0.1:5000/movie/" + movie_id)
+#    return render_template('screening.html', movie=movie)
+'''
 
 @mod_screening.route('/screening/movies', methods=['GET'])
 def get_all_dates():

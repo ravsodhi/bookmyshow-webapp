@@ -17,7 +17,7 @@
     <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
     <link href="../static/css/book-button.css" rel="stylesheet">
     <link href="../static/css/auto-slideshow.css" rel="stylesheet">
-
+    <script type="text/javascript" src="../static/js/login_state.js"></script>
     <style>
     h1{
         font-family:'Revalia';
@@ -64,12 +64,9 @@
     body {
         font-family: Verdana, sans-serif;
     }
-    
-    
     </style>
 
 </head>
-
 <body class="backimg">
     <nav class="navbar navbar-inverse navbar-no-margin">
         <div class="container-fluid">
@@ -96,8 +93,8 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://127.0.0.1:5000/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="http://127.0.0.1:5000/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href = "#" onclick = "valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
+                    <li><a href="#" onclick = "logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>

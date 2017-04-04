@@ -29,16 +29,17 @@ $(document).ready(function() {
 });
 
 var book = function(id /* This is the id of movie*/ ) {
+    /*
     $.ajax({
         url: 'http://127.0.0.1:5000/api/screening',
         method: 'GET',
         data: "movie_id=" + id,
         success: function(response) {
-            console.log(response);
-            document.write(response)
-        },
+      */      window.location.href = 'http://127.0.0.1:5000/movie/' + id
+            //document.write(response)
+       /* },
         error: function(response) {
             console.log(response);
         }
-    });
+    });*/
 }
