@@ -14,3 +14,17 @@ def display_movies():
     for i in movies:
         movie_array.append(i.to_dict_movies())
     return jsonify(success=True, movies=movie_array),200
+
+@mod_movie.route('/movie/add', methods=['POST'])
+def add_movie():
+	print("hdwdjw")
+	title = request.form['title']
+	print(title)
+	director = request.form['director']
+	discription = request.form['discription']
+	duration = request.form['duration']
+	url = request.form['url']
+	new_movie = Movie(title,director,discription,duration,url)
+	db.session.add(new_movie)
+	db.session.commit()
+	return jsonify(success=True),200

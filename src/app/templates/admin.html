@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        form {
+            width: 70%;
+        }
+
+        td {
+            vertical-align: top;
+            padding-left: 3%;
+            padding-right: 5%;
+        }
+
+        h1 {
+            color: #17866b;
+            font-size: 50pt;
+        }
+
+        .moveRight {
+            padding-left: 3%;
+            padding-right: 5%;
+        }
+
+        th {
+            background-color: rgba(52, 73, 94, 0.47);
+        }
+
+        table {
+            border-color: rgba(52, 73, 94, 0.9);
+        }
+    </style>
+</head>
+<script type="text/javascript">
+
+	var addMovie = function(){
+			title = document.forms[0].elements[0].value;
+    		director = document.forms[0].elements[1].value;
+    		discription = document.forms[0].elements[2].value;
+    		duration = document.forms[0].elements[4].value;
+    		urli = document.forms[0].elements[3].value;
+    		Dte = document.forms[0].elements[5].value;
+    		var res = Dte.split("-")
+    		yr = res[0];
+    		mn = res[1];
+    		dt = res[2];
+    		console.log(yr)
+    		console.log(res)
+			console.log(title)
+			console.log(director)
+			console.log(discription)
+			console.log(duration)
+			//$('#addMovie input[name=roll]').val(),$('#addNewStudent input[name=name]').val(),$('#addNewStudent input[name=year]').val()
+		        $.ajax({
+            url: "http://127.0.0.1:5000/api/movie/add",
+            method : 'POST',
+ 			data :{
+ 				title : title,
+ 				director : director,
+ 				discription : discription,
+ 				duration : duration,
+ 				url : urli,
+ 			},            
+            success: function(response) {
+            	console.log("movie added")
+            	$.ajax({
+            		url: "http://127.0.0.1:5000/api/screening/add"
+
+
+            	});
+            },
+            error: function(response) {
+                console.log('Error in adding movie');
+            }
+        });
+
+	}
+function validateForm() {
+	q = document.forms[0].elements[0].value;
+    w = document.forms[0].elements[1].value;
+    e = document.forms[0].elements[2].value;
+    r = document.forms[0].elements[3].value;
+    t = document.forms[0].elements[4].value;
+    y = document.forms[0].elements[5].value;
+    if (q == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+function selectHall(){
+    console.log("hello")
+    k = document.getElementsByClassName('selecthall')[0]
+    k = k.selectedOptions;
+    for(i=0;i<k.length;i++)
+        console.log(k[i].value)
+}
+$(document).ready(function() {
+
+                    $.ajax({
+                        url:"http://127.0.0.1:5000/api/auditorium",
+                        success: function(response)
+                        {
+                            console.log(response.audi)
+                            auditoriums = response.audi;
+                            str ="" 
+                            for(var i=0; i<auditoriums.length;i++)
+                            {
+                                str+="<option value=\"" +auditoriums[i].id +"\">" + auditoriums[i].name +" (" + auditoriums[i].audi_type + ")" + "</option>";
+                            }
+                                console.log(str)
+                            $("select.selecthall").html(str);    
+
+                        },
+                        error: function(response)
+                        {
+                            console.log("Error in fetching movies")
+                        }
+                    })
+                })
+</script>
+<body style="margin: 0 20px 20px 20px;">
+<h1>Admin Portal</h1>
+<br/>
+<table width="100%">
+    <tr>
+        <td width="50%">
+            <input type="button" value="Add Movie" onclick="$('#addMovie').toggle('fast')"
+                   class="btn btn-primary btn-lg">
+            <form id="addMovie" class="addMovie moveRight" hidden="hidden" onsubmit="return validateForm()">
+                <br/>
+                <label for="001">Movie Name</label><input name="title" class="roll form-control" type="text" placeholder="Movie Name" required>
+                <label for="002">Director</label><input name="director" class="name form-control" type="text"  placeholder="Director" required>
+                <label for="003">Discription</label><input name="discription" class="year form-control" type="text"  placeholder="Discription" required>
+                <label for="004">Trailer Url</label><input name="urli" class="roll form-control" type="text" placeholder="Trailer URL" required>
+                <label for="005">Duration</label><input name="duration" class="roll form-control" type="text" placeholder="Duration" required>
+              <br/>
+                <button type="button" onclick="addMovie()" class="btn btn-success">ADD</button>
+                <button type="button" onclick="$('#addMovie').toggle('fast')" class="btn btn-warning">DONE</button>
+                <br/><br/>
+            </form>
+            <form id= "addhall" >
+            <select name="hall" multiple="True" class="selecthall">
+            </select>
+            <button type="button" onclick="selectHall()" >Submit</button>
+            </form>
+            <br/><br/>
+            <input type="button" value="Add Hall" onclick="$('#addHall').toggle('fast')"
+                   class="btn btn-danger btn-lg">
+            <form id="addHall" class="addMovie moveRight" hidden="hidden">
+                <br/>
+                <label for="011">Select Movie</label> <select name="student" class="selectStudent form-control"
+                                                                id="011"></select><br/>
+                <button type="button" onclick="removeMovie()" class="btn btn-danger">REMOVE</button>
+                <button type="button" onclick="$('#removeMovie').toggle('fast')" class="btn btn-warning">DONE
+                </button>
+                <br/><br/>
+            </form>
+            <br/><br/>
+            <br/><br/>
+        </td>
+        <td width="50%">
+        <h3>Current Movies</h3>
+            <table id="allMovies" style="width:100%;" class="table table-hover table-striped ">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Movie</th>
+                </tr>
+                </thead>
+                <tbody id="insertStudents">
+                <tbody>
+            </table>
+            <br/>
+        </td>
+    </tr>
+        </table>
+    </div>
+</div>
+<br/><br/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</body>
+</html>

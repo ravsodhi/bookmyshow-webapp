@@ -38,12 +38,14 @@ from app.user.controllers import mod_user
 from app.screening.controllers import mod_screening
 from app.movie.controllers import mod_movie
 from app.helper.controllers import mod_todo
+from app.auditorium.controllers import mod_auditorium
 # instead of doing app.route
 # Register blueprint(s)
 app.register_blueprint(mod_user)
 app.register_blueprint(mod_screening)
 app.register_blueprint(mod_movie)
 app.register_blueprint(mod_todo)
+app.register_blueprint(mod_auditorium)
 
 # Build the database:
 # This will create the database file using SQLAlchemy

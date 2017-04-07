@@ -49,7 +49,7 @@
     
     .movie-div {
         width: 100%;
-        height: 250px;
+        height: 350px;
         margin-top: 0;
         margin-bottom: 2%;
         padding: 0;
@@ -221,18 +221,29 @@
     </nav>
      <div class="movie-div">
         <br/>
+        <div style="float: left; width: 50%">
         <h1>{{ movie.title }}</h1>
         <!--h1 class="hidden movie_id_required"> {{ movie.id }} </h1-->
-        <h2>{{ movie.director }}</h3>
+        <h2>Director:{{ movie.director }}</h2>
                 <br/>
-                <h3>{{ movie.description }}</h3>
+              
+        <h2>Duration:{{ movie.duration }}</h2>
+                <br/>
+                <br/>
+        
+        <h3>{{ movie.description }}</h3>
+        </div>
+		<iframe src= {{ movie.url }} style="float: right; width: 40%;height: 80%; margin-right: 3%"></iframe>
+		<br/>
+
     </div>
     <div class="screening-div">
         <h2 style="text-align:center;">Screening</h2>
         <hr/>
         <br/>
-        <div class="btn-group">
             <h3>Choose Date:</h3>
+
+        <div class="btn-group">
             <button class="button">Button</button>
             <button class="button">Button</button>
             <button class="button">Button</button>
