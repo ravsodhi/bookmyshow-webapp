@@ -165,3 +165,21 @@ var movieFetcher = function() {
         }
     })
 }
+
+function addCost(){
+    cost1 = $("input#platinum")[0].value
+    cost2 = $("input#gold")[0].value
+    cost3 = $("input#silver")[0].value
+    $.post({
+        url : "http://127.0.0.1:5000/api/seat/set",
+        data : {
+            platinum : cost1,
+            gold : cost2,
+            silver : cost3
+        }
+
+    });
+    console.log(cost1)
+    console.log(cost2)
+    console.log(cost3)
+}
