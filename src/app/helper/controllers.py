@@ -64,3 +64,8 @@ def load_screening(movie_id):
 	return render_template('screening.html',movie=movie,log=ans)
 
 
+@mod_todo.route('/admin')
+def admin_form():
+	return render_template('admin.html')
+
+

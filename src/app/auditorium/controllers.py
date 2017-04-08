@@ -9,7 +9,7 @@ mod_auditorium = Blueprint('auditorium', __name__, url_prefix='/api')
 @mod_auditorium.route('/auditorium', methods=['GET'])
 def display_audi():
 	print("display_audi")
-	audi = Auditorium.query.all()
+	audi = Auditorium.query.order_by(Auditorium.audi_type)
 	print(audi)
 	audi_array = []
 	for i in audi:

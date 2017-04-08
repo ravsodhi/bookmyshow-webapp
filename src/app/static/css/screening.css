@@ -1,0 +1,235 @@
+h1,
+h2,
+h3 {
+    margin-left: 2%;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+h1 {
+    font-family: 'Revalia';
+    color: white;
+}
+
+h2 {
+    font-family: 'Droid Sans';
+    color: gray;
+}
+
+h3 {
+    font-family: 'Cabin';
+    color: gray;
+}
+
+.hall-text {
+    padding-right: 10px;
+    color: white;
+    font-family: 'Macondo';
+    display: inline;
+}
+
+.movie-div {
+    width: 100%;
+    height: 350px;
+    margin-top: 0;
+    margin-bottom: 2%;
+    padding: 0;
+    background-image: url("/static/img/movie-div-background.jpg");
+}
+
+.body-background{
+background-image: url("/static/img/light_background-wallpaper-1600x900.jpg");
+}
+
+.screening-div {
+    width: 95%;
+    background-image: url("/static/img/screening-div-background.jpg");
+    margin: 2%;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.navbar-no-margin {
+    margin-bottom: 0!important;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Verdana, sans-serif;
+}
+
+hr {
+    width: 100%;
+    background-color: black;
+    height: 1px;
+    border: 0;
+}
+
+.btn-group {
+    width: 100%;
+}
+
+.btn-group .button {
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 100%;
+    color: gray;
+    padding: 20px 10px;
+    margin: 1%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+}
+
+.btn-group .button:not(:last-child) {
+    border-right: none;
+    /* Prevent double borders */
+}
+
+.btn-group .button:hover {
+    border: none;
+    color: gray;
+    background-image: url("/static/img/date-button-background.jpg");
+    background-color: #4da6ff;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.button:focus {
+    background-image: url("/static/img/date-button-background-after.jpg");
+    color: black;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.slot-group {
+    padding: 20px;
+    /*padding-bottom: 12px;
+        */
+    background-image: url("/static/img/slot-background.jpg");
+    width: 100%;
+}
+
+.hall-div {
+    background-image: url("/static/img/movie-box-background.jpg");
+    margin: 2%;
+    padding: 25px;
+    width: 95%;
+    border-radius: 15px;
+}
+
+.slot-button {
+    background-image: url("/static/img/slot-button-background.jpg");
+    font-family: 'Droid Sans';
+    border: none;
+    color: white;
+    padding: 25px 50px;
+    margin-left: 1%;
+    margin-right: 1%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+.slot-button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.slot-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.slot-button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.slot-button:hover span {
+    padding-right: 25px;
+}
+
+.slot-button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.list-type3 {
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.list-type3 li,
+.list-type3 a {
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    position: relative;
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-family: 'Raleway', sans-serif;
+    transition: background-color 1.5s ease;
+}
+
+.list-type3 a {
+    padding: 0 60px 0 12px;
+    background: #0089e0;
+    color: #fff;
+    text-decoration: none;
+    -moz-border-radius-bottomright: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.list-type3 a:before {
+    content: "";
+    float: left;
+    position: absolute;
+    top: 0;
+    left: -12px;
+    width: 0;
+    height: 0;
+    border-color: transparent #0089e0 transparent transparent;
+    border-style: solid;
+    border-width: 18px 12px 18px 0;
+}
+
+.list-type3 a:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 0;
+    float: left;
+    width: 6px;
+    height: 6px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    background: #fff;
+    -moz-box-shadow: -1px -1px 2px #004977;
+    -webkit-box-shadow: -1px -1px 2px #004977;
+    box-shadow: -1px -1px 2px #004977;
+}
+
+.list-type3 a:hover {
+    background: #555;
+}
+
+.list-type3 a:hover:before {
+    border-color: transparent #0089e0 transparent transparent;
+}

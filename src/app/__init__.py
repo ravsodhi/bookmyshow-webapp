@@ -29,7 +29,10 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
-            return jsonify(message="Unauthorized", success=False), 401
+        	next_url = get_current_url() # However you do this in Flask
+        	login_url = '%s?next=%s' % (url_for('login'), next_url)
+        	return redirect(login_url)
+           # return jsonify(message="Unauthorized", success=False), 401
         return f(*args, **kwargs)
     return decorated
 
@@ -39,6 +42,10 @@ from app.screening.controllers import mod_screening
 from app.movie.controllers import mod_movie
 from app.helper.controllers import mod_todo
 from app.auditorium.controllers import mod_auditorium
+from app.seat.controllers import mod_seat
+from app.booking.controllers import mod_booking
+
+
 # instead of doing app.route
 # Register blueprint(s)
 app.register_blueprint(mod_user)
@@ -46,6 +53,9 @@ app.register_blueprint(mod_screening)
 app.register_blueprint(mod_movie)
 app.register_blueprint(mod_todo)
 app.register_blueprint(mod_auditorium)
+app.register_blueprint(mod_seat)
+app.register_blueprint(mod_booking)
+
 
 # Build the database:
 # This will create the database file using SQLAlchemy

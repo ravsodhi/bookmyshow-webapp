@@ -16,177 +16,10 @@
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
-    <link href="../static/css/book-button.css" rel="stylesheet">
-    <style>
-    h1,
-    h2,
-    h3 {
-        margin-left: 2%;
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-    
-    h1 {
-        font-family: 'Revalia';
-        color: white;
-    }
-    
-    h2 {
-        font-family: 'Droid Sans';
-        color: gray;
-    }
-    
-    h3 {
-        font-family: 'Cabin';
-        color: gray;
-    }
-    .hall-text {    
-        padding-right: 10px; 
-        color:white;
-        font-family: 'Macondo';
-        display:inline;
-    }
-    
-    .movie-div {
-        width: 100%;
-        height: 350px;
-        margin-top: 0;
-        margin-bottom: 2%;
-        padding: 0;
-        background-image: url("../static/img/movie-div-background.jpg");
-    }
-    
-    .screening-div {
-        width: 95%;
-        background-image: url("../static/img/screening-div-background.jpg");
-        margin: 2%;
-        padding: 25px;
-        border-radius: 15px;
-    }
-       
-    .navbar-no-margin {
-        margin-bottom: 0!important;
-    }
-    
-    body {
-        margin: 0 !important;
-        padding: 0 !important;
-        font-family: Verdana, sans-serif;
-    }
-    
-    hr {
-        width: 100%;
-        background-color: black;
-        height: 1px;
-        border: 0;
-    }
-    
-    .btn-group {
-        width: 100%;
-    }
-    
-    .btn-group .button {
-        
-        background-color: white;
-        border: 1px solid gray;
-        border-radius: 100%;
-        color: gray;
-        padding: 20px 10px;
-        margin: 1%;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        cursor: pointer;
-        float: left;
-    }
-    
-    .btn-group .button:not(:last-child) {
-        border-right: none;
-        /* Prevent double borders */
-    }
-    
-    .btn-group .button:hover {
-        border:none;
-        color: gray;
-        background-image: url("../static/img/date-button-background.jpg");
-        background-color: #4da6ff;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    }
-    
-    .button:focus {
-        background-image: url("../static/img/date-button-background-after.jpg");
-        
-        color: black;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
-    
-    .slot-group {
-        padding: 20px;
-        /*padding-bottom: 12px;
-        */
-        background-image: url("../static/img/slot-background.jpg");
-        width: 100%;
-    }
-    
-    .hall-div {
-        background-image: url("../static/img/movie-box-background.jpg");
-        margin: 2%;
-        padding: 25px;
-        width: 95%;
-        border-radius: 15px;
-    }
-    
-    .slot-button {
-        background-image: url("../static/img/slot-button-background.jpg");
-        font-family: 'Droid Sans';
-        border: none;
-        color: white;
-        padding: 25px 50px;
-        margin-left: 1%;
-        margin-right: 1%;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 7px;
-    }
-    .slot-button:hover{
-
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    }
-    .slot-button span {
-        cursor: pointer;
-        display: inline-block;
-        position: relative;
-        transition: 0.5s;
-    }
-    
-    .slot-button span:after {
-        content: '\00bb';
-        position: absolute;
-        opacity: 0;
-        top: 0;
-        right: -20px;
-        transition: 0.5s;
-    }
-    
-    .slot-button:hover span {
-        padding-right: 25px;
-    }
-    
-    .slot-button:hover span:after {
-        opacity: 1;
-        right: 0;
-    }
-    
-    
-    </style>
+    <link href="../static/css/screening.css" rel="stylesheet">
 </head>
 
-<body style="background-image: url(http://wallpaperswide.com/download/light_background-wallpaper-1600x900.jpg)">
+<body class="body-background">
     <nav class="navbar navbar-inverse navbar-no-margin">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -212,73 +45,40 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href = "#" onclick = "valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
-                    <li><a href="#" onclick = "logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li>
+                        <a href="#" onclick="valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+                    </li>
+                    <li><a href="#" onclick="logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
         </div>
     </nav>
-     <div class="movie-div">
+    <div class="movie-div">
         <br/>
         <div style="float: left; width: 50%">
-        <h1>{{ movie.title }}</h1>
-        <!--h1 class="hidden movie_id_required"> {{ movie.id }} </h1-->
-        <h2>Director:{{ movie.director }}</h2>
-                <br/>
-              
-        <h2>Duration:{{ movie.duration }}</h2>
-                <br/>
-                <br/>
-        
-        <h3>{{ movie.description }}</h3>
+            <h1>{{ movie.title }}</h1>
+            <!--h1 class="hidden movie_id_required"> {{ movie.id }} </h1-->
+            <h2>Director:{{ movie.director }}</h2>
+            <br/>
+            <h2>Duration:{{ movie.duration }}</h2>
+            <br/>
+            <br/>
+            <h3>{{ movie.description }}</h3>
         </div>
-		<iframe src= {{ movie.url }} style="float: right; width: 40%;height: 80%; margin-right: 3%"></iframe>
-		<br/>
-
+        <iframe src= {{ movie.url }} style="float: right; width: 40%;height: 80%; margin-right: 3%"></iframe>
+        <br/>
     </div>
     <div class="screening-div">
         <h2 style="text-align:center;">Screening</h2>
         <hr/>
         <br/>
-            <h3>Choose Date:</h3>
-
-        <div class="btn-group">
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-            <button class="button">Button</button>
-        </div>
+        <h3>Choose Date:</h3>
+        <div class="btn-group"></div>
         <br/>
-        <div class="hall-div">
-            <h2 class="hall-text">Hall</h2>
-            <div class="slot-group">
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-            </div>
-            <br/>
-            <h2 class="hall-text">Hall</h2>
-            <div class="slot-group">
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-            </div>
-            <br/>
-            <h2 class="hall-text">Hall</h2>
-            <div class="slot-group">
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-                <button class="slot-button"><span>Button</span></button>
-            </div>
-        </div>
+        <div class="hall-div"> </div>
+        <hr/>
     </div>
-    <hr/>
     </div>
 </body>
-
 </html>

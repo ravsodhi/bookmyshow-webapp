@@ -1,6 +1,6 @@
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import * 
+from sqlalchemy import *
 from flask_cors import CORS
 #app=CORS(__name__)
 app = Flask(__name__)
@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 
 class Movie (db.Model):
- #Model   
+ #Model
     __tablename__ = "movie"
     id = db.Column('id', db.Integer, primary_key = True)
     title = db.Column('title', db.String)
@@ -30,13 +30,13 @@ class Movie (db.Model):
     def __repr__(self):
         #return "Movie { name: %r }"%(self.title)
         return "Movie {name: %r director : %r description :%r duration_min : %r rating : %r}"%(self.title,self.director,self.description,self.duration_min,self.rating)
-        
+
 
 class User (db.Model):
- #Model   
+ #Model
     __tablename__ = "user"
     id = db.Column('id', db.Integer, primary_key = True)
-    
+
     username = db.Column('username', db.String)
     password = db.Column('password', db.String)
     email = db.Column(db.String(60), unique = True)
@@ -48,18 +48,18 @@ class User (db.Model):
     def __repr__(self):
         #return "User { username: %r }"%(self.username)
         return "User { username: %r password: %r email: %r}"%(self.username,self.password,self.email)
-        
+
 
 class Seat (db.Model):
     __tablename__ = "seat"
     id = db.Column('id', db.Integer, primary_key = True)
     row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
     column = db.Column('column', db.Integer)
-        
+
     def __init__(self,row,column):
         self.row = row
         self.column = column
-            
+
     def __repr__(self):
         return "Seat { row: %r column: %r}"%(self.row,self.column)
 
@@ -79,7 +79,7 @@ class Time (db.Model):
     __tablename__ = "time"
     id = db.Column('id', db.Integer, primary_key = True)
     start_time = db.Column('start_time', db.String)
-    
+
     def __init__(self,start_time):
         self.start_time = start_time
     def __repr__(self):
@@ -89,7 +89,7 @@ class Date(db.Model):
     __tablename__="date"
     id = db.Column('id',db.Integer,primary_key = True)
     show_date = db.Column('show_date',db.String)
-    
+
     def __init__(self,show_date):
         self.show_date = show_date
     def __repr__(self):
@@ -102,13 +102,13 @@ class Screening (db.Model):
     auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
     screening_start_time = db.Column('screening_start_time', db.Integer,db.ForeignKey('time.id'))
     screening_date = db.Column('screening_date',db.Integer,db.ForeignKey('date.id'))
-    
+
     def __init__(self,movie_id,auditorium_id,screening_start_time,screening_date):
         self.movie_id = movie_id
         self.auditorium_id = auditorium_id
         self.screening_start_time = screening_start_time
         self.screening_date = screening_date
-    
+
     def __repr__(self):
         return "Screening { movie_id: %r auditorium_id: %r start_time:%r show_date: %r}"%(self.movie_id,self.auditorium_id,self.screening_start_time,self.screening_date)
 
@@ -118,7 +118,7 @@ class Cost (db.Model):
     auditorium_id = db.Column('auditorium_id', db.Integer, db.ForeignKey('auditorium.id'))
     row = db.Column('row', db.String)   #Row will be alphabetical A,B,C
     value = db.Column('value', db.Integer)
-    
+
     def __init__(self,auditorium_id,row,value):
         self.auditorium_id = auditorium_id
         self.row = row
