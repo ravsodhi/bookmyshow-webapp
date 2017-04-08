@@ -72,3 +72,7 @@ def admin_form():
 def seating_arrangement():
 	return render_template('seating.html')
 
+@mod_todo.route('/booking/<scr_id>')
+def view_booking(scr_id):
+	return render_template('seating.html')
+
