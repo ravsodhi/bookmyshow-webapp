@@ -68,4 +68,7 @@ def load_screening(movie_id):
 def admin_form():
 	return render_template('admin.html')
 
+@mod_todo.route('/seating')
+def seating_arrangement():
+	return render_template('seating.html')
 
