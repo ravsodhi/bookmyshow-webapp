@@ -36,6 +36,14 @@ def get_all_screening():
     else:
         return jsonify(success=True, slots=slots)
 
+# Given a screening, provide a audi_type:
+@mod_screening.route('/screening/audi', methods=['POST'])
+def get_aauditype():
+    id1 = request.form['scr_id']
+    m = db.session.query(Screening, Auditorium).join(Auditorium).filter(Screening.id == int(id1)).first()
+    ans = m.Auditorium.audi_type
+    return jsonify(success=True,ans=ans)
+
 
 @mod_screening.route('/screening/add', methods=['POST'])
 def add_screening():
