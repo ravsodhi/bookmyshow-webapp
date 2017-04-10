@@ -67,16 +67,34 @@
     <input type="button" value="Add Movie" onclick="$('#addMovie').toggle('fast')" class="btn btn-primary btn-lg">
     <form id="addMovie" class="addMovie moveRight" hidden="hidden">
         <br/>
-        <label for="movie_name">Movie Name</label><br/>
-        <input name="title" id="movie_name" type="text" placeholder="Movie Name" required><br/>
-        <label for="director">Director</label><br/>
-        <input name="director" id="director" type="text" placeholder="Director" required><br/>
-        <label for="description">Discription</label><br/>
-        <input name="discription" id="description" type="text" placeholder="Discription" required><br/>
-        <label for="trailer_url">Trailer Url</label><br/>
-        <input name="urli" id="trailer_url" type="text" placeholder="Trailer URL" required><br/>
-        <label for="duration">Duration</label><br/>
-        <input name="duration" id="duration" type="text" placeholder="Duration" required><br/>
+        <label for="movie_name">Movie Name</label>
+        <br/>
+        <input name="title" id="movie_name" type="text" placeholder="Movie Name" required>
+        <br/>
+        <label for="director">Director</label>
+        <br/>
+        <input name="director" id="director" type="text" placeholder="Director" required>
+        <br/>
+        <label for="description">Discription</label>
+        <br/>
+        <input name="discription" id="description" type="text" placeholder="Discription" required>
+        <br/>
+        <label for="trailer_url">Trailer Url</label>
+        <br/>
+        <input name="urli" id="trailer_url" type="text" placeholder="Trailer URL" required>
+        <br/>
+        <label for="duration">Duration</label>
+        <br/>
+        <input name="duration" id="duration" type="text" placeholder="Duration" required>
+        <br/>
+        <br/>
+        <label for="release_datere">Release Date</label>
+        <br/>
+        <input name="release_date" id="release_date" type="text" placeholder="yyyy-mm-dd" required>
+        <br/>
+        <label for="off_theatre_date">Off theatre Date</label>
+        <br/>
+        <input name="off_theatre_date" id="off_theatre_date" placeholder="yyyy-mm-dd" type="text" required>
         <br/>
         <button type="button" onclick="addMovie()" class="btn btn-success">ADD</button>
         <button type="button" onclick="$('#addMovie').toggle('fast')" class="btn btn-warning">DONE</button>
@@ -108,14 +126,6 @@
             <option value="21:00">9:00pm</option>
         </select>
         <br/>
-        <label for="release_datere">Release Date</label>
-        <br/>
-        <input name="release_date" id="release_date" type="text" placeholder="yyyy-mm-dd" required>
-        <br/>
-        <label for="off_theatre_date">Off theatre Date</label>
-        <br/>
-        <input name="off_theatre_date" id="off_theatre_date" placeholder="yyyy-mm-dd" type="text" required>
-        <br/>
         <br/>
         <button type="button" onclick="selectHall()" class="btn btn-success">ADD</button>
         <button type="button" onclick="$('#addScreening').toggle('fast')" class="btn btn-warning">DONE</button>
@@ -146,13 +156,18 @@
     <input type="button" value="Set Cost" onclick="$('#addCost').toggle('fast')" class="btn btn-danger btn-lg">
     <form id="addCost" class="addCost moveRight" hidden="hidden">
         <br/>
-        <label for="platinum">Platinum Seat Cost</label><br/>
-        <input name="platinum" id="platinum" type="text" placeholder="Platinum Seat Cost" required><br/>
-        <label for="gold">Gold Seat Cost</label><br/>
-
-        <input name="gold" id="gold" type="text" placeholder="Gold Seat Cost" required><br/>
-        <label for="silver">Silver Seat Cost</label><br/>
-        <input name="silver" id="silver" type="text" placeholder="Silver Seat Cost" required><br/>
+        <label for="platinum">Platinum Seat Cost</label>
+        <br/>
+        <input name="platinum" id="platinum" type="text" placeholder="Platinum Seat Cost" required>
+        <br/>
+        <label for="gold">Gold Seat Cost</label>
+        <br/>
+        <input name="gold" id="gold" type="text" placeholder="Gold Seat Cost" required>
+        <br/>
+        <label for="silver">Silver Seat Cost</label>
+        <br/>
+        <input name="silver" id="silver" type="text" placeholder="Silver Seat Cost" required>
+        <br/>
         <br/>
         <button type="button" onclick="addCost()" class="btn btn-success">ADD</button>
         <button type="button" onclick="$('#addCost').toggle('fast')" class="btn btn-warning">DONE</button>

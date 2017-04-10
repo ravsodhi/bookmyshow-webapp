@@ -13,8 +13,11 @@ function addMovie() {
     title = document.forms[0].elements[0].value;
     director = document.forms[0].elements[1].value;
     discription = document.forms[0].elements[2].value;
-    duration = document.forms[0].elements[4].value;
     urli = document.forms[0].elements[3].value;
+    duration = document.forms[0].elements[4].value;
+    date1 = document.forms[0].elements[5].value;
+    date2 = document.forms[0].elements[6].value;
+
     $.ajax({
         url: "http://127.0.0.1:5000/api/movie/add",
         method: 'POST',
@@ -24,6 +27,8 @@ function addMovie() {
             discription: discription,
             duration: duration,
             url: urli,
+            release_date : date1,
+            off_theatre_date : date2
         },
         success: function(response) {
             console.log("movie added")
@@ -77,6 +82,7 @@ function selectHall() {
             m += k[i].value + ","
         else
             m += k[i].value
+
     k = document.getElementsByClassName('selecttime')[0]
     k = k.selectedOptions;
     for (i = 0; i < k.length; i++)
@@ -84,18 +90,15 @@ function selectHall() {
             time += k[i].value + ","
         else
             time += k[i].value
+
     k = document.getElementById('selectmovie').value
     idi = k
-    date1 = document.getElementById('release_date').value
-    date2 = document.getElementById('off_theatre_date').value
 
     $.post({
         url: "http://127.0.0.1:5000/api/screening/add",
         data: {
             audi_id: m,
             time: time,
-            rel_date: date1,
-            off_date: date2,
             movie_id: idi
         },
         success: function(response) {

@@ -47,21 +47,24 @@ def get_aauditype():
 
 @mod_screening.route('/screening/add', methods=['POST'])
 def add_screening():
-    id1 = request.form['rel_date']
+    id3 = request.form['movie_id']
+    dates = Movie.query.filter(Movie.id == id3).first()
+    id1 = dates.release_date
+    id2 = dates.off_theatre_date
+    '''
     id1 = id1.split("-")
     id1 = date(int(id1[0]),int(id1[1]),int(id1[2]))
     
-    id2 = request.form['off_date']
     id2 = id2.split("-")
     id2 = date(int(id2[0]),int(id2[1]),int(id2[2]))
-
+    '''
     k = id2-id1
     k = str(k)
     k = k.split(",")
     k = k[0].split(" ")
     m = int(k[0])   #no of days for which movie is to be screened 
         
-    id3 = request.form['movie_id']
+
     audi = request.form['audi_id']
     audi = audi.split(",")
     audilen = len(audi);
@@ -88,3 +91,4 @@ def add_screening():
                 db.session.add(scr1)
     db.session.commit()
     return jsonify(success=True)
+
