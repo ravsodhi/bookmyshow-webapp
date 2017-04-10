@@ -12,14 +12,28 @@
 
 <body class="container">
     <h1 style="text-align:center;">Please select seats to book</h1>
-    <div class="seat-container">
+   <table width="100%">
+   <tr width="100%">
+   
+   <td width="75%">
+    <div class="seat-container" style="float:right;">
         <br/>
         <br/>
         <ol id="seat-selector"></ol>
     <h1 style="text-align:center;color:white">All Eyes this way</h1>
         <br/>
         <br/>
-
+    </div>
+    </td>
+    <td>
+    <div class="cost_viewer list-type3">
+    <h3 id="dyncost" style="color : white">Cost : 0</h3>
+    <h3 id="dynseat" style="color : white">Seats Selected : 0</h3>
+    <li><a href=# onclick=bookNow(); style="text-align: center;">Book Now</a></li>
+   </div>
+   </td>
+   </tr>
+    <br/>
     </div>
 </body>
 

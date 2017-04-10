@@ -1,7 +1,22 @@
+var max_row ;
+var t = [];
+
 $(document).ready(
-    function renderSeats() {
+     function renderSeats() {
+           $.ajax({
+            url: "http://127.0.0.1:5000/api/seat/get",
+            success: function(response) {
+     //           console.log(response.cost)
+                t.push(response.cost[0])
+                t.push(response.cost[1])
+                t.push(response.cost[2])
+       //         console.log(t);
+
+            }
+        });
+
+
         arr = []
-        var max_row = 9;
         s = window.location.pathname.split("/")[2]
         $.ajax({
             url: "http://127.0.0.1:5000/api/booking/" + s,
@@ -13,7 +28,7 @@ $(document).ready(
                         scr_id: s
                     },
                     success: function(response) {
-                    	ans = response.ans;
+                        ans = response.ans;
                         if (!ans.localeCompare("Big"))
                             max_row = 15;
                         else if (!ans.localeCompare("Medium"))
@@ -22,10 +37,28 @@ $(document).ready(
                             max_row = 8;
                         var str_full = "";
 
+                        if (max_row == 15)
+                            hall_decider = 2;
+                        else if (max_row == 12)
+                            hall_decider = 1;
+                        else
+                            hall_decider = 0;
+
                         for (var i = max_row; i >= 0; i--) {
                             row_no = String.fromCharCode(65 + i);
-                            var str_head = "<li class=\"row row-" + row_no + "\"><ol class=\"seats\" type=\"A\"><li class=\'seat\' style=\'color:white\'>" + row_no + "</li>";
+                            var str_head = "";
+
+                            if (hall_decider == 2 && i == 15) {
+                                str_head += "<h3 style=\"text-align:center;color:white \">Platinum Class (Rs." + t[2] +  ")</h3>";
+                            }
+                            if ((hall_decider == 2 || hall_decider == 1) && i == 12)
+                                str_head += "<h3 style=\"text-align:center; color:white\">Gold Class (Rs." + t[1] +  ")</h3>"
+                            if ((hall_decider == 2 || hall_decider == 1 || hall_decider == 0) && i == 7)
+                                str_head += "<h3 style=\"text-align:center; color:white\">Silver Class (Rs." + t[0] +  ")</h3>"
+
+                            str_head += "<li class=\"row row-" + row_no + "\"><ol class=\"seats\" type=\"A\"><li class=\'seat\' style=\'color:white\'>" + row_no + "</li>";
                             var str_body = "";
+
                             for (var j = 0; j < 15; j++) {
                                 column_no = j + 1;
                                 for (var k = 0; k < arr.length;) {
@@ -33,14 +66,14 @@ $(document).ready(
                                     column = arr[k].seat_column;
 
                                     if (row == row_no && column == column_no) {
-                                        str_body += "<li class=\"seat\"><input type=\"checkbox\" disabled id=\"" + row_no + column_no + "\" /><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
+                                        str_body += "<li class=\"seat\"><input type=\"checkbox\" disabled id=\"" + row_no + column_no + "\"" + "/><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
                                         break;
                                     } else {
                                         k++;
                                     }
                                 }
                                 if (k == arr.length)
-                                    str_body += "<li class=\"seat\"><input type=\"checkbox\" id=\"" + row_no + column_no + "\" /><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
+                                    str_body += "<li class=\"seat\"><input type=\"checkbox\"" +  "onclick = costdetector(" + max_row + ") id=\"" + row_no + column_no + "\"" +  "/><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
 
                             }
 
@@ -49,6 +82,8 @@ $(document).ready(
                         }
 
                         $("ol#seat-selector").html(str_full);
+
+ 
                     },
                     error: function(response) {
                         console.log("booking is not functional")
@@ -59,11 +94,40 @@ $(document).ready(
                 console.log("booking is not functional")
             }
         });
-        //get audi type//
-        //get data//
+    
+        
 
     }
 );
+
+var costdetector = function(max_row) {
+        checked = $('input:checked');
+        check_array = []
+        for (var i = 0; i < checked.length; i++) {
+            check_array.push(checked[i].id)
+
+        }
+        seatsselected = checked.length
+        var cost = 0;
+    for(var i=0;i<check_array.length;i++){
+        k = check_array[i].charCodeAt(0) - 65
+        if( k > -1 && k< 8)
+            cost+= t[0]
+        else if (k>  7 && k <13)
+            cost+=t[1]
+        else
+            cost +=t[2]
+    }
+    str1="<h3 id=\"dyncost\" style=\"color:white\">Cost : "+ cost+"</h3>"
+    str2="<h3 id=\"dynseat\" style=\"color:white\">Selected Seats: "+ seatsselected+"</h3>"
+
+       $("h3#dyncost").html(str1);
+       $("h3#dynseat").html(str2);
+
+
+
+
+}
 
 function bookNow() {
     checked = $('input:checked');
@@ -84,8 +148,12 @@ function bookNow() {
             scr_id: s,
         },
         success: function(response) {
+            if (!response.success)
+                window.location.href = "http://127.0.0.1:5000/login"
+            console.log(response)
             console.log(response)
         }
-    })
+    });
+
 
 }

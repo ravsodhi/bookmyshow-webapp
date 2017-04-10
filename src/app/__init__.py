@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from functools import wraps
 
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 # Define the WSGI application object
 app = Flask(__name__)
 # this is imported in run.py
@@ -21,6 +23,10 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 # Sample HTTP error handling
+migrate = Migrate(app,db)
+manager = Manager(app)
+manager.add_command('db',MigrateCommand)
+
 @app.errorhandler(404)
 def not_found(error):
    return render_template('index.html'), 200

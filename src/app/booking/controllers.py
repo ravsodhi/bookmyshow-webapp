@@ -25,7 +25,7 @@ def book_screening(scr_id):
     for i in bookings:
     	#print(i)
     	i.Seat
-    	seats.append({ 'screening_id' :i.Booking.screening_id,'seat_row':i.Seat.row,'seat_column':i.Seat.column,'seat_id':i.Seat.id,'audi_type': m.Auditorium.audi_type})
+    	seats.append({ 'screening_id' :i.Booking.screening_id,'seat_row':i.Seat.row,'seat_column':i.Seat.column,'seat_id':i.Seat.id, 'seat_cost': i.Seat.cost, 'audi_type': m.Auditorium.audi_type})
     if bookings is None:
     	return jsonify(success=False), 404
     else:
@@ -36,7 +36,7 @@ def add_booking():
 	if 'user_id' in session:
 		use = session['user_id']
 	else:
-		return redirect("http://127.0.0.1:5000/login")
+		return jsonify(success=False)
 	print(use)
 	scr_id =  int(request.args.get('scr_id'))
 	k = request.args.get('seats')

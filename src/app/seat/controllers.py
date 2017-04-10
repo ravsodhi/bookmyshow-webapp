@@ -28,3 +28,16 @@ def set_seat_cost():
 	return jsonify(success=True),200
 
 
+@mod_seat.route('/seat/get', methods=['GET'])
+def get_seat_cost():
+	cost =[]
+	c1 = Seat.query.filter(Seat.id == 1).first()
+	c2 = Seat.query.filter(Seat.id == 121).first()
+	c3 = Seat.query.filter(Seat.id == 211).first()
+	cost.append(c1.cost)
+	cost.append(c2.cost)
+	cost.append(c3.cost)
+	print(cost)
+	return jsonify(success=True,cost=cost)
+
+
