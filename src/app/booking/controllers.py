@@ -5,6 +5,7 @@ from app.user.models import User
 from app.seat.models import Seat
 from app.auditorium.models import Auditorium
 from app.screening.models import Screening
+from app.movie.models import Movie
 
 from sqlalchemy import *
 
@@ -30,6 +31,52 @@ def book_screening(scr_id):
     	return jsonify(success=False), 404
     else:
     	return jsonify(success=True, seats=seats)
+@mod_booking.route('/booking/user/<user_id>', methods=['GET'])
+def book_user(user_id):
+	# Change url to get user id from here only (if usr_id in session) return user id#
+	booking_data = db.session.query(Booking,Screening,Seat).join(Screening,Seat).filter(Booking.user_id == user_id).order_by(Screening.id,Seat.row)
+	print(booking_data)
+	bookings = []
+	screening_id = 0
+	screening_data = []
+	for i in booking_data:
+		if(screening_id != i.Screening.id):
+			screening_aud_data = db.session.query(Screening,Auditorium).join(Auditorium).filter(Screening.id == i.Screening.id).first()
+			screening_mov_data = db.session.query(Screening,Movie).join(Movie).filter(Screening.id == i.Screening.id).first()
+			screening_id = i.Screening.id
+		print(screening_mov_data)
+		bookings.append({'screening_time':str(i.Screening.screening_start_time),'screening_date':str(i.Screening.screening_date),'screening_id':i.Screening.id,'movie_title':screening_mov_data.Movie.title,'audi_name':screening_aud_data.Auditorium.name,'audi_type':screening_aud_data.Auditorium.audi_type,'seat_row':i.Seat.row,'seat_column':i.Seat.column, 'seat_cost': i.Seat.cost})
+	
+	screening_id = 0
+	booking_info = []
+	if bookings is None:
+		return jsonify(success=False), 404
+	else:
+		for i in bookings:
+			#print(i)
+			if screening_id != i['screening_id']:
+				if i != bookings[0]:
+					booking_info.append({'cost':seat_cost,'screening_time':screening_time,'screening_date':screening_date,'movie_title':movie_title,'audi_name':audi_name,'audi_type':audi_type,'seats':seats})
+					print(booking_info)
+				screening_id = i['screening_id']
+				screening_date = i['screening_date']
+				screening_time = i['screening_time']
+				movie_title = i['movie_title']
+				audi_name = i['audi_name']
+				audi_type = i['audi_type']
+				
+				seats = []
+				seat_str = ""
+				seat_cost = 0
+						
+			seat_str = i['seat_row'] + str(i['seat_column'])
+			seats.append(seat_str)
+			seat_cost += i['seat_cost']
+			print(seats)
+				#print(seat_str)
+		#print(bookings[0])
+		#print(bookings[0]['screening_id'])
+		return jsonify(success=True, booking_data=booking_info)
 
 @mod_booking.route('/booking/add', methods=['GET'])
 def add_booking():
