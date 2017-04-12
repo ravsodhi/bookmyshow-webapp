@@ -1,0 +1,25 @@
+.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+.tcol,table,.trow{
+	border:2px solid black;
+	border-collapse: collapse;
+}
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+
+.toppad
+{margin-top:20px;
+}
+
