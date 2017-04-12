@@ -11,7 +11,8 @@ mod_screening = Blueprint('screening', __name__, url_prefix='/api')
 @mod_screening.route('/screening/movies', methods=['POST'])
 def get_all_dates():
     movie_id = request.form['movie_id']
-    dates = Screening.query.filter(Screening.movie_id == movie_id).order_by(str(Screening.screening_date))
+    today = date.today()    
+    dates = Screening.query.filter(and_(Screening.movie_id == movie_id,Screening.screening_date >= today)).order_by(str(Screening.screening_date))
     new_dates = []
     for i in dates:
         new_dates.append(i.to_dict_dates())
@@ -26,8 +27,8 @@ def get_all_screening():
     id2 = request.form['movie_id']
     id1 = id1.split("-")
     id1 = date(int(id1[0]),int(id1[1]),int(id1[2]))
-
-    dates2 = db.session.query(Screening, Auditorium).join(Auditorium).filter(and_(Screening.auditorium_id == Auditorium.id,Screening.screening_date == id1,Screening.movie_id == id2)).order_by(Auditorium.name.asc(),(Screening.screening_start_time-datetime(1970,1,1)))
+    now = datetime.today().time()
+    dates2 = db.session.query(Screening, Auditorium).join(Auditorium).filter(and_(Screening.screening_start_time >= now,Screening.auditorium_id == Auditorium.id,Screening.screening_date == id1,Screening.movie_id == id2)).order_by(Auditorium.name.asc(),(Screening.screening_start_time-datetime(1970,1,1)))
     slots = []
     for i in dates2:
         slots.append({ 'screening_id' :i.Screening.id,'time' : str(i.Screening.screening_start_time) , 'hall_name' : i.Auditorium.name , 'hall_type' : i.Auditorium.audi_type })
