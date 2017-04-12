@@ -116,8 +116,7 @@ def add_booking():
 #	Book = Booking(user_id,scr_id,seat_id)
 #	db.session.add(Book)
 #	db.session.commit()
-    print(type(str(start_time)))
-
+	print(type(str(start_time)))
 	ticket = { 'seats' : k , 'screening_start_time' : str(start_time) , 'total_cost' : cost , 'hall_name' : hall_name , 'hall_type' : hall_type , 'date' : start_date , 'movie_name' : movie_name}
 	session['myticket'] = ticket
 	print('reached at end of booking controllers')
