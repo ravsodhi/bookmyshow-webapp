@@ -85,3 +85,7 @@ def view_booking(scr_id):
 def view_ticket():
 	print('reached at helper controllers')
 	return render_template('ticket.html')
+	
+@mod_todo.route('/user/history')
+def user_history():
+	return render_template('user.html')
