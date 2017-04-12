@@ -5,6 +5,10 @@ from flask import render_template
 mod_todo = Blueprint('todo', __name__)
 from app.user.models import User
 from app.movie.models import Movie
+from app.screening.models import Screening
+from app.auditorium.models import Auditorium
+from app.seat.models import Seat
+from sqlalchemy import *
 
 @mod_todo.route('/api/todo', methods=['POST'])
 def form_auth():
@@ -76,3 +80,8 @@ def seating_arrangement():
 def view_booking(scr_id):
 	return render_template('seating.html')
 
+
+@mod_todo.route('/viewticket')
+def view_ticket():
+	print('reached at helper controllers')
+	return render_template('ticket.html')
