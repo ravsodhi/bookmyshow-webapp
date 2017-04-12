@@ -89,13 +89,24 @@ def add_booking():
 	k = request.args.get('seats')
 	k = k.split(",")
 	print(k)
+	screening_touple = Screening.query.filter(Screening.id == scr_id).first()
+	start_time = screening_touple.screening_start_time
+	start_date = screening_touple.screening_date
+	hall_id = screening_touple.auditorium_id
+	hall_touple = Auditorium.query.filter(Auditorium.id == hall_id).first()
+	hall_name = hall_touple.name
+	hall_type = hall_touple.audi_type
+	movie_touple = Movie.query.filter(Movie.id == screening_touple.movie_id).first()
+	movie_name = movie_touple.title
+	print(start_time)
 	print(scr_id)
 	p =[]
+	cost = 0
 	for i in k:
 		m = i[1:]
-		print(m)
-		p.append(Seat.query.filter(and_(Seat.row == i[0],Seat.column == int(m))).first().id)
-		print(p)
+		screens = Seat.query.filter(and_(Seat.row == i[0],Seat.column == int(m))).first()
+		p.append(screens.id)
+		cost += screens.cost
 	for t in p:
 		sy = Booking(use,scr_id,t)
 		db.session.add(sy)
@@ -105,5 +116,10 @@ def add_booking():
 #	Book = Booking(user_id,scr_id,seat_id)
 #	db.session.add(Book)
 #	db.session.commit()
+    print(type(str(start_time)))
+
+	ticket = { 'seats' : k , 'screening_start_time' : str(start_time) , 'total_cost' : cost , 'hall_name' : hall_name , 'hall_type' : hall_type , 'date' : start_date , 'movie_name' : movie_name}
+	session['myticket'] = ticket
+	print('reached at end of booking controllers')
 	return jsonify(success=True),200
 
