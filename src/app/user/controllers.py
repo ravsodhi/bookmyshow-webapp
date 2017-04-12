@@ -67,3 +67,18 @@ def create_user():
 
     return jsonify(success=True)
 
+#This route is needed to show user's booking history
+@mod_user.route('/user_info', methods=['GET'])
+def get_user_info():
+    try:
+        if 'user_id' in session:
+            user_id = session['user_id']
+        else:
+            print('notloggedin')
+            return jsonify(success=False), 404
+        user_touple = User.query.filter(User.id == user_id).first()
+        name = user_touple.name
+        email = user_touple.email
+        return jsonify(success=True, info={'name':name, 'email':email})
+    except:
+        return jsonify(success=False, message="Error in fetching user info"), 404
