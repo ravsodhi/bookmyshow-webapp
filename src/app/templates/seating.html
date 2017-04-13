@@ -8,6 +8,11 @@
     <script src="../static/js/vendor/jquery.min.js"></script>
     <script src="../static/js/seating.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+      #hover:hover{
+        cursor: pointer;
+      }
+    </style>
 </head>
 
 <body class="container">
@@ -29,7 +34,7 @@
     <div class="cost_viewer list-type3">
     <h3 id="dyncost" style="color : white">Cost : 0</h3>
     <h3 id="dynseat" style="color : white">Seats Selected : 0</h3>
-    <li><a href=# onclick=bookNow(); style="text-align: center;">Book Now</a></li>
+    <li><a id="hover" onclick=bookNow(); style="text-align: center;">Book Now</a></li>
    </div>
    </td>
    </tr>

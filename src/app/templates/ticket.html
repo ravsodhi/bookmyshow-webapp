@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Book My Show</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/vendor/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link href="../static/css/ticket.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
+</head>
+
+<body class="container">
+    <div class="ticket_box">
+        <h1 style="text-align:center"> Ticket</h1>
+        <h2> Movie name : {{ session['myticket'].movie_name }} </h2>
+        <h2> Hall name : {{ session['myticket'].hall_name }} ({{ session['myticket'].hall_type }} ) </h2>
+        <h2> Date : {{ session['myticket'].date }} </h2>
+        <h2> Start Time : {{ session['myticket'].screening_start_time }} </h2>
+        <h2> Seats Booked: </h2>
+        <br/>
+        <h3>
+    {% for seat in session['myticket'].seats %}
+        {{ seat }}
+        <br/>
+    {% endfor %}
+    </h3>
+        <h2> Total Cost: {{ session.pop('myticket').total_cost }} </h2>
+    </div>
+</body>

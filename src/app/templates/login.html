@@ -1,0 +1,53 @@
+{% extends "index.html" %} {% import "bootstrap/wtf.html" as wtf %} {% block body %}
+
+
+
+<div class="container">
+    <script type="text/javascript">
+    var msg = "{{message}}";
+    var duration = 3000
+
+    function tempAlert() {
+        var el = document.createElement("div");
+        el.innerHTML = msg;
+        el.setAttribute("style", "position:fixed ; top:87% ;bottom:5%; left:45% ; background-color:black ; height:9%;padding: 12px 20px;color:white;");
+        setTimeout(function() {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+    if(msg!="")
+        tempAlert();
+
+        console.log("{{message}}");
+        console.log('kunal;');
+    </script>
+    <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" ><a href="/home">Home</a></li>
+            <li role="presentation" class="active"><a href="#">Sign In</a></li>
+            <li role="presentation" ><a href="/register">Sign Up</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Python Flask App</h3>
+      </div>
+ 
+      <div class="jumbotron">
+        <h2 id="sign-up">SIGN IN</h2>
+    <form class="form-signin" method="POST" action="/login">
+          {{ form.csrf_token }}
+          {{ wtf.form_field(form.email) }} 
+          {{ wtf.form_field(form.password) }} 
+        <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit" style="margin-bottom: 20px;">Sign In</button>
+        </form>
+        <h5 style="text-align: center;">Still not connected? <u><a href="/register" >Sign Up</a></u></h5>
+      </div>
+ 
+      <footer class="footer">
+        <p>&copy; Company 2017</p>
+      </footer>
+</div>
+<!-- /container -->
+{% endblock %}

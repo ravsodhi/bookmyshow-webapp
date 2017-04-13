@@ -47,27 +47,23 @@ function slot_fetch(date, movie_id) {
                 str_full += str_head + str_body + "</div>"
             }
             $("div.hall-div").html(str_full);
+
         },
         error: function(response) {
             console.log('Error in fetching slots');
         }
     });
 }
-$(document).ready(function() {
-    var array = [];
-    var array2 = [];
-    url = window.location.pathname
 
-    var movie_id = url.split("/");
-    movie_id = movie_id[2]
-    console.log(movie_id);
+function loader() {
+    var array = [];
+    movieid = parseInt(window.location.pathname.split("/")[2])
     tempAlert("Page is Loading", 2000)
         //var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
-    $.ajax({
+    $.post({
         url: "http://127.0.0.1:5000/api/screening/movies",
-        method: 'POST',
         data: {
-            movie_id: movie_id
+            movie_id: movieid
         },
         success: function(response) {
         	console.log("success")
@@ -76,17 +72,21 @@ $(document).ready(function() {
             var date = "";
             for (var i = 0; i < array.length; i++) {
                 if (date != array[i].date) {
-                    str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movie_id + ');\' >' + array[i].date + '</button>';
+                    str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movieid + ');\' >' + array[i].date + '</button>';
                     date = array[i].date;
                 }
 
             }
 
             $("div.btn-group").html(str);
-            slot_fetch(array[0].date, movie_id);
+            slot_fetch(array[0].date, movieid);
+            console.log(movieid)
+
         },
         error: function(response) {
             console.log('Error in fetching dates');
         }
     });
-});
+};
+
+loader()

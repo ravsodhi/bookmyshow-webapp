@@ -1,0 +1,23 @@
+    {% extends "base.html" %}
+    {% import "bootstrap/wtf.html" as wtf %}
+    {% block body %}
+    <div class="container">
+    <form id="addMovie" class="addMovie moveRight" method="POST" action="/movie/add">
+        <h2 class="form-signin-heading">Add Movie</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.title) }}
+        {{ wtf.form_field(form.director) }}
+        {{ wtf.form_field(form.discription) }}
+        {{ wtf.form_field(form.trailer_url) }}
+        {{ wtf.form_field(form.duration) }}
+        {{ wtf.form_field(form.release_date) }}
+        {{ wtf.form_field(form.off_theatre_date) }}
+        <button type="submit" class="btn btn-success">ADD</button>
+      </form>
+        <br/>
+        <br/>
+    </div> <!-- /container -->
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Portal</title>
+    <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
+    <link href="../static/css/vendor/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/login_state.js"></script>
+    <script type="text/javascript" src="../static/js/admin.js"></script>
+   
+    <style>
+    form {
+        width: 70%;
+    }
+    
+    td {
+        vertical-align: top;
+        padding-left: 3%;
+        padding-right: 5%;
+    }
+    
+    h1 {
+        color: #17866b;
+        font-size: 50pt;
+    }
+    
+    .moveRight {
+        padding-left: 3%;
+        padding-right: 5%;
+    }
+    
+    th {
+        background-color: rgba(52, 73, 94, 0.47);
+    }
+    
+    table {
+        border-color: rgba(52, 73, 94, 0.9);
+    }
+    
+    optgroup[label="Big"] {
+        background-color: lightgrey;
+        color: red;
+    }
+    
+    optgroup[label="Small"] {
+        background-color: lightgrey;
+        color: blue;
+    }
+    
+    optgroup[label="Medium"] {
+        background-color: lightgrey;
+        color: green;
+    }
+    
+    option {
+        color: black;
+    }
+    
+    optgroup option {
+        padding-left: 20px;
+    }
+    h1{
+        font-family:'Revalia';
+    }
+    
+    h4{
+        font-family:'Cabin';
+        color:white;
+    }
+    .navbar-no-margin {
+        margin-bottom: 0!important;
+    }
+    .backimg{
+        background-image: url("../static/img/light_background-wallpaper-1600x900.jpg")
+    }
+    
+    * {
+        box-sizing: border-box
+    }
+    
+    body {
+        font-family: Verdana, sans-serif;
+    }
+    #hover:hover{
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body class="backimg">
+    <nav class="navbar navbar-inverse navbar-no-margin">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" style="font-family:'Bitter'">Book My Show</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#" style="font-family:'Bitter'">Movies</a></li>
+                </ul>
+                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%">
+                    <div class="input-group" style="width:200%">
+                        <input type="text" id="search" class="form-control" placeholder="Search">
+                        <div class="input-group-btn">
+                                <i class="glyphicon glyphicon-search"></i>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a  onclick = "valchecker()" id= "hover"> <span class="glyphicon glyphicon-user"></span>{{log.val}}</a></li>
+                    <li><a  onclick = "logchecker()" id= "hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <h1>Admin Portal</h1>
+    <br/>
+    <div class="wrapper"  style="margin: 0 20px 20px 20px;">
+    {% block body %}
+    {% endblock %}
+    </div>
+</body>
+</html>

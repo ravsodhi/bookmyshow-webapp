@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/js/screening.js"></script>
     <script type="text/javascript" src="../static/js/login_state.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
@@ -17,6 +16,11 @@
     <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
     <link href="../static/css/screening.css" rel="stylesheet">
+    <style>
+    #hover:hover{
+        cursor: pointer;
+    }
+    </style>
 </head>
 
 <body class="body-background">
@@ -46,9 +50,9 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#" onclick="valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+                        <a id= "hover" onclick="valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
                     </li>
-                    <li><a href="#" onclick="logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li><a id="hover" onclick="logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
@@ -81,4 +85,6 @@
     </div>
     </div>
 </body>
+    <script type="text/javascript" src="../static/js/screening.js"></script>
+
 </html>

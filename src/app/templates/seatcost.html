@@ -1,0 +1,17 @@
+    {% extends "base.html" %}
+    {% import "bootstrap/wtf.html" as wtf %}
+    {% block body %}
+    <div class="container">
+    <form id="addCost" class="addCost moveRight" method="POST" action="/seat/cost">
+        <h2 class="form-signin-heading">Seat Cost</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.platinum) }}
+        {{ wtf.form_field(form.gold) }}
+        {{ wtf.form_field(form.silver) }}
+        <button type="submit" class="btn btn-success">SET</button>
+      </form>
+        <br/>
+        <br/>
+    </div> <!-- /container -->
+{% endblock %}
+</body>

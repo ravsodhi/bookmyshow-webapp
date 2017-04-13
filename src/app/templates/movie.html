@@ -64,9 +64,13 @@
     body {
         font-family: Verdana, sans-serif;
     }
+    #hover:hover{
+        cursor: pointer;
+    }
     </style>
 
 </head>
+
 <body class="backimg">
     <nav class="navbar navbar-inverse navbar-no-margin">
         <div class="container-fluid">
@@ -84,22 +88,21 @@
                 </ul>
                 <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%">
                     <div class="input-group" style="width:200%">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" id="search" class="form-control" placeholder="Search">
                         <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
                                 <i class="glyphicon glyphicon-search"></i>
-                            </button>
                         </div>
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href = "#" onclick = "valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
-                    <li><a href="#" onclick = "logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li><a  onclick = "valchecker()" id= "hover"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
+                    <li><a  onclick = "logchecker()" id= "hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
         </div>
     </nav>
+    <div id="response"></div>
     <div class="slideshow-container">
         <div class="mySlides fade">
             <img src="../static/img/img1.jpg" style="width:100%; max-height:550px">
@@ -165,6 +168,22 @@ function showSlides() {
 }
 showSlides();
 </script>
-</body>
 
+</body>
+<script type="text/javascript">
+        $("#search").on("keyup",function () {
+            $.ajax ({
+                url : "http://127.0.0.1:5000/api/movies/search",
+                method : "GET",
+                data : {
+                    query:$('#search').val()
+                },
+                success : function(resp){
+                    console.log(resp.movies)
+                    $("#response").html(resp.movies);
+                }
+            })
+            // body...
+        })
+    </script>
 </html>
