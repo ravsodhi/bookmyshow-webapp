@@ -31,11 +31,17 @@ def book_screening(scr_id):
     	return jsonify(success=False), 404
     else:
     	return jsonify(success=True, seats=seats)
-@mod_booking.route('/booking/user/<user_id>', methods=['GET'])
-def book_user(user_id):
+@mod_booking.route('/booking/user', methods=['GET'])
+def book_user():
 	# Change url to get user id from here only (if usr_id in session) return user id#
+	if 'user_id' in session:
+		user_id = session['user_id']
+		print(user_id)
+	else:
+		return jsonify(success=False), 404
+	
 	booking_data = db.session.query(Booking,Screening,Seat).join(Screening,Seat).filter(Booking.user_id == user_id).order_by(Screening.id,Seat.row)
-	print(booking_data)
+	print('booking_data', booking_data)
 	bookings = []
 	screening_id = 0
 	screening_data = []
@@ -57,7 +63,6 @@ def book_user(user_id):
 			if screening_id != i['screening_id']:
 				if i != bookings[0]:
 					booking_info.append({'cost':seat_cost,'screening_time':screening_time,'screening_date':screening_date,'movie_title':movie_title,'audi_name':audi_name,'audi_type':audi_type,'seats':seats})
-					print(booking_info)
 				screening_id = i['screening_id']
 				screening_date = i['screening_date']
 				screening_time = i['screening_time']
@@ -73,6 +78,8 @@ def book_user(user_id):
 			seats.append(seat_str)
 			seat_cost += i['seat_cost']
 			print(seats)
+			print(booking_info)
+		booking_info.append({'cost':seat_cost,'screening_time':screening_time,'screening_date':screening_date,'movie_title':movie_title,'audi_name':audi_name,'audi_type':audi_type,'seats':seats})
 				#print(seat_str)
 		#print(bookings[0])
 		#print(bookings[0]['screening_id'])
