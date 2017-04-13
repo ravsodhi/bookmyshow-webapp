@@ -2,6 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 from app.auditorium.models import Auditorium
+from app.movie.models import Movie
 from datetime import datetime
 from datetime import date
 from datetime import time
@@ -44,4 +45,4 @@ class Screening (db.Model):
             'screening_start_time' : str(self.screening_start_time)
         }
     def __repr__(self):
-        return "Screening { 'movie_id': %r , 'auditorium_id': %r, 'screening_start_time':%r , 'screening_date': %r}"%(self.movie_id,self.auditorium_id,str(self.screening_start_time),str(self.screening_date))
+        return "'Screening' { 'movie_id': %r , 'auditorium_id': %r, 'screening_start_time':%r , 'screening_date': %r}"%(self.movie_id,self.auditorium_id,str(self.screening_start_time),str(self.screening_date))
