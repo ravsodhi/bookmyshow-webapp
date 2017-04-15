@@ -1,5 +1,79 @@
-var max_row;
-var t = [];
+var seating = function() {
+    var t = [];
+    var costdetector = function(max_row) {
+        checked = $('input:checked');
+        check_array = []
+        for (var i = 0; i < checked.length; i++) {
+            check_array.push(checked[i].id)
+
+        }
+        seatsselected = checked.length
+        var cost = 0;
+        for (var i = 0; i < check_array.length; i++) {
+            k = check_array[i].charCodeAt(0) - 65
+            if (k > -1 && k < 8)
+                cost += t[0]
+            else if (k > 7 && k < 12)
+                cost += t[1]
+            else
+                cost += t[2]
+        }
+        str1 = "<h3 id=\"dyncost\" style=\"color:white\">Cost : " + cost + "</h3>"
+        str2 = "<h3 id=\"dynseat\" style=\"color:white\">Selected Seats: " + seatsselected + "</h3>"
+
+        $("h3#dyncost").html(str1);
+        $("h3#dynseat").html(str2);
+    }
+
+    function bookNow() {
+        checked = $('input:checked');
+        if (checked.length == 0) {
+            alert('Please select a seat to book!');
+            return;
+        }
+
+        str = ""
+        for (var i = 0; i < checked.length; i++) {
+            if (i != checked.length - 1)
+                str += checked[i].id + ","
+            else
+                str += checked[i].id
+        }
+        console.log(checked);
+        console.log(str)
+        s = parseInt(window.location.pathname.split("/")[2])
+        $.ajax({
+            url: "http://127.0.0.1:5000/api/booking/add",
+            data: {
+                seats: str,
+                scr_id: s,
+            },
+            success: function(response) {
+                console.log(response)
+                if (response.cheater) {
+                    alert('Please select valid seats only!');
+                }
+                if (response.success) {
+
+                    window.location.href = "http://127.0.0.1:5000/viewticket"
+
+                } else //(!response.success)
+                    window.location.href = "http://127.0.0.1:5000/login"
+
+            }
+        });
+    }
+
+    var safe = {}
+    safe.bookNow = bookNow
+    safe.costdetector = costdetector
+    safe.t = t;
+    return safe;
+
+
+
+
+}();
 
 $(document).ready(
     function renderSeats() {
@@ -7,15 +81,17 @@ $(document).ready(
             url: "http://127.0.0.1:5000/api/seat/get",
             success: function(response) {
                 //           console.log(response.cost)
-                t.push(response.cost[0]);
-                t.push(response.cost[1]);
-                t.push(response.cost[2]);
-                    //         console.log(t);
+                seating.t.push(response.cost[0]);
+                seating.t.push(response.cost[1]);
+                seating.t.push(response.cost[2]);
+// This function can be used to make objects more safer
+//                array_maker(response.cost[0], response.cost[1], response.cost[2]);
+                //         console.log(t);
 
             }
         });
 
-
+        var max_row;
         arr = [];
         s = window.location.pathname.split("/")[2];
         $.ajax({
@@ -49,12 +125,12 @@ $(document).ready(
                             var str_head = "";
 
                             if (hall_decider == 2 && i == 14) {
-                                str_head += "<h3 style=\"text-align:center;color:white \">Platinum Class (Rs." + t[2] + ")</h3>";
+                                str_head += "<h3 style=\"text-align:center;color:white \">Platinum Class (Rs." + seating.t[2] + ")</h3>";
                             }
                             if ((hall_decider == 2 || hall_decider == 1) && i == 11)
-                                str_head += "<h3 style=\"text-align:center; color:white\">Gold Class (Rs." + t[1] + ")</h3>"
+                                str_head += "<h3 style=\"text-align:center; color:white\">Gold Class (Rs." + seating.t[1] + ")</h3>"
                             if ((hall_decider == 2 || hall_decider == 1 || hall_decider == 0) && i == 7)
-                                str_head += "<h3 style=\"text-align:center; color:white\">Silver Class (Rs." + t[0] + ")</h3>"
+                                str_head += "<h3 style=\"text-align:center; color:white\">Silver Class (Rs." + seating.t[0] + ")</h3>"
 
                             str_head += "<li class=\"row row-" + row_no + "\"><ol class=\"seats\" type=\"A\"><li class=\'seat\' style=\'color:white\'>" + row_no + "</li>";
                             var str_body = "";
@@ -73,7 +149,7 @@ $(document).ready(
                                     }
                                 }
                                 if (k == arr.length)
-                                    str_body += "<li class=\"seat\"><input type=\"checkbox\"" + "onclick = costdetector(" + max_row + ") id=\"" + row_no + column_no + "\"" + "/><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
+                                    str_body += "<li class=\"seat\"><input type=\"checkbox\"" + "onclick = seating.costdetector(" + max_row + ") id=\"" + row_no + column_no + "\"" + "/><label for=\"" + row_no + column_no + "\">" + column_no + "</label></li>";
 
                             }
 
@@ -99,78 +175,3 @@ $(document).ready(
 
     }
 );
-
-var costdetector = function(max_row) {
-    checked = $('input:checked');
-    check_array = []
-    for (var i = 0; i < checked.length; i++) {
-        check_array.push(checked[i].id)
-
-    }
-    seatsselected = checked.length
-    var cost = 0;
-    for (var i = 0; i < check_array.length; i++) {
-        k = check_array[i].charCodeAt(0) - 65
-        if (k > -1 && k < 8)
-            cost += t[0]
-        else if (k > 7 && k < 12)
-            cost += t[1]
-        else
-            cost += t[2]
-    }
-    str1 = "<h3 id=\"dyncost\" style=\"color:white\">Cost : " + cost + "</h3>"
-    str2 = "<h3 id=\"dynseat\" style=\"color:white\">Selected Seats: " + seatsselected + "</h3>"
-
-    $("h3#dyncost").html(str1);
-    $("h3#dynseat").html(str2);
-
-
-
-
-}
-
-function bookNow() {
-    checked = $('input:checked');
-    if(checked.length == 0)
-    {
-        alert('Please select a seat to book!');
-        return ;
-    }
-
-    str = ""
-    for (var i = 0; i < checked.length; i++) {
-        if (i != checked.length - 1)
-            str += checked[i].id + ","
-        else
-            str += checked[i].id
-    }
-    console.log(checked);
-    console.log(str)
-    s = parseInt(window.location.pathname.split("/")[2])
-    $.ajax({
-        url: "http://127.0.0.1:5000/api/booking/add",
-        data: {
-            seats: str,
-            scr_id: s,
-        },
-        success: function(response) {
-            console.log(response)
-            if(response.cheater)
-            {
-                alert('Please select valid seats only!');
-            }
-            if(response.success)
-             {
-
-                window.location.href = "http://127.0.0.1:5000/viewticket"
-
-                 }
-
-            else//(!response.success)
-                window.location.href = "http://127.0.0.1:5000/login"
-                
-        }
-    });
-
-
-}

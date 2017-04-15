@@ -43,28 +43,22 @@ function slot_fetch(date, movie_id) {
                     ti = time.split(":")
                     console.log(ti)
                     ti[0] = parseInt(ti[0])
-                    //ti[1] = parseInt(ti[1])
+                        //ti[1] = parseInt(ti[1])
                     console.log(ti)
 
-                    if(ti[0] > 12)
-                    {
-                        ti[0] = ti[0]-12
+                    if (ti[0] > 12) {
+                        ti[0] = ti[0] - 12
                         fti = ti[0].toString() + ":" + ti[1] + ' PM'
-                    }    
-                    else
-                    {
-                        if(ti[0] <12)
-                        {
-                            fti = ti[0].toString() +":" +  ti[1] + ' AM'
-                        }
-                        else    
-                        {
-                            fti = ti[0].toString() +":" +  ti[1] + ' PM'
+                    } else {
+                        if (ti[0] < 12) {
+                            fti = ti[0].toString() + ":" + ti[1] + ' AM'
+                        } else {
+                            fti = ti[0].toString() + ":" + ti[1] + ' PM'
                         }
                     }
                     console.log(ti[0])
                     console.log(fti)
-                    //if(time[0])
+                        //if(time[0])
 
                     str_body += "<button class=\"slot-button\" onclick = \'seat_view(" + array2[i].screening_id + ")\'><span>" + fti + "</span></button>";
                     i++;
