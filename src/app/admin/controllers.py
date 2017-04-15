@@ -5,7 +5,7 @@ from app.user.models import User
 from app.movie.models import Movie
 from app.auditorium.models import Auditorium
 from app.screening.models import Screening
-from app.forms.models import LoginForm,AdminLoginForm,AdminRegisterForm
+from app.forms.models import LoginForm,AdminLoginForm
 
 from app.seat.models import Seat
 from datetime import *
@@ -40,7 +40,7 @@ def admin_form():
 @app.before_request
 def before_request():
     g.user = current_user
-
+'''
 @mod_admin.route('/adminregister', methods=['GET','POST'])
 def adminsignup():
 	if 'user_id' in session:
@@ -73,7 +73,7 @@ def adminsignup():
 			print('admin not added')
 			return render_template('adminregister.html', form=form,message = "Email is already Registered")
 	return render_template('adminregister.html', form=form)
-
+'''
 @mod_admin.route('/adminlogin', methods=['GET', 'POST'])
 def adminlogin():
 	print("/adminlogin")

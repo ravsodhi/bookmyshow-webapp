@@ -25,12 +25,14 @@ mod_helper = Blueprint('helper', __name__)
 
 @mod_helper.route('/api/helper', methods=['POST'])
 def form_auth():
-      if 'user_id' not in session:
-           return jsonify(success=False)
-      return jsonify(success=True)
+	print('helper controler',session)
+	if 'user_id' not in session:
+		return jsonify(success=False)
+	return jsonify(success=True)
 
 @mod_helper.route('/home')
 def load_html():
+	print(session)
 	session['k'] = "http://127.0.0.1:5000/home"
 	if 'user_id' not in session:
 		ans = {'log':"Login",'val':"Signup"}

@@ -7,7 +7,7 @@ from app.screening.models import Screening
 from app.seat.models import Seat
 from datetime import *
 from flask import Blueprint, request, render_template,flash, g, session, redirect, url_for, jsonify, make_response
-from flask_wtf import FlaskForm 
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, DateField, SelectField,IntegerField, SelectMultipleField
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms.validators import InputRequired, Email, Length,URL
@@ -69,7 +69,7 @@ class MovieForm(FlaskForm):
     trailer_url = StringField('Url',validators=[InputRequired(),URL(message = 'Invalid URL')],render_kw={"placeholder": "URL"})
     duration = StringField('Duration',validators=[InputRequired(message="Please Enter Movie Duration")],render_kw={"placeholder":"Duration"})
     release_date = DateField('Release Date',validators=[InputRequired()],render_kw={"placeholder": "Release Date format: yyyy-mm-dd"})
-    off_theatre_date = DateField('Off Theatre Date',validators=[InputRequired()], render_kw={"placeholder": "Off Theatre Date format: yyyy-mm-dd"})
+    off_theatre_date = DateField('Off Theatre Date',validators=[InputRequired()], render_kw={"placeholder": "Off Theatre Date FlaskFormat: yyyy-mm-dd"})
 
 class HallForm(FlaskForm):
     hall_name = StringField('Hall Name', validators=[InputRequired(message="Please Enter New Hall Name"), Length(min=2, max=15)],render_kw={"placeholder": "Hall Name"})
@@ -92,4 +92,4 @@ class ScreeningForm(FlaskForm):
 	'''
 	def __init__(self, multiple=True):
 		self.multiple = multiple
-	'''	
+	'''

@@ -63,6 +63,7 @@ from app.auditorium.controllers import mod_auditorium
 from app.seat.controllers import mod_seat
 from app.booking.controllers import mod_booking
 from app.admin.controllers import mod_admin
+from app.forms.controllers import mod_form
 
 
 # instead of doing app.route
@@ -75,6 +76,8 @@ app.register_blueprint(mod_auditorium)
 app.register_blueprint(mod_seat)
 app.register_blueprint(mod_booking)
 app.register_blueprint(mod_admin)
+app.register_blueprint(mod_form)
+
 Bootstrap(app)
 
 
