@@ -19,7 +19,7 @@ def setcost():
 		print(use.is_admin)
 		if use.is_admin is True:
 			form = CostForm()
-			ans = {'log':"Logout",'val': 'Hi! '+ use.name}	
+			ans = {'log':"Logout",'val':use.name}	
 			if form.validate_on_submit():
 				print('Cost Form')
 				platinum = form.platinum.data

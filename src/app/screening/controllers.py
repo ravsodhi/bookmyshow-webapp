@@ -60,7 +60,7 @@ def addscreening():
         print(session['user_id'])
         use = User.query.filter_by(id = session['user_id']).first()
         print(use.is_admin)
-        ans = {'log':"Logout",'val': 'Hi! '+ use.name}
+        ans = {'log':"Logout",'val':use.name}
         if use.is_admin is False:
             return render_template('401.html'),401
         else:

@@ -89,7 +89,7 @@
 </head>
 
 <body class="backimg">
-    <nav class="navbar navbar-inverse navbar-no-margin">
+        <nav class="navbar navbar-inverse navbar-no-margin">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -97,23 +97,35 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="font-family:'Bitter'">Book My Show</a>
+                <a class="navbar-brand" href="/home" style="font-family:'Bitter'">Book My Show</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="#" style="font-family:'Bitter'">Movies</a></li>
+                    <li><a href="/home#movie-div" style="font-family:'Bitter'">Movies</a></li>
                 </ul>
-                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%">
+                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%" autocomplete="off">
                     <div class="input-group" style="width:200%">
                         <input type="text" id="search" class="form-control" placeholder="Search">
                         <div class="input-group-btn">
-                                <i class="glyphicon glyphicon-search"></i>
+                            <i class="glyphicon glyphicon-search"></i>
                         </div>
+                    </div>
+                    <div style="position:absolute;width:392 px;float:none;z-index:1000;">
+                        <table id="response" class="myTable" style="width:392px;background-color:white;">
+                        </table>
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a  onclick = "valchecker()" id= "hover"> <span class="glyphicon glyphicon-user"></span>{{log.val}}</a></li>
-                    <li><a  onclick = "logchecker()" id= "hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li>
+                        <a onclick="valchecker()" id="hover"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+
+                    </li>
+                    <li >
+                        {% if current_user.is_admin == true %}
+                        <a onclick="window.location.href = '/admin'" id="hover">Admin Page </a>
+                        {% endif %}
+                    </li>
+                    <li><a onclick="logchecker()" id="hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
@@ -125,5 +137,31 @@
     {% block body %}
     {% endblock %}
     </div>
+
 </body>
+<script type="text/javascript">
+        $("#search").on("keyup",function () {
+            $.ajax ({
+                url : "http://127.0.0.1:5000/api/movies/search",
+                method : "GET",
+                data : {
+                    query:$('#search').val()
+                },
+                success : function(resp){
+                    console.log(resp.movies)
+                    str=""
+                    for(var i=0;i<resp.movies.length;i++)
+                    {
+                        str+="<tr style=\'width:392 px;\''><td><a href=\'http://127.0.0.1:5000/movie/"+ resp.movies[i].id+"\'>" + resp.movies[i].title+"</a></td></tr>";
+                    }
+                    if(str !="")
+                    $("#response").html(str);
+                    else
+                    $("#response").html("");
+
+                }
+            })
+            // body...
+        })
+    </script>
 </html>

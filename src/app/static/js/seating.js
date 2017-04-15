@@ -131,6 +131,12 @@ var costdetector = function(max_row) {
 
 function bookNow() {
     checked = $('input:checked');
+    if(checked.length == 0)
+    {
+        alert('Please select a seat to book!');
+        return ;
+    }
+
     str = ""
     for (var i = 0; i < checked.length; i++) {
         if (i != checked.length - 1)
@@ -149,6 +155,10 @@ function bookNow() {
         },
         success: function(response) {
             console.log(response)
+            if(response.cheater)
+            {
+                alert('Please select valid seats only!');
+            }
             if(response.success)
              {
 

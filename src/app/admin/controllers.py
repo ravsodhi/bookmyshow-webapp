@@ -29,7 +29,7 @@ def admin_form():
 		print(session['user_id'])
 		use = User.query.filter_by(id = session['user_id']).first()
 		print(use.is_admin)
-		ans = {'log':"Logout",'val': 'Hi! '+ use.name}
+		ans = {'log':"Logout",'val': use.name}
 
 
 		if use.is_admin is True:
@@ -40,40 +40,7 @@ def admin_form():
 @app.before_request
 def before_request():
     g.user = current_user
-'''
-@mod_admin.route('/adminregister', methods=['GET','POST'])
-def adminsignup():
-	if 'user_id' in session:
-		return redirect("http://127.0.0.1:5000/home")
-	form = AdminRegisterForm()
-	print('/adminregister')
-	if form.validate_on_submit():
-		print('/admin validate')
-		if form.password.data != form.check_password.data:
-			return render_template('adminregister.html', form=form ,message = "Passwords don't match")
-		if '@' not in form.email.data:
-			return render_template('adminregister.html',form=form, message="Please enter a valid email")
-		try:
-			print('admin added')
-			print(form.password.data)
-			new_user = User(name=form.username.data, email=form.email.data, password=form.password.data,is_admin = True)
-			db.session.add(new_user)
-			print(new_user)
-			db.session.commit()
-			print('admin added')
-			print('lalala')
-			print(new_user.id)
-			session['user_id'] = new_user.id
-			print(new_user.id)
-			print(session['user_id'])
-			login_user(new_user)
-			print(session['user_id'])
-			return redirect("http://127.0.0.1:5000/admin")
-		except:
-			print('admin not added')
-			return render_template('adminregister.html', form=form,message = "Email is already Registered")
-	return render_template('adminregister.html', form=form)
-'''
+
 @mod_admin.route('/adminlogin', methods=['GET', 'POST'])
 def adminlogin():
 	print("/adminlogin")

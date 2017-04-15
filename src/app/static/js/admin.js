@@ -22,11 +22,9 @@ $(document).ready(function() {
             }
             console.log(str)
             $("select#selecthall").html(str);
-            tempAlert("Form is loading", 2500)
         },
         error: function(response) {
             console.log("Error in fetching auditoriums")
-            tempAlert("Error in fetching auditoriums", 2500)
 
         }
     })
@@ -34,7 +32,7 @@ $(document).ready(function() {
         url: "http://127.0.0.1:5000/api/movies",
         success: function(response) {
             console.log(response.audi)
-            movies = response.movies;
+            movies = response.allmovies;
             str = ""
             for (var i = 0; i < movies.length; i++) {
                 str += "<option value=\"" + movies[i].id + "\">" + movies[i].title + "</option>";
@@ -44,7 +42,6 @@ $(document).ready(function() {
         },
         error: function(response) {
             console.log("Error in fetching movies")
-            tempAlert("Error in fetching movies", 2500)
 
         }
     })

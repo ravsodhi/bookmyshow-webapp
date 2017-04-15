@@ -126,7 +126,7 @@ def signup():
         except:
             print('user not added')
             return render_template('register.html', form=form, message = "Email is already Registered")
-    return render_template('register.htm    l', form=form)
+    return render_template('register.html', form=form)
 
 @mod_form.route('/adminregister', methods=['GET','POST'])
 def adminsignup():

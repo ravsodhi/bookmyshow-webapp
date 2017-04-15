@@ -10,11 +10,12 @@
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/login_state.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Macondo.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Revalia.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Droid-Sans.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Cabin.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Bitter.css' rel='stylesheet' type='text/css'>
+
     <link href="../static/css/screening.css" rel="stylesheet">
     <style>
     #hover:hover{
@@ -32,27 +33,35 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="font-family:'Bitter'">Book My Show</a>
+                <a class="navbar-brand" href="/home" style="font-family:'Bitter'">Book My Show</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="#" style="font-family:'Bitter'">Movies</a></li>
+                    <li><a href="/home#movie-div" style="font-family:'Bitter'">Movies</a></li>
                 </ul>
-                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%">
+                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%" autocomplete="off">
                     <div class="input-group" style="width:200%">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" id="search" class="form-control" placeholder="Search">
                         <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
+                            <i class="glyphicon glyphicon-search"></i>
                         </div>
+                    </div>
+                    <div style="position:absolute;width:392 px;float:none;z-index:1000;">
+                        <table id="response" class="myTable" style="width:392px;background-color:white;">
+                        </table>
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a id= "hover" onclick="valchecker()"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+                        <a onclick="valchecker()" id="hover"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+
                     </li>
-                    <li><a id="hover" onclick="logchecker()"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li >
+                        {% if current_user.is_admin == true %}
+                        <a onclick="window.location.href = '/admin'" id="hover">Admin Page </a>
+                        {% endif %}
+                    </li>
+                    <li><a onclick="logchecker()" id="hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
@@ -86,5 +95,31 @@
     </div>
 </body>
     <script type="text/javascript" src="../static/js/screening.js"></script>
+
+<script type="text/javascript">
+        $("#search").on("keyup",function () {
+            $.ajax ({
+                url : "http://127.0.0.1:5000/api/movies/search",
+                method : "GET",
+                data : {
+                    query:$('#search').val()
+                },
+                success : function(resp){
+                    console.log(resp.movies)
+                    str=""
+                    for(var i=0;i<resp.movies.length;i++)
+                    {
+                        str+="<tr style=\'width:392 px;\''><td><a href=\'http://127.0.0.1:5000/movie/"+ resp.movies[i].id+"\'>" + resp.movies[i].title+"</a></td></tr>";
+                    }
+                    if(str !="")
+                    $("#response").html(str);
+                    else
+                    $("#response").html("");
+
+                }
+            })
+            // body...
+        })
+    </script>
 
 </html>

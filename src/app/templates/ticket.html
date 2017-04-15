@@ -8,19 +8,21 @@
     <link href="../static/css/vendor/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link href="../static/css/ticket.css" rel="stylesheet">
+    <link href="../static/css/fonts/Revalia.css" rel="stylesheet">
+    <link href="../static/css/movie.css" rel="stylesheet">
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
 </head>
 
 <body class="container">
     <div class="ticket_box">
-        <h1 style="text-align:center"> Ticket</h1>
+        <h1 style="text-align:center ;font-family:'Revalia';"> Ticket</h1>
+        <br/>
         <h2> Movie name : {{ session['myticket'].movie_name }} </h2>
         <h2> Hall name : {{ session['myticket'].hall_name }} ({{ session['myticket'].hall_type }} ) </h2>
         <h2> Date : {{ session['myticket'].date }} </h2>
-        <h2> Start Time : {{ session['myticket'].screening_start_time }} </h2>
+        <h2> Time : {{ session['myticket'].screening_start_time }} </h2>
         <h2> Seats Booked: </h2>
-        <br/>
         <h3>
     {% for seat in session['myticket'].seats %}
         {{ seat }}
@@ -29,4 +31,10 @@
     </h3>
         <h2> Total Cost: {{ session.pop('myticket').total_cost }} </h2>
     </div>
+    <div class="list-type3">
+    <li style="float:right"><a href="/home">Home</a></li>
+</div>
+<div class ="list-type3">
+    <li style="float:right"><a href="/logout">Logout</a></li>
+</div>
 </body>

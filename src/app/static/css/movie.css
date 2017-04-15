@@ -1,6 +1,7 @@
 .list-type3 {
     margin: 0 auto;
     overflow: hidden;
+    list-style:none;
 }
 
 .list-type3 li,

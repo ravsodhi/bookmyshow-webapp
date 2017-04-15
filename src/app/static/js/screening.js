@@ -39,7 +39,34 @@ function slot_fetch(date, movie_id) {
                     if (array2[i].hall_name != hall_name) {
                         break;
                     }
-                    str_body += "<button class=\"slot-button\" onclick = \'seat_view(" + array2[i].screening_id + ")\'><span>" + array2[i].time + "</span></button>";
+                    time = array2[i].time;
+                    ti = time.split(":")
+                    console.log(ti)
+                    ti[0] = parseInt(ti[0])
+                    //ti[1] = parseInt(ti[1])
+                    console.log(ti)
+
+                    if(ti[0] > 12)
+                    {
+                        ti[0] = ti[0]-12
+                        fti = ti[0].toString() + ":" + ti[1] + ' PM'
+                    }    
+                    else
+                    {
+                        if(ti[0] <12)
+                        {
+                            fti = ti[0].toString() +":" +  ti[1] + ' AM'
+                        }
+                        else    
+                        {
+                            fti = ti[0].toString() +":" +  ti[1] + ' PM'
+                        }
+                    }
+                    console.log(ti[0])
+                    console.log(fti)
+                    //if(time[0])
+
+                    str_body += "<button class=\"slot-button\" onclick = \'seat_view(" + array2[i].screening_id + ")\'><span>" + fti + "</span></button>";
                     i++;
                 }
                 i--;
@@ -66,13 +93,17 @@ function loader() {
             movie_id: movieid
         },
         success: function(response) {
-        	console.log("success")
+            console.log("success")
             array = response.dates;
+            console.log(array)
+
             var str = "";
             var date = "";
             for (var i = 0; i < array.length; i++) {
+                temp = array[i].date.split("-")
+                temp = temp[2] + "-" + temp[1] + "-" + temp[0]
                 if (date != array[i].date) {
-                    str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movieid + ');\' >' + array[i].date + '</button>';
+                    str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movieid + ');\' >' + temp + '</button>';
                     date = array[i].date;
                 }
 

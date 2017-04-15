@@ -43,7 +43,9 @@ background-image: url("/static/img/light_background-wallpaper-1600x900.jpg");
 
 .screening-div {
     width: 95%;
+    
     background-image: url("/static/img/screening-div-background.jpg");
+    /*background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAACWCAMAAAC/8CD2AAAAA1BMVEXQ0NAtGB8hAAAAR0lEQVR4nO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF8GxXYAARizDlgAAAAASUVORK5CYII=");*/
     margin: 2%;
     padding: 25px;
     border-radius: 15px;
@@ -71,10 +73,10 @@ hr {
 }
 
 .btn-group .button {
-    background-color: white;
+    background-color: #4a4b4c;
     border: 1px solid gray;
-    border-radius: 100%;
-    color: gray;
+    border-radius: 25%;
+    color: white;
     padding: 20px 10px;
     margin: 1%;
     text-align: center;
@@ -92,29 +94,31 @@ hr {
 
 .btn-group .button:hover {
     border: none;
-    color: gray;
-    background-image: url("/static/img/date-button-background.jpg");
+    color: white;
+    background-image: url("/static/img/movie-div-background.jpg");
     background-color: #4da6ff;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .button:focus {
-    background-image: url("/static/img/date-button-background-after.jpg");
-    color: black;
+    background-color: black;
+    /*background-image: url("/static/img/date-button-background-after.jpg");*/
+    color: white;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
 
 .slot-group {
-    padding: 20px;
+    padding: 30px;
     /*padding-bottom: 12px;
         */
     background-image: url("/static/img/slot-background.jpg");
     width: 100%;
+    border-radius: 15px;
 }
 
 .hall-div {
-    background-image: url("/static/img/movie-box-background.jpg");
+    background-image: url("/static/img/movie-div-background.jpg");
     margin: 2%;
     padding: 25px;
     width: 95%;

@@ -65,7 +65,7 @@ class AdminRegisterForm(FlaskForm):
 class MovieForm(FlaskForm):
     title = StringField('Title', validators=[InputRequired(message="Please Enter Movie Title"), Length(min=4, max=15)],render_kw={"placeholder": "Title"})
     director = StringField('Director', validators=[InputRequired(message="Please Enter Movie Director"), Length(min=8, max=80)],render_kw={"placeholder": "Director"})
-    discription = StringField('Description',validators=[InputRequired(message="Please Enter Movie Discription")],render_kw={"placeholder": "Discription"})
+    discription = StringField('Description',validators=[InputRequired(message="Please Enter Movie description")],render_kw={"placeholder": "Description"})
     trailer_url = StringField('Url',validators=[InputRequired(),URL(message = 'Invalid URL')],render_kw={"placeholder": "URL"})
     duration = StringField('Duration',validators=[InputRequired(message="Please Enter Movie Duration")],render_kw={"placeholder":"Duration"})
     release_date = DateField('Release Date',validators=[InputRequired()],render_kw={"placeholder": "Release Date format: yyyy-mm-dd"})

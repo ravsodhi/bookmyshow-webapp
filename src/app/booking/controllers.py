@@ -42,7 +42,7 @@ def book_user():
 	print(user_id)
 	print(user_id)
 
-	booking_data = db.session.query(Booking,Screening,Seat).join(Screening,Seat).filter(Booking.user_id == user_id).order_by(Screening.id,Seat.row)
+	booking_data = db.session.query(Booking,Screening,Seat).join(Screening,Seat).filter(Booking.user_id == user_id).order_by(Screening.screening_date,Screening.id,Seat.row)
 	print(booking_data)
 	bookings = []
 	screening_id = 0
@@ -120,23 +120,33 @@ def add_booking():
 	movie_name = movie_touple.title
 	print(start_time)
 	print(scr_id)
-	p =[]
+	seats_array =[]
 	cost = 0
 
 	for i in k:
 		m = i[1:]
 		screens = Seat.query.filter(and_(Seat.row == i[0],Seat.column == int(m))).first()
-		p.append(screens.id)
+		check_seat = Booking.query.filter(and_(Booking.screening_id == scr_id,Booking.seat_id == screens.id)).first()
+		print(check_seat is None)
+		if(check_seat is None):
+			print('No Match')
+		else:
+			return jsonify(cheater=True)
+			
+			#session['cheater'] = True
+			#return render_template('401.html')
+
+		seats_array.append(screens.id)
 		cost += screens.cost
 
-	for t in p:
+	for t in seats_array:
 		sy = Booking(use,scr_id,t)
 		db.session.add(sy)
-	print(p)
+	print(seats_array)
 	db.session.commit()
 	print(type(str(start_time)))
-
-	ticket = { 'seats' : k , 'screening_start_time' : str(start_time) , 'total_cost' : cost , 'hall_name' : hall_name , 'hall_type' : hall_type , 'date' : start_date , 'movie_name' : movie_name}
+	print('start_date',start_date)
+	ticket = { 'seats' : k , 'screening_start_time' : str(start_time) , 'total_cost' : cost , 'hall_name' : hall_name , 'hall_type' : hall_type , 'date' : str(start_date) , 'movie_name' : movie_name}
 	session['myticket'] = ticket
 	print('reached at end of booking controllers')
 

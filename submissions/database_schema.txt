@@ -15,7 +15,6 @@ DATA SCHEMA
     * Director (String)
     * Description (String)
     * Duration_min(Integer)
-    * Rating(Float,Nullable)
     * release_date (date)
     * off_theater_date (date)
     * trailer_url (string)
@@ -35,11 +34,7 @@ DATA SCHEMA
     * ID (Primary Key)
     * Row (String)
     * Column (Integer)
-
-* Cost:
-    * auditorium_id (Foreign Key : from Auditorium)
-    * row
-    * value (cost)
+    * Cost (Integer)
 
 * Booking/Reservation:
     * User Id
@@ -49,20 +44,19 @@ DATA SCHEMA
 Login:
 * Admin Login
    * Add Screening
-   * Delete Screening
+   * Add Movie
+   * Add Hall
+   * Set Cost
+
 * User Login + Register 
    * Check if user is registered
    * Book a screening of a show
    * Functionality to select seats and view bookings
+
 * Guest Functionality
    * Able to view screenings
    * Require login on booking
 
 Doubts:
-1. Can we have two primary keys for same table?
-//2. How can we relate 3 tables in database?
-//3. How can we create a table with foreign keys (from separate classes) so that they are linked to every other column?
-    Example: - While Booking a ticket, we need to store Movie,Time, Show Time, Hall in a single row of a table.
-4. How do we add user functionality?
 
 

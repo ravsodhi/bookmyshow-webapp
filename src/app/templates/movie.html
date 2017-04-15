@@ -10,50 +10,68 @@
     <script type="text/javascript" src="../static/js/vendor/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/index.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Macondo.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Revalia.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Droid-Sans.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Bitter.css' rel='stylesheet' type='text/css'>
+    <link href='../static/css/fonts/Cabin.css' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+    -->
     <link href="../static/css/movie.css" rel="stylesheet">
     <link href="../static/css/auto-slideshow.css" rel="stylesheet">
     <script type="text/javascript" src="../static/js/login_state.js"></script>
     <style>
-    h1{
-        font-family:'Revalia';
-    }
-    h2{
-        font-family:'Droid Sans';
-        color:white;
-    }
-    h4{
-        font-family:'Cabin';
-        color:white;
-    }
-    .movie-box{
-        width: 95%;
-        padding: 10px;
-        border-width:5px;
-        border-color: gray;
-        border-style:dashed double dashed double;
-        border-radius: 5px;
-        margin:auto;
-        background-image:url("../static/img/movie-box-background.jpg");
-    }
-    .movie-div{
-        margin:8%;
-        margin-top:2%;
-        margin-bottom:2%;
-        padding: 10px;
-        border-radius: 15px;
-        background-image:url("../static/img/movie-div-background.jpg");
+    h1 {
+        font-family: 'Revalia';
     }
     
+    h2 {
+        font-family: 'Droid Sans';
+        color: white;
+    }
+    
+    h4 {
+        font-family: 'Cabin';
+        color: white;
+    }
+    
+    .movie-box {
+        width: 95%;
+        padding: 10px;
+        border-width: 5px;
+        border-color: gray;
+        border-style: dashed double dashed double;
+        border-radius: 5px;
+        margin: auto;
+        background-image: url("../static/img/movie-box-background.jpg");
+    }
+    
+    .movie-div {
+        margin: 8%;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        padding: 10px;
+        border-radius: 15px;
+        background-image: url("../static/img/movie-div-background.jpg");
+    }
+    .up-movie-div {
+        margin: 8%;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        padding: 10px;
+        border-radius: 15px;
+        background-image: url("../static/img/movie-div-background.jpg");
+    }
     
     .navbar-no-margin {
         margin-bottom: 0!important;
     }
-    .backimg{
+    
+    .backimg {
         background-image: url("../static/img/light_background-wallpaper-1600x900.jpg")
     }
     
@@ -64,11 +82,41 @@
     body {
         font-family: Verdana, sans-serif;
     }
-    #hover:hover{
+    
+    #hover:hover {
         cursor: pointer;
     }
+    
+    .myTable {
+        border-collapse: collapse;
+        /* Collapse borders */
+        width: 100%;
+        /* Full-width */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        font-size: 16px;
+        /* Increase font-size */
+    }
+    
+    .myTable th,
+    .myTable td {
+        text-align: left;
+        /* Left-align text */
+        padding: 12px;
+        /* Add padding */
+    }
+    
+    .myTable tr {
+        /* Add a bottom border to all table rows */
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .myTable tr.header,
+    .myTable tr:hover {
+        /* Add a grey background color to the table header and on hover */
+        background-color: #f1f1f1;
+    }
     </style>
-
 </head>
 
 <body class="backimg">
@@ -80,29 +128,40 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="font-family:'Bitter'">Book My Show</a>
+                <a class="navbar-brand" href="/home" style="font-family:'Bitter'">Book My Show</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="#" style="font-family:'Bitter'">Movies</a></li>
+                    <li><a href="#movie-div" style="font-family:'Bitter'">Movies</a></li>
                 </ul>
-                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%">
+                <form id="navBarSearchForm" class="navbar-form navbar-left" style="margin-left:20%" autocomplete="off">
                     <div class="input-group" style="width:200%">
                         <input type="text" id="search" class="form-control" placeholder="Search">
                         <div class="input-group-btn">
-                                <i class="glyphicon glyphicon-search"></i>
+                            <i class="glyphicon glyphicon-search"></i>
                         </div>
+                    </div>
+                    <div style="position:absolute;width:392 px;float:none;z-index:1000;">
+                        <table id="response" class="myTable" style="width:392px;background-color:white;">
+                        </table>
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a  onclick = "valchecker()" id= "hover"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a></li>
-                    <li><a  onclick = "logchecker()" id= "hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
+                    <li>
+                        <a onclick="valchecker()" id="hover"> <span class="glyphicon glyphicon-user"></span> {{log.val}}</a>
+
+                    </li>
+                    <li >
+                        {% if current_user.is_admin == true %}
+                        <a onclick="window.location.href = '/admin'" id="hover">Admin Page </a>
+                        {% endif %}
+                    </li>
+                    <li><a onclick="logchecker()" id="hover"><span class="glyphicon glyphicon-log-in"></span>{{log.log}} </a></li>
                 </ul>
             </div>
         </div>
         </div>
     </nav>
-    <div id="response"></div>
     <div class="slideshow-container">
         <div class="mySlides fade">
             <img src="../static/img/img1.jpg" style="width:100%; max-height:550px">
@@ -120,11 +179,8 @@
         <span class="dot"></span>
         <span class="dot"></span>
     </div>
-    
-    <div class="container">
-        <h1 style="text-align:center">Now Showing</h3>
-    </div>
-    <div class="movie-div">
+    <h1 style="text-align:center">Now Showing</h3>
+    <div class="movie-div" id="movie-div">
         <br/>
         <div class="list-type3 movie-box">
         <div>
@@ -140,7 +196,29 @@
             <li style="float:right"><a href="/movies">Book Now</a></li>
         </div>
         <br/>
+        </div>
     </div>
+    <br/>
+    <br/>
+    <h1 style="text-align:center">Upcoming</h3>
+    <div class="up-movie-div">
+        <br/>
+        <div class="list-type3 movie-box">
+        <div>
+            <div style="float:left;margin-top:0">
+            <h2>
+                Movie Name
+            </h2>
+            <br/>
+            <h4>
+                Movie details
+            </h4>
+            </div>
+            
+        </div>
+        <br/>
+    </div>
+</div>
     <br/>
     <br/>
 </div>
@@ -180,7 +258,16 @@ showSlides();
                 },
                 success : function(resp){
                     console.log(resp.movies)
-                    $("#response").html(resp.movies);
+                    str=""
+                    for(var i=0;i<resp.movies.length;i++)
+                    {
+                        str+="<tr style=\'width:392 px;\''><td><a href=\'http://127.0.0.1:5000/movie/"+ resp.movies[i].id+"\'>" + resp.movies[i].title+"</a></td></tr>";
+                    }
+                    if(str !="")
+                    $("#response").html(str);
+                    else
+                    $("#response").html("");
+
                 }
             })
             // body...
