@@ -1,15 +1,27 @@
     var valchecker = function()
     {
         $.post({
-            url: 'http://127.0.0.1:5000/api/helper',
+            url: '/api/helper',
             success : function(response)
             {
                // console.log(response)
                 //alert(response)
                 if(response.success)
-                window.location.href = 'http://127.0.0.1:5000/user/history';
+                {
+                    var x = window.location.href;
+                    x = x.split("/")
+                    x = x[0] + "//" + x[2] + "/" + "user/history"
+                    window.location.href = x;
+
+                }
                 else
-                window.location.href = 'http://127.0.0.1:5000/register';
+                {
+                    var x = window.location.href;
+                    x = x.split("/")
+                    x = x[0] + "//" + x[2] + "/" + "register"
+                    window.location.href = x;
+
+                }
 
             },
             error : function(response){
@@ -21,16 +33,25 @@
     var logchecker = function()
     {
          $.post({
-            url: 'http://127.0.0.1:5000/api/helper',
+            url: '/api/helper',
             success : function(response)
             {
                 //console.log(response)
                 //alert(response)
                 if(response.success)
-                window.location.href = 'http://127.0.0.1:5000/logout';
+                {
+                    var x = window.location.href;
+                    x = x.split("/")
+                    x = x[0] + "//" + x[2] + "/" + "logout"
+                    window.location.href = x;
+                }
                 else
-                window.location.href = 'http://127.0.0.1:5000/login';
-
+                {
+                    var x = window.location.href;
+                    x = x.split("/")
+                    x = x[0] + "//" + x[2] + "/" + "login"
+                    window.location.href = x;
+                }
                 
             },
             error : function(response){

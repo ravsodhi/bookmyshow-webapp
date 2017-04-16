@@ -33,7 +33,7 @@ def form_auth():
 @mod_helper.route('/home')
 def load_html():
 	print(session)
-	session['k'] = "http://127.0.0.1:5000/home"
+	session['k'] = url_for('admin.admin_form')
 	if 'user_id' not in session:
 		ans = {'log':"Login",'val':"Signup"}
 	else:

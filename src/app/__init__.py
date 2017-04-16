@@ -47,10 +47,6 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
             return jsonify(message="Unauthorized", success=False), 401
-        	#next_url = get_current_url() # However you do this in Flask
-        	#login_url = '%s?next=%s' % (url_for('login'), next_url)
-        	#return redirect(login_url)
-           # return jsonify(message="Unauthorized", success=False), 401
         return f(*args, **kwargs)
     return decorated
 

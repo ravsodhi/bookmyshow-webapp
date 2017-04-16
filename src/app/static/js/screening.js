@@ -11,12 +11,15 @@ function tempAlert(msg, duration) {
 }
 
 function seat_view(screening_id) {
-    window.location.href = "http://127.0.0.1:5000/booking/" + screening_id
+    var x = window.location.href;
+    x =  x.split("/")
+    x = x[0] + "//" + x[2] + "/" + "booking/" + screening_id
+    window.location.href = x
 }
 
 function slot_fetch(date, movie_id) {
     $.ajax({
-        url: "http://127.0.0.1:5000/api/screening/date",
+        url: "/api/screening/date",
         data: {
             date_id: date,
             movie_id: movie_id
@@ -28,6 +31,10 @@ function slot_fetch(date, movie_id) {
             var str_head = ""
             var hall_name = ""
             var i;
+            if(array2.length == 0)
+            {
+                str_full = "<h2 class=\"hall-text\">No Shows Available</h2>";
+            }
             for (i = 0; i < array2.length; i++) {
                 hall_name = array2[i].hall_name;
                 var str_body = ""
@@ -82,7 +89,7 @@ function loader() {
     tempAlert("Page is Loading", 2000)
         //var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
     $.post({
-        url: "http://127.0.0.1:5000/api/screening/movies",
+        url: "/api/screening/movies",
         data: {
             movie_id: movieid
         },

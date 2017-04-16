@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, render_template,redirect
+from flask import Blueprint, request, session, jsonify, render_template,redirect,url_for
 from app import db
 from .models import Movie
 from app.user.models import User
@@ -75,7 +75,7 @@ def addmovie():
 					new_movie = Movie(title,director,discription,duration,url,release_date,off_theatre_date)
 					db.session.add(new_movie)
 					db.session.commit()
-					return redirect("http://127.0.0.1:5000/admin")
+					return redirect(url_for('admin.admin_form'))
 			return render_template('addmovie.html', form=form,log=ans),200
 
 @mod_movie.route('/movie/<movie_id>')
@@ -85,7 +85,7 @@ def load_screening(movie_id):
 	if movie:
 		if 'user_id' not in session:
 			print(movie_id)
-			session['k'] = "http://127.0.0.1:5000/movie/" + movie_id
+			session['k'] = url_for('admin.admin_form') + "/" +  movie_id
 			ans = {'log':"Login",'val':"Signup"}
 		else:
 			name = User.query.filter_by(id = session['user_id']).first()

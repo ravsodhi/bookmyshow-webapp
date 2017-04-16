@@ -45,7 +45,7 @@ def before_request():
 def adminlogin():
 	print("/adminlogin")
 	if 'user_id' in session:
-		return redirect("http://127.0.0.1:5000/home")
+		return redirect(url_for('helper.load_html'))
 #	if g.user is not None and g.user.is_authenticated:
 #		return redirect(session['k'])
 	#	return redirect("http://127.0.0.1:5000/home")
@@ -68,7 +68,7 @@ def adminlogin():
 					login_user(user)
 					print(session['k'])
 					print('redirect to /admin')
-					return redirect("http://127.0.0.1:5000/admin")
+					return redirect(url_for('.admin_form'))
 			print('password incorrect')
 			return render_template('adminlogin.html', form=form,message= "password is incorrect")
 		else:

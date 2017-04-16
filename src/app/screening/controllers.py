@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, render_template,redirect
+from flask import Blueprint, request, session, jsonify, render_template,redirect,url_for
 from app import db
 from .models import Screening
 from sqlalchemy import *
@@ -90,6 +90,6 @@ def addscreening():
                             db.session.add(scr1)
                 db.session.commit()
                 print('screening added')
-                return redirect('http://127.0.0.1:5000/admin')
+                return redirect(url_for('admin.admin_form'))
             else:
                 return render_template('addscreening.html',form=form,log=ans),200

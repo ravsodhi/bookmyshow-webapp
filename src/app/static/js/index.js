@@ -1,7 +1,9 @@
 $(document).ready(function() {
     console.log("index.js")
+     
+
     $.ajax({
-        url: 'http://127.0.0.1:5000/api/movies',
+        url: '/api/movies',
         method: 'GET',
         data: {},
         success: 
@@ -23,6 +25,15 @@ $(document).ready(function() {
                 str3 += '<br/> <div class=\"list-type3 movie-box\"> <div style=\"float:left;"> <h2>' + upMovies[i].title + '</h2> <br/> <h4>' + upMovies[i].description + '</h4> </div></div>';
 
             }
+            if(array.length == 0)
+            {
+                str2 = "<h2 class style=\'color:white;\'>No Shows Available</h2>";
+            }
+            if(upMovies.length == 0)
+            {
+                str3 = "<h2 class style=\'color:white;\'>No Shows Available</h2>";
+
+            }
             $("div.movie-div").html(str2);
             $("div.up-movie-div").html(str3);
 
@@ -38,5 +49,11 @@ $(document).ready(function() {
 });
 
 var book = function(id /* This is the id of movie*/ ) {
-       window.location.href = 'http://127.0.0.1:5000/movie/' + id
+       var x = window.location.href;
+        x =  x.split("/")
+        x[3] = "movie/" + id
+        x = x.join("/")
+       window.location.href = x
 }
+    
+

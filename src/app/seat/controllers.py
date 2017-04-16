@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, render_template,redirect
+from flask import Blueprint, request, session, jsonify, render_template,redirect,url_for
 from app import db
 from .models import Seat
 from app.user.models import User
@@ -29,11 +29,11 @@ def setcost():
 				for i in k:
 					db.session.delete(i)
 				db.session.commit()
-				for i in range(65,72):
+				for i in range(65,73):
 					for j in range(1,16):
 						s = Seat(chr(i),j,silver)
 						db.session.add(s)
-				for i in range(72,77):
+				for i in range(73,77):
 					for j in range(1,16):
 						s = Seat(chr(i),j,gold)
 						db.session.add(s)
@@ -44,7 +44,7 @@ def setcost():
 						db.session.add(s)
 				db.session.commit()
 				print('Seat Cost')
-				return redirect("http://127.0.0.1:5000/admin")
+				return redirect(url_for('admin.admin_form'))
 			return render_template('seatcost.html', form=form,log=ans),200
 		else:
 			return render_template('401.html'),401

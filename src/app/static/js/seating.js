@@ -43,7 +43,7 @@ var seating = function() {
         console.log(str)
         s = parseInt(window.location.pathname.split("/")[2])
         $.ajax({
-            url: "http://127.0.0.1:5000/api/booking/add",
+            url: "/api/booking/add",
             data: {
                 seats: str,
                 scr_id: s,
@@ -55,12 +55,22 @@ var seating = function() {
                 }
                 if (response.success) {
 
-                    window.location.href = "http://127.0.0.1:5000/viewticket"
+                    var x = window.location.href;
+                    x = x.split("/")
+                    x = x[0] + "//" + x[2] + "/" + "viewticket"
+                    console.log(x);
+                    //window.location.href = "http://127.0.0.1:5000/viewticket"
+                    window.location.href = x
 
                 } else //(!response.success)
-                    window.location.href = "http://127.0.0.1:5000/login"
+                //                   window.location.href = "http://127.0.0.1:5000/login"
+             {       var x = window.location.href;
+                x =  x.split("/")
+    x = x[0] + "//" + x[2] + "/" + "login"
+    window.location.href = x
 
             }
+        }
         });
     }
 
@@ -78,14 +88,14 @@ var seating = function() {
 $(document).ready(
     function renderSeats() {
         $.ajax({
-            url: "http://127.0.0.1:5000/api/seat/get",
+            url: "/api/seat/get",
             success: function(response) {
                 //           console.log(response.cost)
                 seating.t.push(response.cost[0]);
                 seating.t.push(response.cost[1]);
                 seating.t.push(response.cost[2]);
-// This function can be used to make objects more safer
-//                array_maker(response.cost[0], response.cost[1], response.cost[2]);
+                // This function can be used to make objects more safer
+                //                array_maker(response.cost[0], response.cost[1], response.cost[2]);
                 //         console.log(t);
 
             }
@@ -95,11 +105,14 @@ $(document).ready(
         arr = [];
         s = window.location.pathname.split("/")[2];
         $.ajax({
-            url: "http://127.0.0.1:5000/api/booking/" + s,
+            //url: "http://127.0.0.1:5000/api/booking/" + s,
+            url: "/api/booking/" + s,
+            
             success: function(response) {
                 arr = response.seats;
                 $.post({
-                    url: "http://127.0.0.1:5000/api/screening/audi",
+                   // url: "http://127.0.0.1:5000/api/screening/audi",
+                    url: "/api/screening/audi",
                     data: {
                         scr_id: s
                     },

@@ -26,9 +26,14 @@ def blueprintefore_request():
 
 @mod_user.route('/login', methods=['GET', 'POST'])
 def login():
+    print('lun')
+    #print(self.request.url)
     print("/login")
     if not session.get('k'):
-        session['k'] = "http://127.0.0.1:5000/home"
+        session['k'] = url_for('helper.load_html')
+    #session['k'] = url_for('helper.load_html')
+
+    print(url_for('helper.load_html'))
     if 'user_id' in session:
         return redirect(session['k'])
     print("dscksjck")
@@ -54,11 +59,12 @@ def login():
 
 @mod_user.route('/logout')
 def logout():
+    #print('lun',self.request.url)
     g.user = None
     session.clear()
     logout_user()
     ans = {'log':"Login",'val':"Signup"}
-    return redirect("http://127.0.0.1:5000/home")
+    return redirect(url_for('helper.load_html'))
 
 #This route is needed to show user's booking history
 @mod_user.route('/api/user_info', methods=['GET'])

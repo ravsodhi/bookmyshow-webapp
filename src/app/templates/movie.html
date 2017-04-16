@@ -15,15 +15,12 @@
     <link href='../static/css/fonts/Droid-Sans.css' rel='stylesheet' type='text/css'>
     <link href='../static/css/fonts/Bitter.css' rel='stylesheet' type='text/css'>
     <link href='../static/css/fonts/Cabin.css' rel='stylesheet' type='text/css'>
-    <!-- <link href='http://fonts.googleapis.com/css?family=Macondo' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Revalia' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
-    -->
+    
     <link href="../static/css/movie.css" rel="stylesheet">
     <link href="../static/css/auto-slideshow.css" rel="stylesheet">
     <script type="text/javascript" src="../static/js/login_state.js"></script>
+    <script type="text/javascript" src="../static/js/search.js"></script>
+
     <style>
     h1 {
         font-family: 'Revalia';
@@ -223,8 +220,8 @@
     <br/>
 </div>
     
-    <script>
-    var slideIndex = 0;
+<script type="text/javascript">
+ var slideIndex = 0;
 
 function showSlides() {
     var i;
@@ -245,32 +242,9 @@ function showSlides() {
     setTimeout(showSlides, 4000); // Change image every 4 seconds
 }
 showSlides();
+
 </script>
 
 </body>
-<script type="text/javascript">
-        $("#search").on("keyup",function () {
-            $.ajax ({
-                url : "http://127.0.0.1:5000/api/movies/search",
-                method : "GET",
-                data : {
-                    query:$('#search').val()
-                },
-                success : function(resp){
-                    console.log(resp.movies)
-                    str=""
-                    for(var i=0;i<resp.movies.length;i++)
-                    {
-                        str+="<tr style=\'width:392 px;\''><td><a href=\'http://127.0.0.1:5000/movie/"+ resp.movies[i].id+"\'>" + resp.movies[i].title+"</a></td></tr>";
-                    }
-                    if(str !="")
-                    $("#response").html(str);
-                    else
-                    $("#response").html("");
 
-                }
-            })
-            // body...
-        })
-    </script>
 </html>

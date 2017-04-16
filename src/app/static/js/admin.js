@@ -2,7 +2,7 @@
 $(document).ready(function() {
 
     $.ajax({
-        url: "http://127.0.0.1:5000/api/auditorium",
+        url: "/api/auditorium",
         success: function(response) {
             console.log(response.audi)
             auditoriums = response.audi;
@@ -29,7 +29,7 @@ $(document).ready(function() {
         }
     })
      $.ajax({
-        url: "http://127.0.0.1:5000/api/movies",
+        url: "/api/movies",
         success: function(response) {
             console.log(response.audi)
             movies = response.allmovies;

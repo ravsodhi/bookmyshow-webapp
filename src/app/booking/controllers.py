@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, render_template,redirect,session
+from flask import Blueprint, request, session, jsonify, render_template,redirect,session,url_for
 from app import db
 from .models import Booking
 from app.user.models import User
@@ -161,7 +161,7 @@ def add_booking():
 def view_booking(scr_id):
 	print("view_booking")
 	print(scr_id)
-	k = "http://127.0.0.1:5000/booking/" + scr_id 
+	k = "/booking" + "/" + scr_id
 	print(k)
 	session['k'] = k;
 	return render_template('seating.html')

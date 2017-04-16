@@ -26,7 +26,7 @@ class Movie (db.Model):
         self.off_theatre_date = off_theatre_date
 
     def __repr__(self):
-        return "'Movie' {'name': %r, 'director' : %r, 'description' :%r ,'duration' : %r,'url' :%r , 'release_date' : %r , 'off_theatre_date' : %r}" %(self.title,self.director,self.description,self.duration,self.url,self.release_date,self.off_theatre_date)
+        return "'Movie' {'title': %r, 'director' : %r, 'description' :%r ,'duration' : %r,'url' :%r , 'release_date' : %r , 'off_theatre_date' : %r}" %(self.title,self.director,self.description,self.duration,self.url,self.release_date,self.off_theatre_date)
 
     def to_dict_movies(self):
         return {
@@ -35,7 +35,7 @@ class Movie (db.Model):
         'description' :self.description, 
         'id' : self.id,
         'url' : self.url,
-        'release_date' : self.release_date,
-        'off_theatre_date' : self.off_theatre_date
+        'release_date' : str(self.release_date),
+        'off_theatre_date' : str(self.off_theatre_date)
         }
 

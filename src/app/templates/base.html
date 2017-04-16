@@ -139,29 +139,6 @@
     </div>
 
 </body>
-<script type="text/javascript">
-        $("#search").on("keyup",function () {
-            $.ajax ({
-                url : "http://127.0.0.1:5000/api/movies/search",
-                method : "GET",
-                data : {
-                    query:$('#search').val()
-                },
-                success : function(resp){
-                    console.log(resp.movies)
-                    str=""
-                    for(var i=0;i<resp.movies.length;i++)
-                    {
-                        str+="<tr style=\'width:392 px;\''><td><a href=\'http://127.0.0.1:5000/movie/"+ resp.movies[i].id+"\'>" + resp.movies[i].title+"</a></td></tr>";
-                    }
-                    if(str !="")
-                    $("#response").html(str);
-                    else
-                    $("#response").html("");
+    <script type="text/javascript" src="../static/js/search.js"></script>
 
-                }
-            })
-            // body...
-        })
-    </script>
 </html>

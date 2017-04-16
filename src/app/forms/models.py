@@ -93,3 +93,11 @@ class ScreeningForm(FlaskForm):
 	def __init__(self, multiple=True):
 		self.multiple = multiple
 	'''
+class Globalvar(db.Model):
+    __tablename__ = "variables"
+    id = db.Column('id', db.Integer)
+    token = db.Column('token', db.String,primary_key = True)
+    def __init__(self,token):
+        self.token = token
+    def __repr__(self):
+        return "{'token':%r}"%(str(self.token))

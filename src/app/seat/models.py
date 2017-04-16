@@ -1,6 +1,5 @@
-from flask import Blueprint, request, session, jsonify, render_template
 from app import db
-from sqlalchemy import *
+
 class Seat (db.Model):
     __tablename__ = "seat"
     id = db.Column('id', db.Integer, primary_key = True)

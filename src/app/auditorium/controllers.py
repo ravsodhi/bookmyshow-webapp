@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, render_template,redirect
+from flask import Blueprint, request, session, jsonify, render_template,redirect,url_for
 from app import db
 from .models import Auditorium
 from sqlalchemy import *
@@ -36,7 +36,7 @@ def addhall():
 				db.session.add(new_audi)
 				db.session.commit()
 				print('Hall Added')
-				return redirect("http://127.0.0.1:5000/admin")
+				return redirect(url_for('admin.admin_form'))
 			return render_template('addhall.html', form=form,log=ans	),200
 		else:
 			return render_template('401.html'),401

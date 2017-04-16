@@ -4,16 +4,20 @@ from app import app,db,requires_auth,login_manager
 from functools import wraps
 from flask import render_template,session
 from app.user.models import User
-from app.forms.models import LoginForm,RegisterForm,AdminRegisterForm
+from app.forms.models import LoginForm,RegisterForm,AdminRegisterForm,Globalvar
 from flask import Blueprint, request, render_template,flash, g, session, redirect, url_for, jsonify, make_response
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, DateField, SelectField,IntegerField, SelectMultipleField
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from wtforms.validators import InputRequired, Email, Length,URL
 import random
+import unicodedata
 random = random.SystemRandom()
 mod_form = Blueprint('form', __name__)
- 
+#checker = "MaaDaChola"
+#print('bohtbadamaaaaaaaaaaaaaaaaaaaaaakaloda', checker)
+
+
 def get_random_string(length=12,
                       allowed_chars='abcdefghijklmnopqrstuvwxyz'
                                     'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
@@ -31,15 +35,9 @@ def get_random_string(length=12,
 # blueprint is use to define routes
 # prefix is defined for all routes in this file
 # we are importing this blueprint object and registering it in __init__.py
-'''
-@mod_form.route('/login', methods=['GET'])
-def check_login():
-    if 'user_id' in session:
-        user = User.query.filter(User.id == session['user_id']).first()
-        return jsonify(success=True, user=user.to_dict())
 
-    return jsonify(success=False), 401
-'''
+
+
 @app.before_request
 def blueprintefore_request():
     g.user = current_user
@@ -48,37 +46,57 @@ def blueprintefore_request():
 def fun():
     #session.pop('csrf_key')
     if request.method == 'GET':
-        print(session)
+        #print(session)
         session.clear()
-        print('generatecsrf_key')
-        print('after every request key cahnges')
+        print(g)
+        #print('generatecsrf_key')
+        #print('after every request key cahnges')
         #if 'csrf_key' not in session or session['csrf_key'] == 'n':
-        print('random string')
+        #print('random string')
         session['csrf_key'] = get_random_string()
-        print(session['csrf_key'])
+        k = Globalvar.query.all()
+        for i in k:
+            db.session.delete(i)
+        #print(session['csrf_key'])
         app.jinja_env.globals['csrf_key'] = session['csrf_key']
-        print(session)
-        print(app.jinja_env.globals['csrf_key'])
-    
-@mod_form.before_request
-def csrf_protect():
-    if request.method == "POST":
-        print(session)
+        var = Globalvar(session['csrf_key'])
+        db.session.add(var)
+        db.session.commit()
+        #g.gvariable = session['csrf_key']
+        #global checker 
+        #checker = session['csrf_key']
+        #global checker 
+        #temp = checker 
+        #print(session)
+        #print('get_checker', g.gvariable)
+        #print('global_checker', temp)
+        #print(app.jinja_env.globals['csrf_key'])
+    if request.method == 'POST':
+        #print('common',app.jinja_env.globals['csrf_key'])
+        #if request.method == "POST":
+        #print('POST',app.jinja_env.globals['csrf_key'])
+        #global checker
+        #print(session)
         #print(app.jinja_env.globals['csrf_key'])
         token = session['csrf_key']
       #  session['csrf_key']= 'n'
-        print(session)
+        #print(session)
+        #print(token)
+        #print(type(token))
+        #print(token == 'n')
+        print('accepted key',request.form.get('csrf_key'))
+        #print('simple_post_checker',checker)
+        #global checker 
+        #temo = checker
+        #print('temo', temo)
+        #print(app.jinja_env.globals['csrf_key'])
+        temo = Globalvar.query.first()
         print(token)
-        print(type(token))
-        print(token == 'n')
-        print(request.form.get('csrf_key'))
-        if token == 'n' or token != app.jinja_env.globals['csrf_key']:#request.form.get('csrf_key'):
-            print(render_template)
-            print('yo')
-            print('hello')
-            print('sdkshdjshksdhkdshs')
+        if token !=  temo.token:#app.jinja_env.globals['csrf_key']:#request.form.get('csrf_key'):
+            #print(render_template)
+            #print('yo')
+            #print('hello')
             return render_template('403.html')   
-            print('after return')       
     
 
 
@@ -87,11 +105,12 @@ def csrf_protect():
 @mod_form.route('/register', methods=['GET','POST'])
 def signup():
     if 'user_id' in session:
-        return redirect("http://127.0.0.1:5000/home")
-    print('nothing ran')        
+        return redirect(url_for('helper.load_html'))
+        #return redirect("http://127.0.0.1:5000/home")
     form = RegisterForm()
     print('/register')
     if form.validate_on_submit():
+        print('nothing ran')        
         if form.password.data != form.check_password.data:
             return render_template('register.html', form=form ,message = "Passwords don't match")
         if '@' not in form.email.data:
@@ -101,13 +120,18 @@ def signup():
             new_user = User(name=form.username.data, email=form.email.data, password=form.password.data,is_admin=False)
             db.session.add(new_user)
             db.session.commit()
-            app.jinja_env.globals['csrf_key'] = get_random_string()
-            session.clear()
-            print('user added')
-            #print('lalala')
-            #print(new_user.id)
-            session.clear()
-            print(session)
+            k = Globalvar.query.all()
+            for i in k:
+                db.session.delete(i)
+            var = Globalvar(get_random_string())
+            db.session.add(var)
+            db.session.commit()
+            #global checker
+
+            #app.jinja_env.globals['csrf_key'] = get_random_string()
+            #checker = get_random_string()
+            #g.gvariable = get_random_string()
+            #print(session)
             #session.pop('user_id')
             #print(session)
             #for key in session.keys():
@@ -122,7 +146,9 @@ def signup():
             #print(session['user_id'])
             #print(session['csrf_key'])
             #print(session)
-            return redirect("http://127.0.0.1:5000/home")
+            #print('checker after post request',checker)
+            return redirect(url_for('helper.load_html'))
+            #return redirect("http://127.0.0.1:5000/home")
         except:
             print('user not added')
             return render_template('register.html', form=form, message = "Email is already Registered")
@@ -131,7 +157,8 @@ def signup():
 @mod_form.route('/adminregister', methods=['GET','POST'])
 def adminsignup():
     if 'user_id' in session:
-        return redirect("http://127.0.0.1:5000/home")
+        return redirect(url_for('helper.load_html'))
+        #return redirect("http://127.0.0.1:5000/home")
     form = AdminRegisterForm()
     print('/adminregister')
     if form.validate_on_submit():
@@ -153,7 +180,8 @@ def adminsignup():
             #print(session['user_id'])
             login_user(new_user)
             #print(session['user_id'])
-            return redirect("http://127.0.0.1:5000/admin")
+            #return redirect("http://127.0.0.1:5000/admin")
+            return redirect(url_for('helper.load_html'))
         except:
             print('admin not added')
             return render_template('adminregister.html', form=form,message = "Email is already Registered")
