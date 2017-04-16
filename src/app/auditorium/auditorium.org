@@ -1,0 +1,111 @@
+#+TITLE:Introduction to 'Auditorium' Model and its controllers
+#+AUTHOR: Ravsimar Singh Sodhi,Anish Gulati,Kunal Garg
+
+* Introduction
+To provide methodology on 'what' this model consists of and 'how' it works
+with the rest of the web app.
+
+
+* Models
+The class or table 'Auditorium' consists of:
+** ID
+Type: Integer
+The ID is the primary key in the 'auditorium' datebase table.It increments automatically 
+as a new auditorium/theatre is added to a database.Being a primary key, The ID can be used 
+to uniquely identify a row in the database table. This is used in foreign key 
+relationship with other tables.
+** Name
+Type:String
+This is the name of the hall/theatre that the user will see and choose
+his booking accordingly.
+** Type
+Type:String
+This determines the size of the hall/theatre.
+We have used 3 types:
+
+*** Small
+'Small' Theatres consist of 8 rows.
+
+*** Medium
+'Medium' theatres consist of 12 rows.
+
+*** Big
+'Big' theatre  consist of 15 rows.
+
+
+We assume that the first 8 rows will have lowest cost, the next 4 rows will have
+medium cost and the last 3 rows will have maximum cost, irrespective of the theatre
+selected. The no. of rows in the theatre are put accordingly. 
+
+** Methods
+Apart from the table columns, an =__init__= method is defined.
+An instance of class is defined using this function.
+#+BEGIN_SRC 
+def __init__(self,name,audi_type):
+		self.name = name
+		self.audi_type = audi_type
+
+#+END_SRC
+
+Another method, =to_dict_audi= , is used to access the data in a readable format.
+#+BEGIN_SRC 
+def to_dict_audi(self):
+		return {
+		'id' : self.id ,
+		'name': self.name,
+		'audi_type': self.audi_type}
+#+END_SRC
+
+A method named =__repr__= is also defined. By default, when accessing an object
+from another table, the object is returned as the =__repr__= result.
+#+BEGIN_SRC 
+def __repr__(self):
+		return "Auditorium { 'name': %r, 'audi_type': %r}"%(self.name,self.audi_type)
+
+#+END_SRC
+
+
+* Controllers
+The controllers define the routes on through which data is accessed. The web app
+sends api calls to these routes and gets response as the required data.
+
+** /api/auditorium
+Methods: GET
+This route returns all the auditorium objects in the database in a readable format.
+The objects are ordered by their Auditorium types.So it is easier to group small,
+medium and large auditoriums together.
+** /hall/add
+Methods: GET,POST
+This route can be used only by the admin user while adding a hall/auditorium to the database.
+It checks whether the admin user is logged in or not. The parameters for the hall
+object are accessed through flask WTF forms.
+The navbar is also refreshed to contain the user details.
+If the form is valid, Hall/Auditorium is added to the database,else the page is reloaded with an
+error message
+#+BEGIN_SRC 
+mod_auditorium.route('/hall/add', methods=['GET', 'POST'])
+def addhall():
+	if 'user_id' not in session:
+		return render_template('401.html'),401
+	else:
+		print(session['user_id'])
+		use = User.query.filter_by(id = session['user_id']).first()
+		print(use.is_admin)
+		if use.is_admin is True:
+			form = HallForm()
+			ans = {'log':"Logout",'val':use.name}	
+			if form.validate_on_submit():
+				print('Hall Form')
+				name = form.hall_name.data
+				audi_type = form.hall_type.data
+				new_audi = Auditorium(name,audi_type)
+				db.session.add(new_audi)
+				db.session.commit()
+				print('Hall Added')
+				return redirect("http://127.0.0.1:5000/admin")
+			return render_template('addhall.html', form=form,log=ans	),200
+		else:
+			return render_template('401.html'),401
+
+#+END_SRC
+
