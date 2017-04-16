@@ -1,0 +1,130 @@
+#+TITLE: Description of 'Seat' Model and its Controllers
+#+AUTHOR: Ravsimar Singh Sodhi, Kunal Garg, Anish Gulati
+
+* Introduction
+To provide methodology on 'what' this model consists of and 'how' it works
+with the rest of the web app.
+
+
+* Model
+The class or table 'Seat' consists of :-
+** ID
+Type: Integer
+The ID is the primary key in the 'movie' datebase table.It increments automatically 
+as a new movie is added to a database.Being a primary key, The ID can be used 
+to uniquely identify a row in the database table. This is used in foreign key 
+relationship with other tables.
+ 
+** row
+Type: String
+This stores the Rows in the 'seat' model
+ 
+** column
+Type: Integer
+This stores the numbers which will tell the seats in a particular row.
+
+** cost
+Type: Integer
+This column stores the cost corresponding to a particular row and column in this model
+
+** Methods 
+Apart from the table columns, an __init__ method is defined.
+An instance of class is defined using this function.
+#+BEGIN_SRC 
+ def __init__(self,row,column,cost):
+        self.row = row
+        self.column = column
+        self.cost = cost
+#+END_SRC
+
+Another method,to_dict_seat, is used to access the data in a readable format.
+This function is used to ensure that date columns are accessible as strings
+and not as 'Seat' class objects.
+#+BEGIN_SRC 
+def to_dict_seat(self):
+    	return {
+    	'id' : self.id , 
+    	'row' : self.row ,
+    	'column' : self.column,
+        'cost' : self.cost 
+    	}
+#+END_SRC
+
+A method named __repr__ is also defined. By default, when accessing an object
+from another table, the object is returned as the __repr__ result.
+Thus, a __repr__ also ensures that date is accessible in a readable format.
+#+BEGIN_SRC 
+def __repr__(self):
+        return "'Seat' { 'row': %r, 'column': %r , 'cost': %r}"%(self.row,self.column,self.cost)
+#+END_SRC
+
+
+* Controllers
+The controllers define the routes on through which data is accessed.The web app
+sends api calls to these routes and gets response as the required data.
+
+** /seat/cost
+Methods: GET,POST
+This route can be used only by the admin user while adding the cost of a seat.
+It checks whether the admin user is logged in or not. The parameters for the 'Seat'
+object are accessed through flask WTF forms.
+If the form is valid, Cost for the seats is added to the database,else the page is reloaded with an
+error message.
+#+BEGIN_SRC 
+@mod_seat.route('/seat/cost', methods=['GET', 'POST'])
+def setcost():
+	if 'user_id' not in session:
+		return render_template('401.html'),401
+	else:
+		print(session['user_id'])
+		use = User.query.filter_by(id = session['user_id']).first()
+		print(use.is_admin)
+		if use.is_admin is True:
+			form = CostForm()
+			ans = {'log':"Logout",'val':use.name}	
+			if form.validate_on_submit():
+				print('Cost Form')
+				platinum = form.platinum.data
+				gold = form.gold.data
+				silver = form.silver.data
+				k = Seat.query.all()
+				for i in k:
+					db.session.delete(i)
+				db.session.commit()
+				for i in range(65,72):
+					for j in range(1,16):
+						s = Seat(chr(i),j,silver)
+						db.session.add(s)
+				for i in range(72,77):
+					for j in range(1,16):
+						s = Seat(chr(i),j,gold)
+						db.session.add(s)
+
+				for i in range(77,80):
+					for j in range(1,16):
+						s = Seat(chr(i),j,platinum)
+						db.session.add(s)
+				db.session.commit()
+				print('Seat Cost')
+				return redirect("http://127.0.0.1:5000/admin")
+			return render_template('seatcost.html', form=form,log=ans),200
+		else:
+			return render_template('401.html'),401
+#+END_SRC
+** /api/seat/get
+This route gives the cost of the seats when demanded by the front side of the application which was set by
+the admin before. It just queries on the Seat model to get the cost of the seats and returns the jsonified 
+object.
+#+BEGIN_SRC 
+@mod_seat.route('/api/seat/get', methods=['GET'])
+def get_seat_cost():
+	cost =[]
+	c1 = Seat.query.filter(Seat.id == 1).first()
+	c2 = Seat.query.filter(Seat.id == 121).first()
+	c3 = Seat.query.filter(Seat.id == 211).first()
+	cost.append(c1.cost)
+	cost.append(c2.cost)
+	cost.append(c3.cost)
+	print(cost)
+	return jsonify(success=True,cost=cost)
+#+END_SRC

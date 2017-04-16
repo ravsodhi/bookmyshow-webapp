@@ -1,0 +1,163 @@
+#+TITLE: Description of 'Screening' model and it's controllers
+#+AUTHOR: Anish Gulati, Kunal Garg, Ravsimar Singh Sodhi
+#+DATE: [2016-05-17 Mon]
+
+* Introduction
+To provide methodology on 'what' this model consists of and 'how' it works with rest of the web app.
+* Model
+The class 'Screening' consists of : -
+** Columns
+The table of Screening consists of columns:
+*** ID
+The ID is primary key of the screening database table. It's column name is 'id' and it increments
+automatically with new enteries in the table. It's data type is Integer.
+*** movie_id
+Another column of table "screening" whose name is 'movie_id'. It's data type is Integer. This is the foreign
+key which tells that their is a link between this screening table's movie_id column and the primary key of 
+the "movie" table('id' column of 'movie' table).
+*** auditorium_id
+This column, named 'auditorium_id', has the data type Integer and it is the foreign key which provides a 
+link between this column and the primary key of the "auditorium" table('id' column of 'auditorium' table).
+*** screening_start_time
+This column named 'screening_start_time', has the data type Time(imported from datetime module) and 
+it stores the start time of each screening.
+*** screening_date
+This column named 'screening_date', has the data type Date(imported from datetime module) and it stores
+the the date of the particular screening.
+** Relationships
+*** 'Auditorium'
+This tells that their is a relationship between class 'Auditorium' and the column 'auditorium_id' of this table
+*** 'Movie'
+This tells that their is a relationship between class 'Movie' and the column 'movie_id' of this table
+
+** Methods
+*** __init__(self,movie_id,auditorium_id,screening_start_time,screening_date) 
+This is a constructor method which takes four parameters mentioned above and initializes an instance
+of the class Screening. 'self' variable represents the instance of the object itself which is not hidden in 
+the python.
+*** __repr__(self)
+This is method provided by python to provide the string representation of the object(which is the instance
+of class)
+*** to_dict(self), to_dict_dates(self), to_dict_shows(self)
+These are similar to __repr__ methods which are needed by some of the controllers(to obtain the string 
+representation of the objects obtained) discussed below.
+* Controller
+** Blueprint
+It's aim is to record the operations to execute when registered on an application in a modular way. These
+blueprints are then at last registered in the main __init__.py which is their in the main app directory.
+#+BEGIN_SRC  blueprint
+mod_screening = Blueprint('screening', __name__)
+#+END_SRC
+** Routes
+*** /api/screening/movies
+#+BEGIN_SRC code
+@mod_screening.route('/api/screening/movies', methods=['POST'])
+def get_all_dates():
+    movie_id = request.form['movie_id']
+    today = date.today()    
+    dates = Screening.query.filter(and_(Screening.movie_id == movie_id,Screening.screening_date >= today)).order_by(str(Screening.screening_date))
+    new_dates = []
+    for i in dates:
+        new_dates.append(i.to_dict_dates())
+    if dates is None:
+        return jsonify(success=False), 404
+    else:
+        return jsonify(success=True, dates=new_dates)
+#+END_SRC
+This route helps in fetching dates for a movie that is on what days their is a screening available for that 
+particular movie. This route firstly gets the movie_id with post request, and then fetches all date objects
+ from screening table which are greater than equal to today's date. These objects are then converted to 
+string representation with help of to_dict_dates() method and at last returns the jsonified array of dates.
+Jsonify converts the string representation into an object. 
+*** /api/screening/date
+#+BEGIN_SRC code
+@mod_screening.route('/api/screening/date', methods=['POST'])
+def get_all_screening():
+    id1 = request.form['date_id']
+    id2 = request.form['movie_id']
+    id1 = id1.split("-")
+    id1 = date(int(id1[0]),int(id1[1]),int(id1[2]))
+    now = datetime.today().time()
+    today = date.today()    
+    if id1 == today:
+        dates2 = db.session.query(Screening, Auditorium).join(Auditorium).filter(and_(Screening.screening_start_time >= now,Screening.auditorium_id == Auditorium.id,Screening.screening_date == id1,Screening.movie_id == id2)).order_by(Auditorium.name.asc(),(Screening.screening_start_time-datetime(1970,1,1)))
+    else:
+        dates2 = db.session.query(Screening, Auditorium).join(Auditorium).filter(and_(Screening.auditorium_id == Auditorium.id,Screening.screening_date == id1,Screening.movie_id == id2)).order_by(Auditorium.name.asc(),(Screening.screening_start_time-datetime(1970,1,1)))
+    slots = []
+    for i in dates2:
+        slots.append({ 'screening_id' :i.Screening.id,'time' : str(i.Screening.screening_start_time) , 'hall_name' : i.Auditorium.name , 'hall_type' : i.Auditorium.audi_type })
+    if dates2 is None:
+        return jsonify(success=False), 404
+    else:
+        return jsonify(success=True, slots=slots)
+#+END_SRC
+This route gets all the screening related to a particular movie and a date. It gets movie and date info with a
+'POST' request.
+After this we create 'flask_sqlalchemy.BaseQuery'(dates2) object by joining the 'screening' and 'auditorium' 
+tables and then filtering on it on the basis of todays date, time, screening date, movie_id, and then order 
+them in ascending order(basis: Auditorium name, screening_start_time).
+Then the obtained array object is jsonified and returned back.
+If the dates2 object is empty then no dates are to be returned, hence we send the 'success' as False.
+*** /api/screening/audi
+#+BEGIN_SRC code
+@mod_screening.route('/api/screening/audi', methods=['POST'])
+def get_aauditype():
+    id1 = request.form['scr_id']
+    m = db.session.query(Screening, Auditorium).join(Auditorium).filter(Screening.id == int(id1)).first()
+    ans = m.Auditorium.audi_type
+    return jsonify(success=True,ans=ans)
+#+END_SRC
+This route provides the 'Audi type' of any particular screening(fetches by 'POST' request) given it's 
+'screening_id' by joining the screening and auditorium table and then filtering on them according to 'screen
+ing_id'.
+Then the obtained answer is returned as a jsonified object.
+*** /screening/add
+#+BEGIN_SRC code
+@mod_screening.route('/screening/add', methods=['GET', 'POST'])
+def addscreening():
+    if 'user_id' not in session:
+        return render_template('401.html'),401
+    else:
+        print(session['user_id'])
+        use = User.query.filter_by(id = session['user_id']).first()
+        print(use.is_admin)
+        ans = {'log':"Logout",'val':use.name}
+        if use.is_admin is False:
+            return render_template('401.html'),401
+        else:
+            form = ScreeningForm()
+            if form.validate_on_submit():
+                print('Screening Form')
+                tim = form .selecttime.data
+                audi = form.selecthall.data
+                mov = form.selectmovie.data
+                audilen = len(audi)
+                timlen = len(tim)
+                dates = Movie.query.filter(Movie.id == mov).first()
+                id1 = dates.release_date
+                id2 = dates.off_theatre_date
+                k = id2-id1
+                k = str(k)
+                k = k.split(",")
+                k = k[0].split(" ")
+                m = int(k[0])
+                for i in range(0,m):
+                    n = id1 + timedelta(days = i)
+                    for j in range(0,audilen):
+                        for g in range(0,timlen):
+                            q = tim[g].split(":")
+                            ti = time(int(q[0]),int(q[1]))
+                            scr1  = Screening(mov,audi[j],ti,n)
+                            db.session.add(scr1)
+                db.session.commit()
+                print('screening added')
+                return redirect('http://127.0.0.1:5000/admin')
+            else:
+                return render_template('addscreening.html',form=form,log=ans),200
+#+END_SRC
+This route is specifically for admin only and checks in the start if the admin is logged in or not.
+This is used to add screenings for a particular movie by the admin and the parameters for the screening 
+are obtained with the help of WTF forms.
+Here three nested 'for' loops are used, one for movie, second for audi's and third for timings. If form is 
+valid then screening's will be added for all the above given values, else the page is reloaded with an error 
+message.
