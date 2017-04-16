@@ -1,0 +1,215 @@
+#+TITLE: Description of 'Movie' Model and its Controllers
+#+AUTHOR: Ravsimar Singh Sodhi, Kunal Garg, Anish Gulati
+
+* Introduction
+To provide methodology on 'what' this model consists of and 'how' it works
+with the rest of the web app.
+
+
+* Model
+The class or table 'Movie' consists of :-
+** ID
+Type: Integer
+The ID is the primary key in the 'movie' datebase table.It increments automatically 
+as a new movie is added to a database.Being a primary key, The ID can be used 
+to uniquely identify a row in the database table. This is used in foreign key 
+relationship with other tables.
+ 
+** Title
+Type: String
+This is the movie title.The user will usually identify the movie on basis of 
+the title.
+ 
+** Director
+Type: String
+This the name of the director of the movie.
+
+** Description
+Type: String
+A short gist of the movie is provided for the user to identify the movie.
+
+** Duration
+Type: Integer
+The duration of the movie in minutes.
+
+** Trailer URL
+Type: String
+The url of the trailer of the movie, this is also verified while the movie
+is being added.
+
+** Release Date
+Type: date
+The release date decides when a movie will be shown in the theatres.
+In the datebase, it is a python datetime object.
+
+** Off Theatre Date
+Type: date
+The off theatre date decides when a movie will be removed from the theatres.
+In the database, it is a python datetime object.
+
+** Methods 
+Apart from the table columns, an __init__ method is defined.
+An instance of class is defined using this function.
+#+BEGIN_SRC 
+def __init__(self,title,director,description,duration,url,release_date,off_theatre_date):
+        self.title = title
+        self.director = director
+        self.description = description
+        self.duration = duration
+        self.url = url
+        self.release_date = release_date
+        self.off_theatre_date = off_theatre_date
+#+END_SRC
+
+Another method,to_dict_movies, is used to access the data in a readable format.
+This function is used to ensure that date columns are accessible as strings
+and not as datetime objects.
+#+BEGIN_SRC 
+def to_dict_movies(self):
+        return {
+        'title': self.title, 
+        'director' : self.director,
+        'description' :self.description, 
+        'id' : self.id,
+        'url' : self.url,
+        'release_date' : self.release_date,
+        'off_theatre_date' : self.off_theatre_date
+        }
+#+END_SRC
+
+A method named __repr__ is also defined. By default, when accessing an object
+from another table, the object is returned as the __repr__ result.
+Thus, a __repr__ also ensures that date is accessible in a readable format.
+#+BEGIN_SRC 
+def __repr__(self):
+        return "'Movie' {'title': %r, 'director' : %r, 'description' :%r ,'duration' : %r,'url' :%r , 'release_date' : %r , 'off_theatre_date' : %r}" %(self.title,self.director,self.description,self.duration,self.url,self.release_date,self.off_theatre_date)
+
+#+END_SRC
+
+
+* Controllers
+The controllers define the routes on through which data is accessed.The web app
+sends api calls to these routes and gets response as the required data.
+
+** /api/movies
+Methods: GET
+This route returns movies and their details in the database.It can be used to
+get:
++ Movies that are currently being showed in theatres,
++ Upcoming movies which are yet to be released,
++ The total movies which are, or will be shown in the theatres.
+#+BEGIN_SRC 
+@mod_movie.route('/api/movies', methods=['GET'])
+def display_movies():
+    movies = Movie.query.filter(and_(Movie.release_date <= date.today(),Movie.off_theatre_date >= date.today()))
+    upMovies = Movie.query.filter(Movie.release_date > date.today())
+    totalMovies = Movie.query.filter(Movie.off_theatre_date >= date.today())
+    movie_array = []
+    upmovies=[]
+    total = []
+    for i in totalMovies:
+    	total.append(i.to_dict_movies())
+    for i in movies:
+        movie_array.append(i.to_dict_movies())
+    for i in upMovies:
+        upmovies.append(i.to_dict_movies())
+    print(upmovies)
+    print(movie_array)
+    print(total)
+    return jsonify(success=True, movies=movie_array,upmovies = upmovies,allmovies=total),200
+#+END_SRC
+
+** api/movies/search
+Methods: GET
+This route is called when the search bar is used. It returns the list of movies
+which contain the query string as a substring in their titles.
+#+BEGIN_SRC 
+@mod_movie.route('/api/movies/search', methods=['GET'])
+def search_movies():
+	query = request.args.get("query")
+	if query == "":
+		return jsonify(success=True,movies=""),200
+	print(query)
+	all_movies = Movie.query.filter(and_(Movie.release_date <= date.today(),Movie.off_theatre_date >= date.today(),Movie.title.like("%" + query + "%"))).all()
+	print(all_movies)
+	ju = []
+	for i in all_movies:
+		ju.append(i.to_dict_movies())
+		print(i)
+		
+	return jsonify(success=True, movies=ju),200
+#+END_SRC
+** /movie/add
+Methods: GET,POST
+This route can be used only by the admin user while adding a movie to the database.
+It checks whether the admin user is logged in or not. The parameters for the movie
+object are accessed through flask WTF forms.
+Date objects are formed manually as python datetime objects to send as a parameter to the movie
+The navbar is also refreshed to contain the user details.
+If the form is valid, Movie is added to the database,else the page is reloaded with an
+error message.
+#+BEGIN_SRC 
+@mod_movie.route('/movie/add', methods=['GET', 'POST'])
+def addmovie():
+	if 'user_id' not in session:
+		return render_template('401.html'),401
+	else:
+		print(session['user_id'])
+		use = User.query.filter_by(id = session['user_id']).first()
+		print(use.is_admin)
+		if use.is_admin is False:
+			return render_template('401.html'),401
+		else:
+			form = MovieForm()
+			ans = {'log':"Logout",'val':use.name}	
+			if form.validate_on_submit():
+					print("movie form")
+					title = form.title.data
+					print(title)
+					director = form.director.data
+					discription = form.discription.data
+					duration = form.duration.data
+					url = form.trailer_url.data
+					release_date = form.release_date.data
+					off_theatre_date = form.off_theatre_date.data
+					print(release_date)
+					release_date = str(release_date).split("-")
+					release_date = date(int(release_date[0]),int(release_date[1]),int(release_date[2]))
+					off_theatre_date = str(off_theatre_date).split("-")
+					off_theatre_date = date(int(off_theatre_date[0]),int(off_theatre_date[1]),int(off_theatre_date[2]))
+					print(release_date)
+					print(off_theatre_date)
+					new_movie = Movie(title,director,discription,duration,url,release_date,off_theatre_date)
+					db.session.add(new_movie)
+					db.session.commit()
+					return redirect("http://127.0.0.1:5000/admin")
+			return render_template('addmovie.html', form=form,log=ans),200
+
+#+END_SRC
+** /movie/<movie_id>
+This route is used when a particular movie is selected to be booked and 
+the screening have to be displayed of that particular movie.
+If the <movie_id> does not exist, an error page is rendered.
+If the user is logged in, the navbar is changed according to its details accordingly.
+The screening page of that movie is rendered.
+#+BEGIN_SRC 
+@mod_movie.route('/movie/<movie_id>')
+def load_screening(movie_id):
+	print(movie_id)
+	movie = Movie.query.filter(Movie.id == movie_id).first()
+	if movie:
+		if 'user_id' not in session:
+			print(movie_id)
+			session['k'] = "http://127.0.0.1:5000/movie/" + movie_id
+			ans = {'log':"Login",'val':"Signup"}
+		else:
+			name = User.query.filter_by(id = session['user_id']).first()
+			print(name)
+			print(type(name))
+			name = name.name	
+			ans = {'log':"Logout",'val':name}
+		return render_template('screening.html',movie=movie,log=ans)
+	else:
+		return render_template('404.html'),404
+
+#+END_SRC
