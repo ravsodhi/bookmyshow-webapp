@@ -92,10 +92,11 @@ def fun():
         #print(app.jinja_env.globals['csrf_key'])
         temo = Globalvar.query.first()
         print(token)
+        print(temo.token)
         if token !=  temo.token:#app.jinja_env.globals['csrf_key']:#request.form.get('csrf_key'):
             #print(render_template)
             #print('yo')
-            #print('hello')
+            print('hello')
             return render_template('403.html')   
     
 

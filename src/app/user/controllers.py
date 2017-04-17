@@ -64,6 +64,7 @@ def logout():
     session.clear()
     logout_user()
     ans = {'log':"Login",'val':"Signup"}
+    session['k'] = url_for('helper.load_html')
     return redirect(url_for('helper.load_html'))
 
 #This route is needed to show user's booking history

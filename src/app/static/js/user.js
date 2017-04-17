@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $.ajax({
-        url:'http://127.0.0.1:5000/api/user_info', 
+        url:'/api/user_info', 
         success: function(response){
             user_name = response.info.name;
             user_email = response.info.email;
@@ -9,7 +9,7 @@ $(document).ready(function(){
             document.getElementById('user_email').innerHTML = user_email;
 
             $.ajax({
-                url: 'http://127.0.0.1:5000/api/booking/user', 
+                url: '/api/booking/user', 
                 success: function(response){
                     array = response.booking_data;
                     str = "<tr class=\"trow\"><td class=\"tcol\">Title</td><td class=\"tcol\">Date</td>" + 
