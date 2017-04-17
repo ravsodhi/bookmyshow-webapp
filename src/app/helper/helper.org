@@ -1,0 +1,81 @@
+#+TITLE: Description of 'Helper' Controllers
+#+AUTHOR: Kunal Garg,Ravsimar Singh Sodhi,Anish Gulati
+
+* Introduction
+To provide methodology on 'how' helper controllers works with the rest of 
+the web app.
+
+
+* Controllers
+The controllers define the routes on through which data is accessed.The web app
+sends api calls to these routes and gets response as the required data.
+
+** /api/helper
+Methods: POST
+This route returns checks whether a user is logged in or not.
+It returns True if 'user_id' is present in session else
+returns False. This route is used when the above information is needed.  
+#+BEGIN_SRC 
+@mod_helper.route('/api/helper', methods=['POST'])
+def form_auth():
+	print('helper controler',session)
+	if 'user_id' not in session:
+		return jsonify(success=False)
+	return jsonify(success=True)
+#+END_SRC
+
+** /home
+Methods: GET
+This route is our default home page. It renders the movie.html template 
+with the variable log, which helps to detect whether user is logged in
+or not. If it is logged in it displays the user history and logout 
+option, otherwise displays signup and login option. If user if admin 
+then additional Admin Page link is also shown.
+#+BEGIN_SRC 
+@mod_helper.route('/home')
+def load_html():
+	print(session)
+	session['k'] = url_for('admin.admin_form')
+	if 'user_id' not in session:
+		ans = {'log':"Login",'val':"Signup"}
+	else:
+		print(session['user_id'])
+		name = User.query.filter_by(id = session['user_id']).first()
+		print(name)
+		print(type(name))
+		name = name.name	
+		ans = {'log':"Logout",'val':name}
+	return render_template("movie.html",log =ans)
+#+END_SRC
+** /
+This route just redirects the user to /home route
+#+BEGIN_SRC 
+@mod_helper.route('/')
+def redirect_home():
+	return redirect(url_for('.load_html'))
+#+END_SRC
+** /viewticket
+When the user books a ticket this route generates the ticket for the
+user which contains the details like
++ Movie Name
++ Theatre Name and Type
++ Show Time
++ Seats Booked
++ Amount Paid
+#+BEGIN_SRC 
+@mod_helper.route('/viewticket')
+def view_ticket():
+	print('reached at helper controllers')
+	return render_template('ticket.html')
+#+END_SRC
+** /user/history
+This route displays the user history for user which is logged in.
+If user is not logged in them Unauthorised error is returned
+#+BEGIN_SRC 
+@mod_helper.route('/user/history')
+def user_history():
+	if 'user_id' not in session:
+		return render_template('401.html'),401
+	else:
+		return render_template('user.html')
+#+END_SRC
