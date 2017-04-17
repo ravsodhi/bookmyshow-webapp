@@ -57,14 +57,14 @@ class AdminLoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(message="Please Enter password")],render_kw={"placeholder": "Password"})
 
 class AdminRegisterForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(message="Please Enter your Name"), Length(min=4, max=15)],render_kw={"placeholder": "Name"})
+    username = StringField('Username', validators=[InputRequired(message="Please Enter your Name"), Length(min=1, max=40)],render_kw={"placeholder": "Name"})
     email = StringField('Email', validators=[InputRequired(message="Please Enter your Email address"), Email(message='Invalid email'), Length(max=50)] ,render_kw={"placeholder": "Email"})
-    password = PasswordField('Password', validators=[InputRequired(message="Please Enter your Password"), Length(min=5, max=80)],render_kw={"placeholder": "Password"})
-    check_password = PasswordField('Retype password', validators=[InputRequired(message="Please Re-enter your Password"), Length(min=5, max=80)],render_kw={"placeholder": "Retype - Password"})
+    password = PasswordField('Password', validators=[InputRequired(message="Please Enter your Password"), Length(min=8)],render_kw={"placeholder": "Password (Minimum 8 characters)"})
+    check_password = PasswordField('Retype password', validators=[InputRequired(message="Please Re-enter your Password"), Length(min=8)],render_kw={"placeholder": "Retype - Password"})
 
 class MovieForm(FlaskForm):
-    title = StringField('Title', validators=[InputRequired(message="Please Enter Movie Title"), Length(min=4, max=15)],render_kw={"placeholder": "Title"})
-    director = StringField('Director', validators=[InputRequired(message="Please Enter Movie Director"), Length(min=8, max=80)],render_kw={"placeholder": "Director"})
+    title = StringField('Title', validators=[InputRequired(message="Please Enter Movie Title"), Length(min=1, max=40)],render_kw={"placeholder": "Title"})
+    director = StringField('Director', validators=[InputRequired(message="Please Enter Movie Director"), Length(min=1, max=80)],render_kw={"placeholder": "Director"})
     discription = StringField('Description',validators=[InputRequired(message="Please Enter Movie description")],render_kw={"placeholder": "Description"})
     trailer_url = StringField('Url',validators=[InputRequired(),URL(message = 'Invalid URL')],render_kw={"placeholder": "URL"})
     duration = StringField('Duration',validators=[InputRequired(message="Please Enter Movie Duration")],render_kw={"placeholder":"Duration"})
@@ -72,8 +72,8 @@ class MovieForm(FlaskForm):
     off_theatre_date = DateField('Off Theatre Date',validators=[InputRequired()], render_kw={"placeholder": "Off Theatre Date FlaskFormat: yyyy-mm-dd"})
 
 class HallForm(FlaskForm):
-    hall_name = StringField('Hall Name', validators=[InputRequired(message="Please Enter New Hall Name"), Length(min=2, max=15)],render_kw={"placeholder": "Hall Name"})
-    hall_type = SelectField('Hall Type', choices = [('Small', 'Small'),('Medium','Medium'),('Big', 'Big')])
+    hall_name = StringField('Theatre Name', validators=[InputRequired(message="Please Enter New Hall Name"), Length(min=2, max=15)],render_kw={"placeholder": "Theatre Name"})
+    hall_type = SelectField('Theatre Type', choices = [('Small', 'Small'),('Medium','Medium'),('Big', 'Big')])
 
 
 class CostForm(FlaskForm):
@@ -86,13 +86,7 @@ class ScreeningForm(FlaskForm):
 	selectmovie = NonValidatingSelectField('Select Movie', choices = [])
 	selecthall = NonValidatingSelectMultipleField('Select Hall', choices = [])
 	selecttime = NonValidatingSelectMultipleField('Select Timings', choices = [('09:00', '9:00am'),('12:00','12:00pm'),('15:00', '3:00pm'),('18:00','6:00pm'),('21:00','9:00pm')])
-	#def pre_validate(self, form):
-	#	pass
-
-	'''
-	def __init__(self, multiple=True):
-		self.multiple = multiple
-	'''
+	
 class Globalvar(db.Model):
     __tablename__ = "variables"
     id = db.Column('id', db.Integer)
