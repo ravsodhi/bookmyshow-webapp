@@ -72,7 +72,7 @@ class MovieForm(FlaskForm):
     off_theatre_date = DateField('Off Theatre Date',validators=[InputRequired()], render_kw={"placeholder": "Off Theatre Date FlaskFormat: yyyy-mm-dd"})
 
 class HallForm(FlaskForm):
-    hall_name = StringField('Theatre Name', validators=[InputRequired(message="Please Enter New Hall Name"), Length(min=2, max=15)],render_kw={"placeholder": "Theatre Name"})
+    hall_name = StringField('Theatre Name', validators=[InputRequired(message="Please Enter New Theatre Name"), Length(min=2, max=15)],render_kw={"placeholder": "Theatre Name"})
     hall_type = SelectField('Theatre Type', choices = [('Small', 'Small'),('Medium','Medium'),('Big', 'Big')])
 
 
@@ -84,7 +84,7 @@ class CostForm(FlaskForm):
 class ScreeningForm(FlaskForm):
 	"""docstring for ScreeningForm"""
 	selectmovie = NonValidatingSelectField('Select Movie', choices = [])
-	selecthall = NonValidatingSelectMultipleField('Select Hall', choices = [])
+	selecthall = NonValidatingSelectMultipleField('Select Theatre', choices = [])
 	selecttime = NonValidatingSelectMultipleField('Select Timings', choices = [('09:00', '9:00am'),('12:00','12:00pm'),('15:00', '3:00pm'),('18:00','6:00pm'),('21:00','9:00pm')])
 	
 class Globalvar(db.Model):
