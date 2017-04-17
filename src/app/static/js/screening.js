@@ -1,18 +1,60 @@
 // works on load of screening.html
-function tempAlert(msg, duration) {
 
-    var el = document.createElement("div");
-    el.innerHTML = msg;
-    el.setAttribute("style", "position:fixed ; top:87% ;bottom:5%; left:45% ; background-color:black ; height:9%;padding: 12px 20px;color:white;");
-    setTimeout(function() {
-        el.parentNode.removeChild(el);
-    }, duration);
-    document.body.appendChild(el);
-}
+$(document).ready(
+    // Now this function can only be accessed on load of the document else, we could misuse it.
+    function loader() {
+        var array = [];
+        movieid = parseInt(window.location.pathname.split("/")[2])
+
+        function tempAlert(msg, duration) {
+
+            var el = document.createElement("div");
+            el.innerHTML = msg;
+            el.setAttribute("style", "position:fixed ; top:87% ;bottom:5%; left:45% ; background-color:black ; height:9%;padding: 12px 20px;color:white;");
+            setTimeout(function() {
+                el.parentNode.removeChild(el);
+            }, duration);
+            document.body.appendChild(el);
+        }
+        tempAlert("Page is Loading", 2000)
+            //var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
+        $.post({
+            url: "/api/screening/movies",
+            data: {
+                movie_id: movieid
+            },
+            success: function(response) {
+                console.log("success")
+                array = response.dates;
+                console.log(array)
+
+                var str = "";
+                var date = "";
+                for (var i = 0; i < array.length; i++) {
+                    temp = array[i].date.split("-")
+                    temp = temp[2] + "-" + temp[1] + "-" + temp[0]
+                    if (date != array[i].date) {
+                        str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movieid + ');\' >' + temp + '</button>';
+                        date = array[i].date;
+                    }
+
+                }
+
+                $("div.btn-group").html(str);
+                slot_fetch(array[0].date, movieid);
+                console.log(movieid)
+
+            },
+            error: function(response) {
+                console.log('Error in fetching dates');
+            }
+        });
+    }
+);
 
 function seat_view(screening_id) {
     var x = window.location.href;
-    x =  x.split("/")
+    x = x.split("/")
     x = x[0] + "//" + x[2] + "/" + "booking/" + screening_id
     window.location.href = x
 }
@@ -31,8 +73,7 @@ function slot_fetch(date, movie_id) {
             var str_head = ""
             var hall_name = ""
             var i;
-            if(array2.length == 0)
-            {
+            if (array2.length == 0) {
                 str_full = "<h2 class=\"hall-text\">No Shows Available</h2>";
             }
             for (i = 0; i < array2.length; i++) {
@@ -74,6 +115,7 @@ function slot_fetch(date, movie_id) {
 
                 str_full += str_head + str_body + "</div>"
             }
+            array2 = "";
             $("div.hall-div").html(str_full);
 
         },
@@ -82,43 +124,3 @@ function slot_fetch(date, movie_id) {
         }
     });
 }
-
-function loader() {
-    var array = [];
-    movieid = parseInt(window.location.pathname.split("/")[2])
-    tempAlert("Page is Loading", 2000)
-        //var movie_id = document.getElementsByClassName(movie_id_required)[0].innerHTML;
-    $.post({
-        url: "/api/screening/movies",
-        data: {
-            movie_id: movieid
-        },
-        success: function(response) {
-            console.log("success")
-            array = response.dates;
-            console.log(array)
-
-            var str = "";
-            var date = "";
-            for (var i = 0; i < array.length; i++) {
-                temp = array[i].date.split("-")
-                temp = temp[2] + "-" + temp[1] + "-" + temp[0]
-                if (date != array[i].date) {
-                    str += '<button class = \"button\" onclick = \'slot_fetch(\"' + array[i].date + '\", ' + movieid + ');\' >' + temp + '</button>';
-                    date = array[i].date;
-                }
-
-            }
-
-            $("div.btn-group").html(str);
-            slot_fetch(array[0].date, movieid);
-            console.log(movieid)
-
-        },
-        error: function(response) {
-            console.log('Error in fetching dates');
-        }
-    });
-};
-
-loader()
