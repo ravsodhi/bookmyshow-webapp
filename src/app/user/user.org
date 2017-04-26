@@ -1,0 +1,173 @@
+#+TITLE: Description of 'User' model and it's controllers
+#+AUTHOR: Kunal Garg, Anish Gulati, Ravsimar Singh Sodhi
+
+* Introduction
+To provide methodology on 'what' this model consists of and 'how' it works with rest of the web app.
+* Model
+The class 'User' consists of : -
+** Columns
+The table of User consists of columns:
+*** ID
+The ID is primary key of the user database table. It's column name is 'id' and it increments
+automatically with new enteries in the table. It's data type is Integer.
+*** name
+Another column of table "user" whose name is 'name'. It's data type is String.
+*** password
+This column, named 'password', has the data type String.
+*** email
+This column named 'email', has the data type String.
+*** is_admin
+This column named 'is_admin', has the data type Boolean which checks if user is admin or not?
+
+#+BEGIN_SRC 
+class User (db.Model):
+    """
+    Create an User table
+    """
+    __tablename__ = "user"
+    id = db.Column('id', db.Integer, primary_key = True,autoincrement=True)
+    name = db.Column('name', db.String(255))
+    password = db.Column('password', db.String(255))
+    email = db.Column('email',db.String(255), unique = True)
+    is_admin = db.Column('is_admin',db.Boolean)
+#+END_SRC
+** Methods
+*** __init__(self,name,email,password,is_admin)
+This methid initailises the values of the user
+#+BEGIN_SRC 
+ def __init__(self,name,email,password,is_admin):
+        self.name = name
+        self.password = generate_password_hash(password)
+        self.email = email
+        self.is_admin = is_admin
+
+#+END_SRC
+*** to_dict(self)
+These are similar to __repr__ methods which are needed by some of the controllers(to obtain the string 
+representation of the objects obtained) discussed below.
+#+BEGIN_SRC 
+def to_dict(self):
+        return {
+            'id' : self.id,
+            'name': self.name,
+            'email': self.email,
+        }
+#+END_SRC
+*** check_password(self,password)
+Checks if hashed password matches actual password
+#+BEGIN_SRC 
+  def check_password(self, password):
+      return check_password_hash(self.password, password)
+#+END_SRC
+
+*** __repr__(self)
+This is method provided by python to provide the string representation of the object(which is the instance
+of class)
+The rest of the 4 methos are created because they are the requirements of
+Flask-Login.
+*** is_active(self)
+This function returns True, as all users are active.
+#+BEGIN_SRC 
+def is_active(self):
+        return True
+#+END_SRC
+*** get_id(self)
+This function returns the user-id to satisfy Flask-Login's requirements.
+#+BEGIN_SRC 
+ def get_id(self):
+        return self.id
+#+END_SRC
+*** is_authenticated(self)
+This function returns True if the user is authenticated.
+#+BEGIN_SRC 
+    def is_authenticated(self):
+        return self.authenticated
+#+END_SRC
+*** is_anonymous(self)
+This function returns False, as anonymous users aren't supported.
+#+BEGIN_SRC 
+def is_anonymous(self):
+         return False
+#+END_SRC
+
+* Controller
+** Blueprint
+It's aim is to record the operations to execute when registered on an application in a modular way. These
+blueprints are then at last registered in the main __init__.py which is their in the main app directory.
+#+BEGIN_SRC  blueprint
+mod_user = Blueprint('user', __name__)
+#+END_SRC
+** Routes
+*** @app.before_request
+The current user is stored in g before any request is processed in
+app.
+#+BEGIN_SRC 
+@app.before_request
+def blueprintefore_request():
+    g.user = current_user
+#+END_SRC
+
+*** /login
+This route is the login interface for both user and admin.
+If login details are incorrect then 'login.html' is rendered.
+Else if the are correct, then if the user is an admin then he has admin
+previlages else user is logged in as normal user and cant have admin access.
+#+BEGIN_SRC 
+@mod_user.route('/login', methods=['GET', 'POST'])
+def login():
+    if not session.get('k'):
+        session['k'] = url_for('helper.load_html')
+    if 'user_id' in session:
+        return redirect(session['k'])
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            print(user.password)
+            print(form.password.data)
+            if check_password_hash(user.password, form.password.data):
+                session['user_id'] = user.id
+                p =  session['k']
+                login_user(user)
+                session['k'] = p
+                return redirect(session['k'])
+            return render_template('login.html', form=form,message= "password is incorrect")
+        else:
+            return render_template('login.html', form=form,message= "Email is not registered")
+    return render_template('login.html', form=form)
+#+END_SRC
+*** /logout
+This route is used to pop the 'user-id' from session and clears the
+session.
+#+BEGIN_SRC
+@mod_user.route('/logout')
+def logout():
+    #print('lun',self.request.url)
+    g.user = None
+    session.clear()
+    logout_user()
+    ans = {'log':"Login",'val':"Signup"}
+    session['k'] = url_for('helper.load_html')
+    return redirect(url_for('helper.load_html'))
+#+END_SRC
+*** /api/user_info
+This route is used to fetch the complete information of the user if we
+know its user-id and returns a touple.
+This roue is needed to show user history.
+#+BEGIN_SRC 
+@mod_user.route('/api/user_info', methods=['GET'])
+def get_user_info():
+    try:
+        if 'user_id' in session:
+            user_id = session['user_id']
+        else:
+            print('notloggedin')
+            return jsonify(success=False), 404
+        user_touple = User.query.filter(User.id == user_id).first()
+        name = user_touple.name
+        email = user_touple.email
+        id = user_touple.id
+        return jsonify(success=True, info={'name':name, 'email':email,'id':id})
+    except:
+        return jsonify(success=False, message="Error in fetching user info"), 404
+#+END_SRC
