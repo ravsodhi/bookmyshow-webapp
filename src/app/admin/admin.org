@@ -1,0 +1,41 @@
+#+TITLE: Description of 'Admin' Controllers
+#+AUTHOR: Kunal Garg,Ravsimar Singh Sodhi,Anish Gulati
+
+* Introduction
+To provide methodology on 'how' form model and controllers works with the rest of 
+the web app.
+
+
+* Controllers
+The controllers define the routes on through which data is accessed.The web app
+sends api calls to these routes and gets response as the required data.
+** /admin
+Checks if 'user-id' is in session:
+If it is present them it checks whether it is admin or user?
+If it is admin then it makes admin page accessable to him
+Otherwise in any case it returns '401.html'.
+#+BEGIN_SRC 
+@mod_admin.route('/admin')
+def admin_form():
+	if 'user_id' not in session:
+		return render_template('401.html'),401
+	else:
+		print(session['user_id'])
+		use = User.query.filter_by(id = session['user_id']).first()
+		print(use.is_admin)
+		ans = {'log':"Logout",'val': use.name}
+		if use.is_admin is True:
+			return render_template('admin.html',log=ans),200
+		else:
+			return render_template('401.html'),401
+#+END_SRC
+** @app.before_request
+The current user is stored in g before any request is processed in
+app.
+#+BEGIN_SRC 
+@app.before_request
+def blueprintefore_request():
+    g.user = current_user
+#+END_SRC
+
+
