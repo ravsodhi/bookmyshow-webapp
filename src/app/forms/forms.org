@@ -1,0 +1,258 @@
+#+TITLE: Description of 'Form' Model and Controllers
+#+AUTHOR: Kunal Garg,Ravsimar Singh Sodhi,Anish Gulati
+
+* Introduction
+To provide methodology on 'how' form model and controllers works with the rest of 
+the web app.
+
+
+* Model
+The model of form contains the code for all the forms that has been used
+in this web app. For making forms we have made use of flask WTF-forms, so 
+as to avoid redundancy of code and also to apply csrf security in every form.
+It has following classes:
+** LoginForm
+'LoginForm' consists of email and password field thorugh which the registered
+user can login and book tickets as well as view his ticket history.Admin can also 
+login in this form.
+#+BEGIN_SRC 
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(message="Please Enter your Email address"), Email(message='Invalid email'),Length(min=4, max=80)], render_kw={"placeholder": "Email"})
+    password = PasswordField('Password', validators=[InputRequired(message="Please Enter password")],render_kw={"placeholder": "Password"})
+#+END_SRC
+
+** RegisterForm
+'Register Form' consists of username,email,password and confirm password
+field registers the new user to have access to book tickets.Username and Email 
+are strings so StringField is used but for passwords we use PasswordField
+provided by the flask forms.
+#+BEGIN_SRC 
+class RegisterForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(message="Please Enter your Name"), Length(min=4, max=15)],render_kw={"placeholder": "Name"})
+    email = StringField('Email', validators=[InputRequired(message="Please Enter your Email address"), Email(message='Invalid email'), Length(max=50)] ,render_kw={"placeholder": "Email"})
+    password = PasswordField('Password', validators=[InputRequired(message="Please Enter your Password"), Length(min=5, max=80)],render_kw={"placeholder": "Password"})
+    check_password = PasswordField('Retype password', validators=[InputRequired(message="Please Re-enter your Password"), Length(min=5, max=80)],render_kw={"placeholder": "Retype - Password"})
+#+END_SRC
+ 
+** AdminLoginForm
+'AdminLoginForm' also consists of email and password field through which only
+the registered admin can login not the user.Admin has access to manage the app,
+more details of admin are given here.
+#+BEGIN_SRC 
+class AdminLoginForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(message="Please Enter your Email address"), Email(message='Invalid email'),Length(min=4, max=80)], render_kw={"placeholder": "Email"})
+    password = PasswordField('Password', validators=[InputRequired(message="Please Enter password")],render_kw={"placeholder": "Password"})
+#+END_SRC
+
+** AdminRegisterForm
+'AdminRegisterForm' allows to register the admin and thus gives him
+access to manage the app.
+#+BEGIN_SRC 
+class AdminRegisterForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(message="Please Enter your Name"), Length(min=1, max=40)],render_kw={"placeholder": "Name"})
+    email = StringField('Email', validators=[InputRequired(message="Please Enter your Email address"), Email(message='Invalid email'), Length(max=50)] ,render_kw={"placeholder": "Email"})
+    password = PasswordField('Password', validators=[InputRequired(message="Please Enter your Password"), Length(min=8)],render_kw={"placeholder": "Password (Minimum 8 characters)"})
+    check_password = PasswordField('Retype password', validators=[InputRequired(message="Please Re-enter your Password"), Length(min=8)],render_kw={"placeholder": "Retype - Password"})
+#+END_SRC
+
+** MovieForm
+'MovieForm' is used to add a new movie in the database. Only admin has access
+to this form, normal user cant add movie in the database.
+This form consists of following fields:
+'Title' - which has to length between 1 to 40
+'Director' - which has to be of length between 1 to 80
+'Description' 
+'Url' - which should be a valid one as the form has a check for url
+'Release Date' - which should be of form yyyy-mm-dd, if admin tries to
+use another format form gives an error
+'Off Theatre Date' -  which should be of form yyyy-mm-dd, if admin tries to
+use another format form gives an error
+The use of each of them is explained in detail here.
+#+BEGIN_SRC 
+class MovieForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired(message="Please Enter Movie Title"), Length(min=1, max=40)],render_kw={"placeholder": "Title"})
+    director = StringField('Director', validators=[InputRequired(message="Please Enter Movie Director"), Length(min=1, max=80)],render_kw={"placeholder": "Director"})
+    discription = StringField('Description',validators=[InputRequired(message="Please Enter Movie description")],render_kw={"placeholder": "Description"})
+    trailer_url = StringField('Url',validators=[InputRequired(),URL(message = 'Invalid URL')],render_kw={"placeholder": "URL"})
+    duration = StringField('Duration',validators=[InputRequired(message="Please Enter Movie Duration")],render_kw={"placeholder":"Duration"})
+    release_date = DateField('Release Date',validators=[InputRequired()],render_kw={"placeholder": "Release Date format: yyyy-mm-dd"})
+    off_theatre_date = DateField('Off Theatre Date',validators=[InputRequired()], render_kw={"placeholder": "Off Theatre Date FlaskFormat: yyyy-mm-dd"})
+#+END_SRC
+
+** HallForm
+'HallForm' allows to add theatre in web app. Like 'MovieForm' only
+admin has access to this form, normal user cant add hall in database.
+This form consists of following fields:
+'Theatre Name' - which is a string input field. 
+'Theatre Type' - which is a dropdown list.
+The use of each of them is explained in detail here.
+#+BEGIN_SRC 
+class HallForm(FlaskForm):
+    hall_name = StringField('Theatre Name', validators=[InputRequired(message="Please Enter New Theatre Name"), Length(min=2, max=15)],render_kw={"placeholder": "Theatre Name"})
+    hall_type = SelectField('Theatre Type', choices = [('Small', 'Small'),('Medium','Medium'),('Big', 'Big')])
+#+END_SRC
+
+** CostForm
+'CostForm' allows to set cost of the seats of the theatre.Like 'MovieForm' 
+only admin has access to this form, normal user cant have access to
+this form.
+This form consists of following fields:
+'Platinum Seat Cost' - which is a integer input field.
+'Gold Seat Cost' - which is a integer input field.
+'Silver Seat Cost' - which is a integer input field.
+#+BEGIN_SRC 
+class CostForm(FlaskForm):
+    platinum = IntegerField('Platinum Seat Cost', validators=[InputRequired()],render_kw={"placeholder": "Platinum Cost"})
+    gold = IntegerField('Gold Seat Cost', validators=[InputRequired()],render_kw={"placeholder": "Gold Cost"})
+    silver = IntegerField('Silver Seat Cost', validators=[InputRequired()],render_kw={"placeholder": "Silver Cost"})
+#+END_SRC
+
+** Screening Form
+'ScreeningForm' allows to add screening of the movie in theatre.
+This form consists of following fields:
+'Platinum Seat Cost' - which is a integer input field.
+'Gold Seat Cost' - which is a integer input field.
+'Silver Seat Cost' - which is a integer input field.
+
+* Controllers
+The controllers define the routes on through which data is accessed.The web app
+sends api calls to these routes and gets response as the required data.
+** get_random_string()
+This returns the random string to be given as csrf key to the front end
+#+BEGIN_SRC 
+def get_random_string(length=12,
+                      allowed_chars='abcdefghijklmnopqrstuvwxyz'
+                                    'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
+     return ''.join(random.choice(allowed_chars) for i in range(length))
+#+END_SRC
+** @app.before_request
+The current user is stored in g before any request is processed in
+app.
+#+BEGIN_SRC 
+@app.before_request
+def blueprintefore_request():
+    g.user = current_user
+#+END_SRC
+
+** @mod_from.before_request
+The function mentioned gets called every time when request is processed
+in the routes in this file
+#+BEGIN_SRC 
+@mod_form.before_request
+def fun():
+#+END_SRC
+
+If the method of request is 'GET' then we send some random csrf key to 
+the front end and stored the sent key in database.
+#+BEGIN_SRC 
+    if request.method == 'GET':
+        session.clear()
+        session['csrf_key'] = get_random_string()
+        k = Globalvar.query.all()
+        for i in k:
+            db.session.delete(i)
+        app.jinja_env.globals['csrf_key'] = session['csrf_key']
+        var = Globalvar(session['csrf_key'])
+        db.session.add(var)
+        db.session.commit()
+#+END_SRC
+
+If the request method is 'POST' then we validate the obtained csrf key
+with the one stored in the database.
+If both have same values then we proceed for the register request.
+#+BEGIN_SRC 
+    if request.method == 'POST':
+        token = session['csrf_key']
+        temo = Globalvar.query.first()
+        if token !=  temo.token:
+            return render_template('403.html')   
+#+END_SRC
+
+** /register
+This route is for registering users.
+*** Method : GET
+It just renders the 'register.html' template.
+*** Method : POST
+When the user clicks on 'Sign Up' button of the 'RegisterForm', 
+then data is submitted to '/register' route with a 'POST' request.
+If the data validation criteria is fulfilled then user gets added in db.
+Otherwise it renders the 'register.html' again.
+If logged in user tries to access this route then user is
+redirected to '/home' 
+#+BEGIN_SRC 
+@mod_form.route('/register', methods=['GET','POST'])
+def signup():
+    if 'user_id' in session:
+        return redirect(url_for('helper.load_html'))
+    form = RegisterForm()
+    
+    if form.validate_on_submit():
+        if form.password.data != form.check_password.data:
+            return render_template('register.html', form=form ,message = "Passwords don't match")
+        if '@' not in form.email.data:
+            return render_template('register.html',form=form, message="Please enter a valid email")
+        try:
+    
+            new_user = User(name=form.username.data, email=form.email.data, password=form.password.data,is_admin=False)
+            db.session.add(new_user)
+            db.session.commit()
+            k = Globalvar.query.all()
+            for i in k:
+                db.session.delete(i)
+            var = Globalvar(get_random_string())
+            db.session.add(var)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('helper.load_html'))
+        except:
+            return render_template('register.html', form=form, message = "Email is already Registered")
+    return render_template('register.html', form=form)
+#+END_SRC
+** /adminregister
+This route is for registering admin only.
+*** Method : GET
+It just renders the 'adminregister.html' template.
+*** Method : POST
+When the user clicks on 'Sign Up' button of the 'AdminRegisterForm', 
+then data is submitted to '/adminregister' route with a 'POST' request.
+If the data validation criteria is fulfilled then user gets added in db.
+Otherwise it renders the 'adminregister.html' again.
+If logged in user tries to access this route then user is
+redirected to '/home' 
+#+BEGIN_SRC 
+@mod_form.route('/adminregister', methods=['GET','POST'])
+def adminsignup():
+    if 'user_id' in session:
+        return redirect(url_for('helper.load_html'))
+        #return redirect("http://127.0.0.1:5000/home")
+    form = AdminRegisterForm()
+    print('/adminregister')
+    if form.validate_on_submit():
+        print('/admin validate')
+        if form.password.data != form.check_password.data:
+            return render_template('adminregister.html', form=form ,message = "Passwords don't match")
+        if '@' not in form.email.data:
+            return render_template('adminregister.html',form=form, message="Please enter a valid email")
+        try:
+            print('admin added')
+            print(form.password.data)
+            new_user = User(name=form.username.data, email=form.email.data, password=form.password.data,is_admin = True)
+            db.session.add(new_user)
+            print(new_user)
+            db.session.commit()
+            app.jinja_env.globals['csrf_key'] = get_random_string()
+            session.clear()
+            print('admin added')
+            #print(session['user_id'])
+            login_user(new_user)
+            #print(session['user_id'])
+            #return redirect("http://127.0.0.1:5000/admin")
+            return redirect(url_for('helper.load_html'))
+        except:
+            print('admin not added')
+            return render_template('adminregister.html', form=form,message = "Email is already Registered")
+    return render_template('adminregister.html', form=form)
+#+END_SRC
+
+
+ 
