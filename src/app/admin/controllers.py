@@ -41,36 +41,3 @@ def admin_form():
 def before_request():
     g.user = current_user
 
-@mod_admin.route('/adminlogin', methods=['GET', 'POST'])
-def adminlogin():
-	print("/adminlogin")
-	if 'user_id' in session:
-		return redirect(url_for('helper.load_html'))
-#	if g.user is not None and g.user.is_authenticated:
-#		return redirect(session['k'])
-	#	return redirect("http://127.0.0.1:5000/home")
-	print("dscksjck")
-	print(session['k'])
-
-	form = AdminLoginForm()
-	if form.validate_on_submit():
-		user = User.query.filter_by(email=form.email.data).first()
-		if user:
-			print(user.is_admin)
-			print(form.password.data)
-			print(user.password)
-			if check_password_hash(user.password, form.password.data):
-				print('correct password')
-				if user.is_admin is False:
-					return render_template('adminlogin.html', form=form,message= "Access Denied")
-				else:
-					session['user_id'] = user.id
-					login_user(user)
-					print(session['k'])
-					print('redirect to /admin')
-					return redirect(url_for('.admin_form'))
-			print('password incorrect')
-			return render_template('adminlogin.html', form=form,message= "password is incorrect")
-		else:
-			return render_template('adminlogin.html', form=form,message= "Email is not registered")
-	return render_template('adminlogin.html', form=form)	
