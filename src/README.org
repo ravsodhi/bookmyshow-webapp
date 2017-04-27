@@ -20,17 +20,29 @@ Build a movie booking system similar to that of Bookmyshow.
 * Application
 ** Data Schema
 The database consists of some ordered tables to store information. These are:
-(A more detailed description of models and controllers is linked in the headings)
 
-+ [[./app/movie/movie.org][Movie]] :: contains the all movies of the database.
-+ [[./app/auditorium/auditorium.org][Auditorium/Theatre]] :: contains all Theatres of the database.
-+ [[./app/screening/screening.org][Screening]] :: contains all shows which were,are or will be aired in the theatres.
-+ [[./app/seat/seat.org][Seat]] :: contains the seats and their costs according to the theatre.
-+ [[./app/booking/booking.org][Booking]] :: contains all the bookings done by users.
-+ [[./app/user/user.org][User]] :: contains the details of the user.
+/(A more detailed description of each table/class can be found on clicking the headings.)/
+
++ [[./app/movie/movie.org][Movie]] ::
+ contains the all movies of the database.
++ [[./app/auditorium/auditorium.org][Auditorium/Theatre]] :: 
+contains all Theatres of the database.
++ [[./app/screening/screening.org][Screening]] :: 
+contains all shows which were,are or will be aired in the theatres.
++ [[./app/seat/seat.org][Seat]] :: 
+contains the seats and their costs according to the theatre.
++ [[./app/booking/booking.org][Booking]] :: 
+contains all the bookings done by users.
++ [[./app/user/user.org][User]] :: 
+contains the details of the user.
 
 Apart from these basic database tables, some more classes and methods had to be defined.
-+ [[./app/helper/helper.org][Helper]] :: contains helper functions for proper functioning of the app.
++ [[./app/helper/helper.org][Helper]] :: 
+contains helper functions for proper functioning of the app.
++ [[./app/admin/admin.org][Admin]] :: 
+contains admin user functionality.
++ [[./app/forms/forms.org][Forms]] :: 
+contains login,signup forms and other admin functionality forms.
 
 ** Designing 
 The first step while building this app was having a flexible but firm idea of the
